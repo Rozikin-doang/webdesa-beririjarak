@@ -1,0 +1,83 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Tambah APBDes - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full max-w-4xl mx-auto gap-space-lg">
+    <div class="flex items-center gap-4">
+        <a href="{% url 'kelola_apbdes' %}" class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-primary">arrow_back</span></a>
+        <div><h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Tambah Laporan APBDes</h1></div>
+    </div>
+    
+    <form method="POST" class="bg-surface-pure rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col gap-6">
+        {% csrf_token %}
+        
+        <!-- TAHUN & TAHAP -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1"><label class="font-label-md font-semibold text-text-primary">Tahun Anggaran <span class="text-error">*</span></label><input type="number" name="tahun_anggaran" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none" placeholder="2026"></div>
+            <div class="space-y-1"><label class="font-label-md font-semibold text-text-primary">Tahap <span class="text-error">*</span></label><input type="text" name="tahap" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none" placeholder="Cth: Tahap I"></div>
+        </div>
+
+        <!-- RINCIAN PENDAPATAN -->
+        <div class="bg-surface-container-low rounded-2xl p-5 border border-border-subtle">
+            <h2 class="font-title-md font-bold text-primary mb-4 border-b border-border-subtle pb-2">Rincian Pendapatan</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                <div class="space-y-1"><label class="font-label-md font-semibold text-text-primary">Pendapatan Asli Desa <span class="text-error">*</span></label><input type="number" name="pendapatan_asli" value="0" required class="w-full px-4 py-3 rounded-xl bg-surface-pure border border-border-subtle outline-none"></div>
+                <div class="space-y-1"><label class="font-label-md font-semibold text-text-primary">Pendapatan Transfer <span class="text-error">*</span></label><input type="number" name="pendapatan_transfer" value="0" required class="w-full px-4 py-3 rounded-xl bg-surface-pure border border-border-subtle outline-none"></div>
+                <div class="space-y-1"><label class="font-label-md font-semibold text-text-primary">Pendapatan Lain-lain <span class="text-error">*</span></label><input type="number" name="pendapatan_lain" value="0" required class="w-full px-4 py-3 rounded-xl bg-surface-pure border border-border-subtle outline-none"></div>
+            </div>
+        </div>
+
+        <!-- TOTAL PENDAPATAN & BELANJA -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1"><label class="font-label-md font-semibold text-text-primary">Total Pendapatan (Rp) <span class="text-error">*</span></label><input type="number" name="total_pendapatan" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none"></div>
+            <div class="space-y-1"><label class="font-label-md font-semibold text-text-primary">Realisasi Pendapatan (Rp) <span class="text-error">*</span></label><input type="number" name="realisasi_pendapatan" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1"><label class="font-label-md font-semibold text-text-primary">Total Belanja (Rp) <span class="text-error">*</span></label><input type="number" name="total_belanja" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none"></div>
+            <div class="space-y-1"><label class="font-label-md font-semibold text-text-primary">Realisasi Belanja (Rp) <span class="text-error">*</span></label><input type="number" name="realisasi_belanja" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none"></div>
+        </div>
+
+        <!-- RINCIAN BELANJA -->
+        <div class="bg-surface-container-low rounded-2xl p-5 border border-border-subtle">
+            <h2 class="font-title-md font-bold text-primary mb-2 border-b border-border-subtle pb-2">Rincian Belanja (Bidang & Sub Bidang)</h2>
+            <p class="text-sm text-text-secondary mb-4">Tambahkan rincian sesuai baliho fisik desa.</p>
+            
+            <div id="belanja-container" class="flex flex-col gap-3 mb-4">
+                <div class="flex flex-col md:flex-row gap-3 belanja-row">
+                    <input type="text" name="uraian_belanja[]" placeholder="Cth: 1. BIDANG PENYELENGGARAAN PEMERINTAHAN DESA" required class="flex-1 px-4 py-2.5 rounded-xl bg-surface-pure border border-border-subtle">
+                    <input type="number" name="anggaran_belanja[]" placeholder="Anggaran (Rp)" required class="md:w-40 px-4 py-2.5 rounded-xl bg-surface-pure border border-border-subtle">
+                    <input type="number" name="realisasi_belanja[]" placeholder="Realisasi (Rp)" required class="md:w-40 px-4 py-2.5 rounded-xl bg-surface-pure border border-border-subtle">
+                    <button type="button" onclick="this.parentElement.remove()" class="px-3 py-2.5 bg-error-container text-error rounded-xl hover:bg-error hover:text-white transition-colors flex items-center justify-center"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                </div>
+            </div>
+            <button type="button" onclick="tambahBelanja()" class="px-4 py-2 rounded-lg bg-primary text-on-primary font-label-md font-bold flex items-center gap-1 hover:bg-secondary transition-colors">
+                <span class="material-symbols-outlined text-[18px]">add_circle</span> Tambah Bidang Belanja
+            </button>
+        </div>
+
+        <div class="pt-4 border-t border-border-subtle flex justify-end gap-3">
+            <a href="{% url 'kelola_apbdes' %}" class="px-5 py-2.5 rounded-xl bg-surface-container font-semibold hover:bg-surface-container-high transition-colors">Batal</a>
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold shadow-md flex items-center gap-2 hover:bg-secondary transition-colors"><span class="material-symbols-outlined">save</span> Simpan</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function tambahBelanja() {
+        const container = document.getElementById('belanja-container');
+        const html = `
+            <div class="flex flex-col md:flex-row gap-3 belanja-row">
+                <input type="text" name="uraian_belanja[]" placeholder="Nama Bidang / Sub Bidang" required class="flex-1 px-4 py-2.5 rounded-xl bg-surface-pure border border-border-subtle">
+                <input type="number" name="anggaran_belanja[]" placeholder="Anggaran" required class="md:w-40 px-4 py-2.5 rounded-xl bg-surface-pure border border-border-subtle">
+                <input type="number" name="realisasi_belanja[]" placeholder="Realisasi" required class="md:w-40 px-4 py-2.5 rounded-xl bg-surface-pure border border-border-subtle">
+                <button type="button" onclick="this.parentElement.remove()" class="px-3 py-2.5 bg-error-container text-error rounded-xl hover:bg-error hover:text-white transition-colors flex items-center justify-center"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', html);
+    }
+</script>
+{% endblock %}

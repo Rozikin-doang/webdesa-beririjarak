@@ -1,0 +1,307 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Dashboard Operator - SID Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full gap-space-lg">
+
+    <!-- Welcome Admin Banner -->
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-primary-container to-secondary p-space-lg shadow-xl text-on-primary">
+        <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-accent-mint/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute right-48 -bottom-20 w-64 h-64 rounded-full bg-accent-emerald/10 blur-2xl pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-space-lg">
+            <div class="space-y-2 max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-pure/15 text-accent-mint backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-accent-mint animate-pulse"></span>
+                    <span class="font-label-sm text-label-sm tracking-wide uppercase font-semibold">{% now "l, d F Y" %} • Sesi Aktif Kantor Desa</span>
+                </div>
+                <h1 class="font-headline-lg text-headline-lg font-bold tracking-tight text-on-primary">
+                    Selamat Bertugas, {{ request.user.username|title }}
+                </h1>
+                <p class="font-body-md text-body-md text-on-primary-container leading-relaxed">
+                    Pusat kendali administrasi, layanan persuratan warga, transparansi keuangan APBDes, dan publikasi warta Kecamatan Wanasaba, Lombok Timur.
+                </p>
+                <div class="flex flex-wrap items-center gap-4 pt-1 font-label-md text-label-md text-on-primary-container">
+                    <span class="inline-flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-accent-mint">verified_user</span>
+                        TTE Balai Sertifikasi Elektronik (BSrE) Aktif
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Quick Action Buttons -->
+            <div class="flex flex-wrap sm:flex-nowrap xl:flex-col gap-2.5 shrink-0 min-w-[260px]">
+                <a href="{% url 'tambah_layanan_surat' %}" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-accent-emerald text-primary font-label-lg text-label-lg font-bold shadow-md hover:bg-accent-mint transition-all transform hover:-translate-y-0.5">
+                    <span class="material-symbols-outlined text-[20px]">add_circle</span>
+                    <span>Terbitkan Surat Baru</span>
+                </a>
+                <div class="grid grid-cols-3 gap-2 w-full">
+                    <a href="{% url 'tambah_berita' %}" class="flex flex-col items-center justify-center p-2 rounded-lg bg-surface-pure/10 hover:bg-surface-pure/20 backdrop-blur transition-colors text-center group" title="Tambah Berita Baru">
+                        <span class="material-symbols-outlined text-[20px] text-accent-mint group-hover:scale-110 transition-transform">post_add</span>
+                        <span class="font-label-sm text-label-sm mt-1 text-on-primary">Warta</span>
+                    </a>
+                    <a href="{% url 'kelola_apbdes' %}" class="flex flex-col items-center justify-center p-2 rounded-lg bg-surface-pure/10 hover:bg-surface-pure/20 backdrop-blur transition-colors text-center group" title="Update APBDes">
+                        <span class="material-symbols-outlined text-[20px] text-tertiary-fixed-dim group-hover:scale-110 transition-transform">monitoring</span>
+                        <span class="font-label-sm text-label-sm mt-1 text-on-primary">APBDes</span>
+                    </a>
+                    <a href="{% url 'tambah_galeri' %}" class="flex flex-col items-center justify-center p-2 rounded-lg bg-surface-pure/10 hover:bg-surface-pure/20 backdrop-blur transition-colors text-center group" title="Upload Galeri">
+                        <span class="material-symbols-outlined text-[20px] text-secondary-fixed group-hover:scale-110 transition-transform">photo_camera</span>
+                        <span class="font-label-sm text-label-sm mt-1 text-on-primary">Galeri</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI Overview Metric Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+        <!-- KPI 1: Surat -->
+        <div class="bg-surface-pure rounded-2xl p-space-md shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="font-label-sm text-label-sm uppercase font-semibold text-text-secondary tracking-wider">Layanan Surat</span>
+                    <h2 class="font-headline-md text-headline-md font-bold text-text-primary mt-1">{{ surat_menunggu|default:"0" }} <span class="font-title-md text-title-md text-on-tertiary-container font-semibold">Antre</span></h2>
+                    <span class="font-label-sm text-label-sm text-text-secondary">Perlu Verifikasi TTE</span>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-gold-light flex items-center justify-center text-tertiary">
+                    <span class="material-symbols-outlined text-[22px]">mark_email_unread</span>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 flex items-center justify-between font-label-sm text-label-sm">
+                <span class="px-2 py-0.5 rounded-full bg-surface-container text-secondary font-semibold">{{ total_surat|default:"0" }} Total</span>
+                <span class="text-text-secondary">Bulan Ini</span>
+            </div>
+        </div>
+        
+        <!-- KPI 2: APBDes -->
+        <div class="bg-surface-pure rounded-2xl p-space-md shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="font-label-sm text-label-sm uppercase font-semibold text-text-secondary tracking-wider">Realisasi APBDes</span>
+                    <h2 class="font-title-lg text-title-lg font-bold text-text-primary mt-1">Rp {{ apbdes.realisasi_belanja|default:"0" }}</h2>
+                    <span class="font-label-sm text-label-sm text-text-secondary">Pagu Rp {{ apbdes.total_belanja|default:"0" }}</span>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed-variant">
+                    <span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
+                </div>
+            </div>
+            <div class="mt-4 pt-3">
+                <div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+                    <div class="bg-accent-emerald h-1.5 rounded-full" style="width: 80%"></div>
+                </div>
+                <div class="flex justify-between items-center mt-1.5 font-label-sm text-label-sm">
+                    <span class="text-secondary font-bold">Tahun {{ apbdes.tahun_anggaran|default:"2026" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 3: UMKM -->
+        <div class="bg-surface-pure rounded-2xl p-space-md shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="font-label-sm text-label-sm uppercase font-semibold text-text-secondary tracking-wider">Katalog UMKM</span>
+                    <h2 class="font-headline-md text-headline-md font-bold text-text-primary mt-1">{{ total_umkm|default:"0" }}</h2>
+                    <span class="font-label-sm text-label-sm text-text-secondary">Unit Usaha Warga</span>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[22px]">storefront</span>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 flex items-center gap-1.5 font-label-sm text-label-sm text-text-secondary">
+                <span class="material-symbols-outlined text-[16px] text-accent-emerald">pin_drop</span>
+                <span>Tersebar di 6 Dusun</span>
+            </div>
+        </div>
+
+        <!-- KPI 4: Berita -->
+        <div class="bg-surface-pure rounded-2xl p-space-md shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="font-label-sm text-label-sm uppercase font-semibold text-text-secondary tracking-wider">Publikasi Portal</span>
+                    <h2 class="font-headline-md text-headline-md font-bold text-text-primary mt-1">{{ total_berita|default:"0" }}</h2>
+                    <span class="font-label-sm text-label-sm text-text-secondary">Warta &amp; Pengumuman</span>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[22px]">campaign</span>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 flex items-center justify-between font-label-sm text-label-sm">
+                <span class="text-accent-emerald font-semibold flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-emerald"></span> Tayang
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Split Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+        
+        <!-- LEFT COLUMN (8 cols) -->
+        <div class="lg:col-span-8 flex flex-col gap-space-lg">
+            
+            <!-- Antrean Pengajuan Surat -->
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-space-md">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-secondary text-[22px]">assignment</span>
+                            <h2 class="font-title-lg text-title-lg font-bold text-text-primary">Antrean Layanan Surat</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto -mx-space-lg px-space-lg">
+                    <table class="w-full text-left min-w-[620px]">
+                        <thead>
+                            <tr class="bg-surface-container-low text-text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                                <th class="py-3 px-4 rounded-l-xl">Pemohon & NIK</th>
+                                <th class="py-3 px-4">Jenis Surat</th>
+                                <th class="py-3 px-4">Dusun Asal</th>
+                                <th class="py-3 px-4">Status</th>
+                                <th class="py-3 px-4 rounded-r-xl text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-border-subtle font-body-sm text-body-sm">
+                            {% for surat in antrean_surat %}
+                            <tr class="hover:bg-surface-container-low/60 transition-colors">
+                                <td class="py-3 px-4">
+                                    <div class="font-title-md text-title-md font-semibold text-text-primary">{{ surat.nama_pemohon }}</div>
+                                    <div class="font-label-sm text-label-sm text-text-secondary">{{ surat.nik_pemohon }}</div>
+                                </td>
+                                <td class="py-3 px-4 font-medium text-text-primary">
+                                    {% if surat.layanan %}
+                                        {{ surat.layanan.nama_layanan }}
+                                    {% else %}
+                                        Input Manual
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 px-4 text-text-secondary">{{ surat.dusun_asal }}</td>
+                                <td class="py-3 px-4">
+                                    {% if surat.status == 'menunggu' %}
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gold-light text-tertiary-container font-label-sm text-label-sm font-semibold">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container animate-ping"></span> Menunggu
+                                        </span>
+                                    {% elif surat.status == 'diproses' %}
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-secondary font-label-sm text-label-sm font-semibold">
+                                            Diproses
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-low text-accent-emerald font-label-sm text-label-sm font-semibold">
+                                            Selesai
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 px-4 text-right">
+                                    <!-- Diubah ke URL ubah_status_pengajuan -->
+                                    <a href="{% url 'ubah_status_pengajuan' surat.id %}" class="p-1.5 rounded-lg bg-primary-container text-on-primary hover:bg-secondary transition-colors inline-block" title="Verifikasi Data">
+                                        <span class="material-symbols-outlined text-[18px]">verified</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="py-8 text-center text-text-secondary">Belum ada antrean surat masuk.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Grafik APBDes -->
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-space-md">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-secondary text-[22px]">bar_chart</span>
+                            <h2 class="font-title-lg text-title-lg font-bold text-text-primary">Penyerapan Anggaran APBDes</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-space-md rounded-xl bg-surface-container-low">
+                    <svg class="w-full h-44 overflow-visible" viewBox="0 0 680 180">
+                        <line stroke="currentColor" stroke-dasharray="3 3" class="text-surface-dim" x1="40" x2="660" y1="20" y2="20"></line>
+                        <line stroke="currentColor" stroke-dasharray="3 3" class="text-surface-dim" x1="40" x2="660" y1="65" y2="65"></line>
+                        <line stroke="currentColor" stroke-dasharray="3 3" class="text-surface-dim" x1="40" x2="660" y1="110" y2="110"></line>
+                        <line stroke="currentColor" class="text-surface-dim" x1="40" x2="660" y1="155" y2="155"></line>
+                        
+                        <rect class="fill-secondary" height="110" rx="4" width="34" x="90" y="45"></rect>
+                        <rect class="fill-accent-mint" height="103" rx="4" width="34" x="130" y="52"></rect>
+                        <text class="fill-text-primary font-label-md font-semibold" font-size="11" text-anchor="middle" x="127" y="172">Q1</text>
+                        
+                        <rect class="fill-secondary" height="117" rx="4" width="34" x="245" y="38"></rect>
+                        <rect class="fill-accent-mint" height="107" rx="4" width="34" x="285" y="48"></rect>
+                        <text class="fill-text-primary font-label-md font-semibold" font-size="11" text-anchor="middle" x="282" y="172">Q2</text>
+                        
+                        <rect class="fill-secondary/50" height="105" rx="4" width="34" x="400" y="50"></rect>
+                        <rect class="fill-accent-mint/50" height="30" rx="4" width="34" x="440" y="125"></rect>
+                        <text class="fill-text-secondary font-label-md" font-size="11" text-anchor="middle" x="437" y="172">Q3</text>
+                        
+                        <rect class="fill-secondary/30" height="95" rx="4" width="34" x="555" y="60"></rect>
+                        <rect class="fill-accent-mint/30" height="5" rx="4" width="34" x="595" y="150"></rect>
+                        <text class="fill-text-secondary font-label-md" font-size="11" text-anchor="middle" x="592" y="172">Q4</text>
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN (4 cols) -->
+        <div class="lg:col-span-4 flex flex-col gap-space-lg">
+            
+            <!-- Log Aktivitas -->
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm">
+                <div class="flex items-center justify-between mb-space-sm">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-[20px]">history</span>
+                        <h3 class="font-title-md text-title-md font-bold text-text-primary">Log Sistem</h3>
+                    </div>
+                    <span class="w-2 h-2 rounded-full bg-accent-emerald animate-ping"></span>
+                </div>
+                <div class="relative pl-6 space-y-4 mt-4 before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-border-subtle">
+                    <div class="relative">
+                        <span class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-secondary ring-4 ring-surface-pure"></span>
+                        <div class="font-label-md text-label-md font-semibold text-text-primary">Login Operator</div>
+                        <p class="font-body-sm text-body-sm text-text-secondary mt-0.5">Berhasil masuk ke sistem.</p>
+                        <span class="font-label-sm text-label-sm text-text-secondary">Baru saja</span>
+                    </div>
+                    <div class="relative">
+                        <span class="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-accent-emerald ring-4 ring-surface-pure"></span>
+                        <div class="font-label-md text-label-md font-semibold text-text-primary">Backup Database</div>
+                        <p class="font-body-sm text-body-sm text-text-secondary mt-0.5">Sinkronisasi otomatis berhasil.</p>
+                        <span class="font-label-sm text-label-sm text-text-secondary">04:00 WITA • Sistem</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Sinkronisasi -->
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm flex flex-col gap-3">
+                <h3 class="font-title-md text-title-md font-bold text-text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">sync</span> Status Server
+                </h3>
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-secondary text-[20px]">cloud_done</span>
+                        <div>
+                            <div class="font-label-md text-label-md font-semibold text-text-primary">Siskeudes</div>
+                            <span class="font-label-sm text-label-sm text-text-secondary">Terkoneksi</span>
+                        </div>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-full bg-surface-pure text-secondary font-label-sm text-label-sm font-bold">Aktif</span>
+                </div>
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-secondary text-[20px]">vpn_lock</span>
+                        <div>
+                            <div class="font-label-md text-label-md font-semibold text-text-primary">TTE BSrE</div>
+                            <span class="font-label-sm text-label-sm text-text-secondary">Sertifikat Valid</span>
+                        </div>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-full bg-surface-pure text-secondary font-label-sm text-label-sm font-bold">Valid</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

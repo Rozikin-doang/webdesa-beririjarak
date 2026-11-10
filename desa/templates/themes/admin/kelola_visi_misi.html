@@ -1,0 +1,36 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Kelola Visi & Misi - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full max-w-4xl mx-auto gap-space-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Visi &amp; Misi Desa</h1>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1">Perbarui arah pembangunan desa.</p>
+        </div>
+    </div>
+
+    <form method="POST" class="bg-surface-pure rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col gap-6">
+        {% csrf_token %}
+        
+        <div class="space-y-2">
+            <label class="font-label-lg font-bold text-primary">Visi Utama Desa <span class="text-error">*</span></label>
+            <textarea name="visi" rows="4" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary" placeholder="Tuliskan visi desa...">{{ data.visi|default:'' }}</textarea>
+        </div>
+
+        <div class="space-y-2">
+            <label class="font-label-lg font-bold text-primary">Misi Desa <span class="text-error">*</span></label>
+            <p class="text-xs text-text-secondary mb-2">Gunakan tombol Enter untuk memisahkan setiap poin misi.</p>
+            <textarea name="misi" rows="8" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary" placeholder="1. Misi pertama...&#10;2. Misi kedua...">{{ data.misi|default:'' }}</textarea>
+        </div>
+
+        <div class="pt-4 border-t border-border-subtle flex justify-end gap-3">
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold shadow-md flex items-center gap-2">
+                <span class="material-symbols-outlined">save</span> Simpan Perubahan
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

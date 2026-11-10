@@ -1,0 +1,133 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Kelola Pengajuan Surat - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full gap-space-lg">
+    
+    <!-- Header & Tombol -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Pengajuan Surat Warga</h1>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1">Daftar permohonan surat yang masuk dari warga.</p>
+        </div>
+    </div>
+
+    <!-- Notifikasi Messages (Akan muncul jika ada) -->
+    {% if messages %}
+        <div class="space-y-2">
+            {% for message in messages %}
+                <div class="p-4 rounded-xl {% if message.tags == 'success' %}bg-accent-mint/20 text-primary border border-accent-mint{% else %}bg-error-container text-on-error-container border border-error{% endif %} flex items-start gap-3">
+                    <span class="material-symbols-outlined">{% if message.tags == 'success' %}check_circle{% else %}error{% endif %}</span>
+                    <p class="font-body-sm font-semibold">{{ message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Filter & Pencarian -->
+    <div class="bg-surface-pure rounded-2xl p-4 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+        <form method="GET" class="w-full flex flex-col sm:flex-row gap-3">
+            <div class="relative flex-1">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary">search</span>
+                <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Cari ID Tiket, Nama, atau NIK..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <select name="status" class="px-4 py-2.5 rounded-xl bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary">
+                <option value="">Semua Status</option>
+                <option value="menunggu" {% if status_filter == 'menunggu' %}selected{% endif %}>Menunggu</option>
+                <option value="diproses" {% if status_filter == 'diproses' %}selected{% endif %}>Diproses</option>
+                <option value="selesai" {% if status_filter == 'selesai' %}selected{% endif %}>Selesai</option>
+                <option value="ditolak" {% if status_filter == 'ditolak' %}selected{% endif %}>Ditolak</option>
+            </select>
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold hover:bg-secondary transition-colors cursor-pointer">Filter</button>
+        </form>
+    </div>
+
+    <!-- Tabel Data -->
+    <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm">
+        <div class="overflow-x-auto -mx-space-lg px-space-lg">
+            <table class="w-full text-left min-w-[820px]">
+                <thead>
+                    <tr class="bg-surface-container-low text-text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                        <th class="py-3 px-4 rounded-l-xl">ID Tiket</th>
+                        <th class="py-3 px-4">Pemohon</th>
+                        <th class="py-3 px-4">Layanan / Keperluan</th>
+                        <th class="py-3 px-4">Tanggal</th>
+                        <th class="py-3 px-4">Status</th>
+                        <th class="py-3 px-4 rounded-r-xl text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border-subtle font-body-sm text-body-sm">
+                    {% for item in daftar_pengajuan %}
+                    <tr class="hover:bg-surface-container-low/60 transition-colors">
+                        <td class="py-3 px-4 font-mono font-semibold text-primary">{{ item.id_tiket }}</td>
+                        <td class="py-3 px-4">
+                            <div class="font-title-md text-title-md font-semibold text-text-primary">{{ item.nama_pemohon }}</div>
+                            <div class="font-label-sm text-label-sm text-text-secondary">{{ item.nik_pemohon }}</div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <!-- PERBAIKAN: Tampilkan jenis surat manual jika item.layanan kosong -->
+                            {% if item.layanan %}
+                                {{ item.layanan.nama_layanan }}
+                            {% else %}
+                                <span class="text-xs px-2 py-1 rounded bg-surface-container-high text-text-secondary" title="{{ item.keterangan_tambahan }}">
+                                    Input Manual
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="py-3 px-4 text-text-secondary">{{ item.tanggal_pengajuan|date:"d M Y H:i" }}</td>
+                        <td class="py-3 px-4">
+                            {% if item.status == 'menunggu' %}
+                                <span class="px-2.5 py-1 rounded-full bg-gold-light text-tertiary font-label-sm font-semibold">Menunggu</span>
+                            {% elif item.status == 'diproses' %}
+                                <span class="px-2.5 py-1 rounded-full bg-surface-container text-secondary font-label-sm font-semibold">Diproses</span>
+                            {% elif item.status == 'selesai' %}
+                                <span class="px-2.5 py-1 rounded-full bg-accent-emerald/20 text-accent-emerald font-label-sm font-semibold">Selesai</span>
+                            {% else %}
+                                <span class="px-2.5 py-1 rounded-full bg-error-container text-error font-label-sm font-semibold">Ditolak</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-3 px-4 text-right flex items-center justify-end gap-2">
+                            <a href="{% url 'ubah_status_pengajuan' item.id %}" class="px-3 py-1.5 rounded-lg bg-primary-container text-on-primary font-label-sm text-label-sm hover:bg-secondary transition-colors inline-block">Proses</a>
+                            
+                            <!-- Tombol Hapus (Opsional, tambahkan jika URL hapus_pengajuan_surat sudah didaftarkan) -->
+                            <!--
+                            <form method="POST" action="{% url 'hapus_pengajuan_surat' item.id %}" onsubmit="return confirm('Hapus pengajuan ini?');">
+                                {% csrf_token %}
+                                <button type="submit" class="px-3 py-1.5 rounded-lg bg-error-container text-error font-label-sm text-label-sm hover:bg-error hover:text-white transition-colors">Hapus</button>
+                            </form>
+                            -->
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="py-12 text-center">
+                            <span class="material-symbols-outlined text-[48px] text-outline mb-2">inbox</span>
+                            <p class="text-text-secondary font-body-md">Belum ada pengajuan surat yang sesuai dengan filter.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if daftar_pengajuan.has_other_pages %}
+        <div class="mt-6 flex justify-center gap-2">
+            {% if daftar_pengajuan.has_previous %}
+                <a href="?page={{ daftar_pengajuan.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="px-4 py-2 rounded-xl bg-surface-container-low border border-border-subtle hover:bg-surface-container transition-colors font-semibold">&laquo; Sebelumnya</a>
+            {% endif %}
+            
+            <span class="px-4 py-2 rounded-xl bg-primary text-on-primary font-bold shadow-sm">
+                Halaman {{ daftar_pengajuan.number }} dari {{ daftar_pengajuan.paginator.num_pages }}
+            </span>
+    
+            {% if daftar_pengajuan.has_next %}
+                <a href="?page={{ daftar_pengajuan.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="px-4 py-2 rounded-xl bg-surface-container-low border border-border-subtle hover:bg-surface-container transition-colors font-semibold">Selanjutnya &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

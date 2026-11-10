@@ -1,0 +1,64 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Kelola Dusun - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full gap-space-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Data Dusun</h1>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1">Kelola data wilayah dusun di Desa Beriri Jarak.</p>
+        </div>
+        <a href="{% url 'tambah_dusun' %}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-bold shadow-sm hover:bg-secondary transition-all">
+            <span class="material-symbols-outlined text-[20px]">add_box</span> Tambah Dusun
+        </a>
+    </div>
+
+    <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm">
+        <div class="overflow-x-auto -mx-space-lg px-space-lg">
+            <table class="w-full text-left min-w-[720px]">
+                <thead>
+                    <tr class="bg-surface-container-low text-text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                        <th class="py-3 px-4 rounded-l-xl">Nama Dusun</th>
+                        <th class="py-3 px-4">Kepala Dusun</th>
+                        <th class="py-3 px-4">Luas (Ha)</th>
+                        <th class="py-3 px-4">Jumlah KK</th>
+                        <th class="py-3 px-4">Jumlah Jiwa</th>
+                        <th class="py-3 px-4 rounded-r-xl text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border-subtle font-body-sm text-body-sm">
+                    {% for item in daftar_dusun %}
+                    <tr class="hover:bg-surface-container-low/60 transition-colors">
+                        <td class="py-3 px-4 font-title-md text-title-md font-semibold text-text-primary">{{ item.nama }}</td>
+                        <td class="py-3 px-4">{{ item.kepala_dusun }}</td>
+                        <td class="py-3 px-4">{{ item.luas_ha }} Ha</td>
+                        <td class="py-3 px-4">{{ item.jumlah_kk }}</td>
+                        <td class="py-3 px-4">{{ item.jumlah_jiwa }}</td>
+                        <td class="py-3 px-4 text-right">
+                            <div class="inline-flex items-center gap-1.5">
+                                <!-- Tombol Edit -->
+                                <a href="{% url 'edit_dusun' item.id %}" class="p-1.5 rounded-lg bg-primary-container text-on-primary hover:bg-secondary transition-colors" title="Edit Dusun">
+                                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                                </a>
+                                
+                                <!-- Tombol Hapus (Gunakan FORM dengan method POST) -->
+                                <form method="POST" action="{% url 'hapus_dusun' item.id %}" class="inline-block m-0 p-0" onsubmit="return confirm('Yakin ingin menghapus dusun ini secara permanen?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="p-1.5 rounded-lg bg-error-container text-error hover:bg-error hover:text-on-error transition-colors cursor-pointer" title="Hapus Dusun">
+                                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="py-8 text-center text-text-secondary">Belum ada data dusun. Silakan tambah.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

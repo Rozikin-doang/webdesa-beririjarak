@@ -1,0 +1,67 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Edit Berita - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full max-w-5xl mx-auto gap-space-lg">
+    <div class="flex items-center gap-4">
+        <a href="{% url 'kelola_berita' %}" class="p-2 rounded-lg bg-surface-container"><span class="material-symbols-outlined text-primary">arrow_back</span></a>
+        <div><h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Edit Berita & Artikel</h1></div>
+    </div>
+    <form method="POST" enctype="multipart/form-data" class="bg-surface-pure rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col gap-5">
+        {% csrf_token %}
+        <div class="space-y-1">
+            <label class="font-label-md font-semibold text-text-primary">Judul Berita <span class="text-error">*</span></label>
+            <input type="text" name="judul" value="{{ berita.judul }}" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Kategori <span class="text-error">*</span></label>
+                <select name="kategori" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+                    {% for kat in kategori_list %}
+                        <option value="{{ kat.id }}" {% if kat.id == berita.kategori.id %}selected{% endif %}>{{ kat.nama }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Status Tayang <span class="text-error">*</span></label>
+                <select name="status" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+                    <option value="draft" {% if berita.status == 'draft' %}selected{% endif %}>Draft</option>
+                    <option value="tayang" {% if berita.status == 'tayang' %}selected{% endif %}>Tayang</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Tanggal Rilis <span class="text-error">*</span></label>
+                <input type="date" name="tanggal_rilis" value="{{ berita.tanggal_rilis|date:'Y-m-d' }}" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+            </div>
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Ganti Gambar (Opsional)</label>
+                <input type="file" name="gambar" accept="image/*" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+                {% if berita.gambar %}
+                <p class="text-xs text-text-secondary mt-1">Gambar saat ini: <a href="{{ berita.gambar.url }}" target="_blank" class="text-primary hover:underline">Lihat</a></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="space-y-1">
+            <label class="font-label-md font-semibold text-text-primary">Ringkasan / Cuplikan <span class="text-error">*</span></label>
+            <textarea name="ringkasan" required rows="3" class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">{{ berita.ringkasan }}</textarea>
+        </div>
+
+        <div class="space-y-1">
+            <label class="font-label-md font-semibold text-text-primary">Isi Berita <span class="text-error">*</span></label>
+            <textarea name="isi_berita" required rows="10" class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">{{ berita.isi_berita }}</textarea>
+        </div>
+
+        <div class="pt-4 border-t border-border-subtle flex justify-end gap-3">
+            <a href="{% url 'kelola_berita' %}" class="px-5 py-2.5 rounded-xl bg-surface-container font-semibold">Batal</a>
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold shadow-md flex items-center gap-2"><span class="material-symbols-outlined text-[20px]">save</span> Simpan Perubahan</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

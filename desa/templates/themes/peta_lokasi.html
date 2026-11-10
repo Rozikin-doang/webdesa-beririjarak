@@ -1,0 +1,280 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Peta Lokasi - Website Resmi Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 w-full pt-4 pb-16">
+        
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 font-label-sm text-label-sm text-text-secondary mb-6">
+            <a class="hover:text-primary transition-colors flex items-center gap-1" href="{% url 'beranda' %}">
+                <span class="material-symbols-outlined text-[16px]">home</span> Beranda
+            </a>
+            <span class="text-outline-variant">/</span>
+            <a class="hover:text-primary transition-colors" href="{% url 'wilayah' %}">Profil Desa</a>
+            <span class="text-outline-variant">/</span>
+            <span class="text-primary font-semibold">Peta Desa &amp; Lokasi Geospasial</span>
+        </div>
+        
+        <!-- Header & Actions -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8">
+            <div class="max-w-3xl space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-md text-label-md">
+                    <span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span> Sistem Informasi Spasial Desa Aktif 2026
+                </div>
+                <h1 class="font-headline-xl text-headline-xl text-primary font-extrabold tracking-tight">Peta Wilayah &amp; Lokasi Geospasial Desa Beriri Jarak</h1>
+                <p class="font-body-lg text-body-lg text-text-secondary leading-relaxed">Navigasi spasial interaktif, penunjuk arah kantor desa, persebaran 6 dusun, dan titik-titik infrastruktur publik di Desa Beriri Jarak, Kecamatan Wanasaba, Kabupaten Lombok Timur.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 shrink-0">
+                <a class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg hover:bg-secondary transition-all shadow-md active:scale-95" href="https://maps.google.com/?q=Beriri+Jarak+Wanasaba+Lombok+Timur" rel="noopener noreferrer" target="_blank">
+                    <span class="material-symbols-outlined text-[20px]">explore</span> Buka di Google Maps
+                </a>
+                <button class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-surface-container-lowest text-primary font-label-lg text-label-lg shadow-sm hover:bg-surface-container-low transition-all active:scale-95" onclick="window.print()">
+                    <span class="material-symbols-outlined text-[20px]">print</span> Cetak Panduan Navigasi
+                </button>
+            </div>
+        </div>
+
+        <!-- Map Wrapper -->
+        <div class="relative bg-surface-pure rounded-3xl shadow-xl overflow-hidden mb-12">
+            <!-- Info Bar -->
+            <div class="bg-primary text-on-primary p-4 lg:p-6 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-6 text-body-sm font-body-sm">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-accent-mint text-[20px]">pin_drop</span>
+                        <div>
+                            <span class="text-on-primary-container block text-label-sm font-label-sm">Alamat Pusat:</span>
+                            <span class="font-semibold text-on-primary">Jl. Raya Beriri Jarak No. 1, Wanasaba, 83653</span>
+                        </div>
+                    </div>
+                    <div class="hidden sm:flex items-center gap-2">
+                        <span class="material-symbols-outlined text-accent-mint text-[20px]">my_location</span>
+                        <div>
+                            <span class="text-on-primary-container block text-label-sm font-label-sm">Koordinat GPS:</span>
+                            <span class="font-mono font-medium text-on-primary">8°31'45.2"S 116°28'10.4"E</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex items-center gap-2">
+                        <span class="material-symbols-outlined text-accent-mint text-[20px]">terrain</span>
+                        <div>
+                            <span class="text-on-primary-container block text-label-sm font-label-sm">Topografi:</span>
+                            <span class="font-semibold text-on-primary">~650 mdpl (Lereng Rinjani)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-pure/10 hover:bg-surface-pure/20 text-on-primary font-label-md text-label-md transition-colors backdrop-blur-sm" onclick="navigator.clipboard.writeText('-8.529222, 116.469556'); const el = this.querySelector('span:last-child'); const orig = el.innerText; el.innerText = 'Tersalin!'; setTimeout(() => el.innerText = orig, 2000);">
+                        <span class="material-symbols-outlined text-[16px] text-accent-mint">content_copy</span>
+                        <span>Salin Koordinat</span>
+                    </button>
+                    <a class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-accent-mint text-primary font-label-md text-label-md font-bold transition-all shadow-sm hover:opacity-90" href="https://maps.google.com/maps/dir//Beriri+Jarak+Wanasaba+Lombok+Timur" rel="noopener noreferrer" target="_blank">
+                        <span class="material-symbols-outlined text-[16px]">directions</span> Rute Langsung
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Iframe -->
+            <div class="relative w-full h-[520px] bg-surface-container">
+                <iframe allowfullscreen="" class="w-full h-full" height="520" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?width=520&amp;height=400&amp;hl=id&amp;q=Beriri+Jarak+Wanasaba+Lombok+Timur&amp;t=h&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" title="Peta Interaktif Desa Beriri Jarak" width="100%"></iframe>
+                <div class="absolute bottom-5 left-5 hidden sm:flex items-center gap-3 bg-surface-pure/95 backdrop-blur-md px-4 py-3 rounded-2xl shadow-lg">
+                    <div class="w-3 h-3 rounded-full bg-accent-emerald animate-ping"></div>
+                    <div class="text-left font-body-sm text-body-sm text-text-primary">
+                        <span class="font-bold block">Status Lalu Lintas Kawasan: Lancar</span>
+                        <span class="text-text-secondary text-label-sm font-label-sm">Dapat diakses seluruh moda roda 2 &amp; 4</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 bg-surface-container-low p-6 gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-surface-pure flex items-center justify-center text-primary shadow-sm"><span class="material-symbols-outlined text-[22px]">square_foot</span></div>
+                    <div><span class="text-label-sm font-label-sm text-text-secondary block">Luas Wilayah</span><span class="font-title-md text-title-md text-primary font-bold">~428.5 Ha</span></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-surface-pure flex items-center justify-center text-primary shadow-sm"><span class="material-symbols-outlined text-[22px]">holiday_village</span></div>
+                    <div><span class="text-label-sm font-label-sm text-text-secondary block">Pembagian Wilayah</span><span class="font-title-md text-title-md text-primary font-bold">6 Dusun Aktif</span></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-surface-pure flex items-center justify-center text-primary shadow-sm"><span class="material-symbols-outlined text-[22px]">nature_people</span></div>
+                    <div><span class="text-label-sm font-label-sm text-text-secondary block">Karakteristik</span><span class="font-title-md text-title-md text-primary font-bold">Agraris Pegunungan</span></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-surface-pure flex items-center justify-center text-primary shadow-sm"><span class="material-symbols-outlined text-[22px]">humidity_mid</span></div>
+                    <div><span class="text-label-sm font-label-sm text-text-secondary block">Suhu Rata-rata</span><span class="font-title-md text-title-md text-primary font-bold">21°C - 27°C</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Point of Interest Grid -->
+        <div class="mb-14">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <span class="font-label-md text-label-md uppercase tracking-wider text-secondary font-bold block mb-1">Landmark &amp; Fasilitas Esensial</span>
+                    <h2 class="font-headline-lg text-headline-lg text-primary font-bold tracking-tight">Titik Kepentingan (Point of Interest)</h2>
+                </div>
+                <p class="font-body-sm text-body-sm text-text-secondary max-w-md">Daftar lokasi rujukan pelayanan birokrasi, fasilitas kesehatan, pusat perekonomian, peribadatan, serta titik konservasi alam desa.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- POI 1 -->
+                <div class="bg-surface-pure rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 flex flex-col justify-between group">
+                    <div class="space-y-4">
+                        <div class="flex items-start justify-between">
+                            <div class="w-12 h-12 rounded-xl bg-surface-container-low text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors"><span class="material-symbols-outlined text-[26px]">account_balance</span></div>
+                            <span class="px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold">Pusat Layanan</span>
+                        </div>
+                        <div>
+                            <h3 class="font-title-lg text-title-lg text-primary font-bold mb-1.5">Kantor Desa &amp; Balai Pertemuan</h3>
+                            <p class="font-body-sm text-body-sm text-text-secondary">Pusat tata usaha pemerintahan, penerbitan surat pengantar, pelayanan administrasi kependudukan, dan musyawarah warga.</p>
+                        </div>
+                        <div class="space-y-1.5 pt-2 font-label-sm text-label-sm text-text-secondary">
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-accent-emerald">location_on</span><span>Dusun Jarak Utara, Jl. Utama No. 01</span></div>
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-accent-emerald">schedule</span><span>Senin - Jumat | 08.00 - 15.30 WITA</span></div>
+                        </div>
+                    </div>
+                    <div class="pt-6 mt-4 flex items-center justify-between">
+                        <span class="text-label-sm font-label-sm text-text-secondary font-medium">Radius: 0 km</span>
+                        <a class="inline-flex items-center gap-1 font-label-lg text-label-lg text-secondary group-hover:text-primary font-semibold" href="https://maps.google.com/?q=Kantor+Desa+Beriri+Jarak" target="_blank">Lihat Titik <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+                    </div>
+                </div>
+                
+                <!-- POI 2 -->
+                <div class="bg-surface-pure rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 flex flex-col justify-between group">
+                    <div class="space-y-4">
+                        <div class="flex items-start justify-between">
+                            <div class="w-12 h-12 rounded-xl bg-surface-container-low text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors"><span class="material-symbols-outlined text-[26px]">medical_services</span></div>
+                            <span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold">Kesehatan</span>
+                        </div>
+                        <div>
+                            <h3 class="font-title-lg text-title-lg text-primary font-bold mb-1.5">Poskesdes &amp; Posyandu Terpadu</h3>
+                            <p class="font-body-sm text-body-sm text-text-secondary">Pusat tindakan medis pertama, pemantauan gizi balita-lansia, pemeriksaan ibu hamil, dan pos rujukan puskesmas.</p>
+                        </div>
+                        <div class="space-y-1.5 pt-2 font-label-sm text-label-sm text-text-secondary">
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-accent-emerald">location_on</span><span>Kompleks Kantor Desa Beriri Jarak</span></div>
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-accent-emerald">emergency</span><span>Siaga Bidan Desa: 24 Jam</span></div>
+                        </div>
+                    </div>
+                    <div class="pt-6 mt-4 flex items-center justify-between">
+                        <span class="text-label-sm font-label-sm text-text-secondary font-medium">Bidan Desa Aktif</span>
+                        <a class="inline-flex items-center gap-1 font-label-lg text-label-lg text-secondary group-hover:text-primary font-semibold" href="https://maps.google.com/?q=Poskesdes+Beriri+Jarak" target="_blank">Lihat Titik <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+                    </div>
+                </div>
+                
+                <!-- POI 3 -->
+                <div class="bg-surface-pure rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 flex flex-col justify-between group">
+                    <div class="space-y-4">
+                        <div class="flex items-start justify-between">
+                            <div class="w-12 h-12 rounded-xl bg-surface-container-low text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors"><span class="material-symbols-outlined text-[26px]">storefront</span></div>
+                            <span class="px-2.5 py-1 rounded-full bg-gold-light text-tertiary font-label-sm text-label-sm font-semibold">Pusat Ekonomi</span>
+                        </div>
+                        <div>
+                            <h3 class="font-title-lg text-title-lg text-primary font-bold mb-1.5">Sentra Kopi Robusta &amp; BUMDes</h3>
+                            <p class="font-body-sm text-body-sm text-text-secondary">Pusat pengolahan biji kopi pegunungan Beriri Jarak, galeri oleh-oleh olahan pangan lokal, dan kantor unit usaha desa.</p>
+                        </div>
+                        <div class="space-y-1.5 pt-2 font-label-sm text-label-sm text-text-secondary">
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-accent-emerald">location_on</span><span>Jl. Pertanian Dusun Beriri Timur</span></div>
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-accent-emerald">shopping_bag</span><span>Kios BUMDes Buka Setiap Hari</span></div>
+                        </div>
+                    </div>
+                    <div class="pt-6 mt-4 flex items-center justify-between">
+                        <span class="text-label-sm font-label-sm text-text-secondary font-medium">Kemitraan Petani</span>
+                        <a class="inline-flex items-center gap-1 font-label-lg text-label-lg text-secondary group-hover:text-primary font-semibold" href="https://maps.google.com/?q=BUMDes+Beriri+Jarak+Lombok+Timur" target="_blank">Lihat Titik <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rute & Aksesibilitas -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-14">
+            <div class="lg:col-span-8 bg-surface-pure rounded-3xl p-8 shadow-sm">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-secondary-container text-on-secondary-fixed-variant flex items-center justify-center"><span class="material-symbols-outlined text-[28px]">route</span></div>
+                    <div>
+                        <h2 class="font-headline-md text-headline-md text-primary font-bold">Panduan Rute &amp; Aksesibilitas</h2>
+                        <p class="font-body-sm text-body-sm text-text-secondary">Akses jalan aspal mulus dapat dilewati kendaraan roda 2, roda 4, hingga mikrobus pariwisata.</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-6 relative before:absolute before:left-5 before:top-4 before:bottom-4 before:w-0.5 before:bg-surface-container">
+                    <!-- Rute 1 -->
+                    <div class="relative flex items-start gap-5 pl-2">
+                        <div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm font-bold shrink-0 z-10 shadow-md">1</div>
+                        <div class="bg-surface-container-low rounded-2xl p-5 w-full">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                                <h4 class="font-title-md text-title-md text-primary font-bold">Dari Bandara Internasional Lombok (BIZAM)</h4>
+                                <span class="px-3 py-1 rounded-full bg-surface-pure text-secondary font-label-sm text-label-sm font-bold">~1 Jam 20 Menit (62 km)</span>
+                            </div>
+                            <p class="font-body-sm text-body-sm text-text-secondary mb-2">Rute terbaik: Bandara BIZAM → Jalur Bypass Praya Timur → Kopang → Terara → Aikmel → Wanasaba → Desa Beriri Jarak.</p>
+                            <div class="flex items-center gap-2 font-label-sm text-label-sm text-secondary font-semibold"><span class="material-symbols-outlined text-[16px]">check_circle</span><span>Kondisi: Aspal hotmix provinsi lebar</span></div>
+                        </div>
+                    </div>
+                    <!-- Rute 2 -->
+                    <div class="relative flex items-start gap-5 pl-2">
+                        <div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm font-bold shrink-0 z-10 shadow-md">2</div>
+                        <div class="bg-surface-container-low rounded-2xl p-5 w-full">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                                <h4 class="font-title-md text-title-md text-primary font-bold">Dari Pelabuhan Kayangan (Sumbawa)</h4>
+                                <span class="px-3 py-1 rounded-full bg-surface-pure text-secondary font-label-sm text-label-sm font-bold">~45 Menit (32 km)</span>
+                            </div>
+                            <p class="font-body-sm text-body-sm text-text-secondary mb-2">Rute: Labuhan Lombok → Korleko / Pringgabaya → Perempatan Pohgading → Jalur Wanasaba → Desa Beriri Jarak.</p>
+                            <div class="flex items-center gap-2 font-label-sm text-label-sm text-secondary font-semibold"><span class="material-symbols-outlined text-[16px]">check_circle</span><span>Kondisi: Kontur menanjak landai</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar Dusun & Image -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                <div class="bg-surface-pure rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="font-title-md text-title-md text-primary font-bold">Sebaran 6 Dusun</span>
+                            <span class="material-symbols-outlined text-secondary">map</span>
+                        </div>
+                        <div class="space-y-3 font-body-sm text-body-sm">
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-accent-emerald"></span><span class="font-semibold text-primary">Dusun Beriri Barat</span></div><span class="font-label-sm text-label-sm text-text-secondary">Pemukiman</span></div>
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-accent-emerald"></span><span class="font-semibold text-primary">Dusun Beriri Timur</span></div><span class="font-label-sm text-label-sm text-text-secondary">Kebun Kopi</span></div>
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-accent-emerald"></span><span class="font-semibold text-primary">Dusun Jarak Utara</span></div><span class="font-label-sm text-label-sm text-text-secondary">Pusat Pemerintahan</span></div>
+                        </div>
+                    </div>
+                    <div class="pt-4 mt-2">
+                        <a class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-surface-container-high hover:bg-secondary-fixed text-primary font-label-md text-label-md font-bold transition-colors" href="{% url 'data_statistik' %}">
+                            <span class="material-symbols-outlined text-[18px]">demography</span> Lihat Statistik Dusun
+                        </a>
+                    </div>
+                </div>
+                <div class="relative rounded-3xl overflow-hidden shadow-sm h-48 bg-primary">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent z-10"></div>
+                    <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7cirWnXfuDv0IHcfMN6aq7iwW8Fgw6prUyzPdlZJfMf5P1sn6JsG_NybRS0B58riUBVxrOXoOuKg2NlkLcTi-ev5xIZ6OOqJ1WcoXLVHTbi1AuJTWyvTkNBpOR3x026mXTYkh1jLPaVZJ9PlZuRgWHJCX_2xRypG0QBWP_MK_mpvOXCAjSUkzOIi3fnHV7VwN6OSjVVz8LKyBMqLUWkevi_v_Y07MvuqXxaB4wfYg"/>
+                    <div class="absolute inset-0 z-20 p-6 flex flex-col justify-end text-on-primary">
+                        <span class="font-label-sm text-label-sm text-accent-mint font-semibold">Pesona Geografis</span>
+                        <h4 class="font-title-lg text-title-lg font-bold leading-snug">Sejuk, Rindang, Menyehatkan</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="relative rounded-3xl bg-primary text-on-primary overflow-hidden p-8 lg:p-12 shadow-2xl">
+            <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div class="space-y-4 max-w-2xl text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-pure/10 text-accent-mint font-label-md text-label-md"><span class="material-symbols-outlined text-[18px]">support_agent</span> Layanan Siaga Tamu</div>
+                    <h2 class="font-headline-lg text-headline-lg font-bold leading-tight">Perlu Petunjuk Arah atau Bantuan Penjemputan Tamu Resmi?</h2>
+                    <p class="font-body-md text-body-md text-on-primary-container leading-relaxed">Bagi rombongan studi banding, dinas, atau wisatawan yang membutuhkan panduan lintasan kendaraan bus besar, silakan hubungi tim posko Seksi Umum Desa.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-center gap-4 shrink-0">
+                    <a class="inline-flex items-center gap-2.5 px-6 py-4 rounded-xl bg-accent-mint text-primary font-label-lg text-label-lg font-bold hover:bg-white transition-all shadow-lg active:scale-95" href="https://wa.me/6281234567890?text=Halo%20Pemdes,%20mohon%20konfirmasi%20petunjuk%20rute" target="_blank">
+                        <span class="material-symbols-outlined text-[22px]">chat</span> WhatsApp Seksi Umum
+                    </a>
+                    <a class="inline-flex items-center gap-2 px-5 py-4 rounded-xl bg-surface-pure/10 hover:bg-surface-pure/20 text-on-primary font-label-lg text-label-lg font-semibold transition-all backdrop-blur-sm" href="tel:+6281234567890">
+                        <span class="material-symbols-outlined text-[20px]">call</span> 0812-3456-7890
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

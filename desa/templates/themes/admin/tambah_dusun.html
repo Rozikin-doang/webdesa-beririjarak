@@ -1,0 +1,48 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Tambah Dusun - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full max-w-4xl mx-auto gap-space-lg">
+    <div class="flex items-center gap-4">
+        <a href="{% url 'kelola_dusun' %}" class="p-2 rounded-lg bg-surface-container"><span class="material-symbols-outlined text-primary">arrow_back</span></a>
+        <div><h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Tambah Data Dusun</h1></div>
+    </div>
+    <form method="POST" class="bg-surface-pure rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col gap-5">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Nama Dusun <span class="text-error">*</span></label>
+                <input type="text" name="nama" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+            </div>
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Kepala Dusun <span class="text-error">*</span></label>
+                <input type="text" name="kepala_dusun" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+            </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Luas (Hektar) <span class="text-error">*</span></label>
+                <input type="number" step="0.01" name="luas_ha" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+            </div>
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Jumlah KK <span class="text-error">*</span></label>
+                <input type="number" name="jumlah_kk" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+            </div>
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Jumlah Jiwa <span class="text-error">*</span></label>
+                <input type="number" name="jumlah_jiwa" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+            </div>
+        </div>
+        <div class="space-y-1">
+            <label class="font-label-md font-semibold text-text-primary">Deskripsi Singkat</label>
+            <textarea name="deskripsi" rows="3" class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none"></textarea>
+        </div>
+        <div class="pt-4 border-t border-border-subtle flex justify-end gap-3">
+            <a href="{% url 'kelola_dusun' %}" class="px-5 py-2.5 rounded-xl bg-surface-container font-semibold">Batal</a>
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold shadow-md"><span class="material-symbols-outlined">save</span> Simpan</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

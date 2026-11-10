@@ -1,0 +1,76 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Kelola UMKM - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full gap-space-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Produk UMKM Warga</h1>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1">Kelola etalase produk unggulan desa.</p>
+        </div>
+        <!-- Tombol Tambah -->
+        <a href="{% url 'tambah_umkm' %}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-bold shadow-sm hover:bg-secondary transition-all">
+            <span class="material-symbols-outlined text-[20px]">add_box</span> Tambah Produk
+        </a>
+    </div>
+
+    <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm">
+        <div class="overflow-x-auto -mx-space-lg px-space-lg">
+            <table class="w-full text-left min-w-[720px]">
+                <thead>
+                    <tr class="bg-surface-container-low text-text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                        <th class="py-3 px-4 rounded-l-xl">Nama Produk</th>
+                        <th class="py-3 px-4">Penjual / Dusun</th>
+                        <th class="py-3 px-4">Harga</th>
+                        <th class="py-3 px-4">Status</th>
+                        <th class="py-3 px-4 rounded-r-xl text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border-subtle font-body-sm text-body-sm">
+                    {% for item in daftar_umkm %}
+                    <tr class="hover:bg-surface-container-low/60 transition-colors">
+                        <td class="py-3 px-4">
+                            <div class="font-title-md text-title-md font-semibold text-text-primary">{{ item.nama_produk }}</div>
+                            <div class="font-label-sm text-label-sm text-text-secondary">{{ item.kategori }}</div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <div class="text-text-primary">{{ item.nama_penjual }}</div>
+                            <div class="font-label-sm text-label-sm text-text-secondary">{{ item.dusun.nama|default:"-" }}</div>
+                        </td>
+                        <td class="py-3 px-4 font-bold text-primary">Rp {{ item.harga|intcomma }}</td>
+                        <td class="py-3 px-4">
+                            {% if item.is_unggulan %}
+                                <span class="px-2.5 py-1 rounded-full bg-gold-light text-tertiary font-label-sm font-bold">Unggulan</span>
+                            {% else %}
+                                <span class="px-2.5 py-1 rounded-full bg-surface-container text-text-secondary font-label-sm">Biasa</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-3 px-4 text-right">
+                            <div class="inline-flex items-center gap-1.5">
+                                <!-- Tombol Edit (Hubungkan ke URL Edit) -->
+                                <a href="{% url 'edit_umkm' item.id %}" class="p-1.5 rounded-lg bg-primary-container text-on-primary hover:bg-secondary transition-colors" title="Edit Produk">
+                                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                                </a>
+                                
+                                <!-- Tombol Hapus (Gunakan FORM dengan method POST) -->
+                                <form method="POST" action="{% url 'hapus_umkm' item.id %}" class="inline-block m-0 p-0" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini secara permanen?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="p-1.5 rounded-lg bg-error-container text-error hover:bg-error hover:text-on-error transition-colors cursor-pointer" title="Hapus Produk">
+                                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="py-8 text-center text-text-secondary">Belum ada produk UMKM.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

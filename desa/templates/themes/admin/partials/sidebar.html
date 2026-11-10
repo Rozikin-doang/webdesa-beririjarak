@@ -1,0 +1,214 @@
+<aside class="fixed left-0 top-0 h-full w-72 bg-primary text-on-primary z-50 flex flex-col justify-between overflow-y-auto shadow-[0_1px_8px_rgba(0,0,0,0.06)]">
+    <div class="flex flex-col">
+        <!-- Logo & Brand -->
+        <div class="h-20 px-space-lg flex items-center gap-3 bg-primary-container">
+            <div class="w-10 h-10 rounded-xl bg-accent-emerald flex items-center justify-center text-primary font-headline-sm text-headline-sm font-bold shadow-md">BJ</div>
+            <div class="flex flex-col">
+                <span class="font-title-md text-title-md font-semibold tracking-wide text-on-primary leading-tight">SID Beriri Jarak</span>
+                <span class="font-label-sm text-label-sm text-on-primary-container tracking-wider uppercase">Kec. Wanasaba, Lotim</span>
+            </div>
+        </div>
+        
+        <div class="px-space-md py-space-sm">
+            <div class="px-space-sm py-space-xs mb-space-xs font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container font-semibold">Menu Administrasi</div>
+            
+            <nav class="flex flex-col gap-1">
+                <!-- UTAMA -->
+                <div class="px-space-sm pt-2 pb-1 font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container font-semibold flex items-center justify-between">
+                    <span>Utama</span>
+                </div>
+                
+                <!-- Cek Menu Dashboard -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if request.resolver_match.url_name == 'dashboard' %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'dashboard' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if request.resolver_match.url_name == 'dashboard' %}text-accent-mint{% endif %}">dashboard</span>
+                        <span class="font-label-md text-label-md">Dashboard</span>
+                    </div>
+                    {% if request.resolver_match.url_name == 'dashboard' %}
+                    <span class="font-label-sm text-[10px] px-1.5 py-0.5 rounded bg-surface-pure/15 text-accent-mint font-semibold">Aktif</span>
+                    {% endif %}
+                </a>
+                
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg font-label-md text-label-md text-on-primary-container hover:bg-primary-container hover:text-on-primary transition-colors" href="{% url 'beranda' %}" target="_blank">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+                        <span>Portal Publik Desa</span>
+                    </div>
+                    <span class="font-label-sm text-[10px] text-accent-mint">Live</span>
+                </a>
+
+                <!-- PELAYANAN -->
+                <div class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container font-semibold flex items-center justify-between">
+                    <span>Pelayanan &amp; Warga</span>
+                </div>
+                
+                <!-- Cek Menu Layanan Surat -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'layanan_surat' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_layanan_surat' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'layanan_surat' in request.resolver_match.url_name %}text-accent-mint{% endif %}">assignment</span>
+                        <span>Layanan Surat</span>
+                    </div>
+                    <span class="px-1.5 py-0.5 rounded-full bg-gold-light text-tertiary-container font-label-sm text-[10px] font-bold">Antre</span>
+                </a>
+
+                <!-- Cek Menu Pengajuan Surat -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'pengajuan_surat' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_pengajuan_surat' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'pengajuan_surat' in request.resolver_match.url_name %}text-accent-mint{% endif %}">inbox</span>
+                        <span>Pengajuan Surat</span>
+                    </div>
+                </a>
+
+                <!-- Menu Kritik & Saran -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'kritik_saran' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_kritik_saran' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'kritik_saran' in request.resolver_match.url_name %}text-accent-mint{% endif %}">forum</span>
+                        <span>Kritik &amp; Saran</span>
+                    </div>
+                    {% if total_pesan_baru > 0 %}
+                        <span class="px-1.5 py-0.5 rounded-full bg-error text-on-error font-label-sm text-[10px] font-bold shadow-sm">{{ total_pesan_baru }}</span>
+                    {% endif %}
+                </a>
+                
+                <!-- Cek Menu Pengumuman -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'pengumuman' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_pengumuman' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'pengumuman' in request.resolver_match.url_name %}text-accent-mint{% endif %}">campaign</span>
+                        <span>Pengumuman</span>
+                    </div>
+                </a>
+
+                <!-- KONTEN -->
+                <div class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container font-semibold flex items-center justify-between">
+                    <span>Konten &amp; Publikasi</span>
+                </div>
+                
+                <!-- Cek Menu Berita -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'berita' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_berita' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'berita' in request.resolver_match.url_name %}text-accent-mint{% endif %}">newspaper</span>
+                        <span>Berita &amp; Artikel</span>
+                    </div>
+                </a>
+                
+                <!-- Cek Menu Galeri -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'galeri' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_galeri' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'galeri' in request.resolver_match.url_name %}text-accent-mint{% endif %}">photo_library</span>
+                        <span>Galeri Foto</span>
+                    </div>
+                </a>
+
+                <!-- Cek Menu Aparatur Desa -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'aparatur' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_aparatur' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'aparatur' in request.resolver_match.url_name %}text-accent-mint{% endif %}">groups</span>
+                        <span>Aparatur Desa</span>
+                    </div>
+                </a>
+
+                <!-- Cek Menu Visi Misi -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'visi_misi' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_visi_misi' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'visi_misi' in request.resolver_match.url_name %}text-accent-mint{% endif %}">flag</span>
+                        <span>Visi &amp; Misi</span>
+                    </div>
+                </a>
+
+                <!-- Cek Menu Sejarah Desa -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'sejarah' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_sejarah' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'sejarah' in request.resolver_match.url_name %}text-accent-mint{% endif %}">history_edu</span>
+                        <span>Sejarah Desa</span>
+                    </div>
+                </a>
+
+                <!-- Cek Menu Peta Desa -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'peta' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_peta' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'peta' in request.resolver_match.url_name %}text-accent-mint{% endif %}">map</span>
+                        <span>Peta Desa</span>
+                    </div>
+                </a>
+                
+                <!-- KEUANGAN -->
+                <div class="px-space-sm pt-3 pb-1 font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container font-semibold flex items-center justify-between">
+                    <span>Keuangan &amp; Data</span>
+                </div>
+                
+                <!-- Cek Menu APBDes -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'apbdes' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_apbdes' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'apbdes' in request.resolver_match.url_name %}text-accent-mint{% endif %}">account_balance_wallet</span>
+                        <span>APBDes &amp; Keuangan</span>
+                    </div>
+                </a>
+                
+                <!-- Cek Menu UMKM -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'umkm' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_umkm' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'umkm' in request.resolver_match.url_name %}text-accent-mint{% endif %}">storefront</span>
+                        <span>Produk UMKM</span>
+                    </div>
+                </a>
+
+                <!-- Cek Menu Dusun -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'dusun' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_dusun' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'dusun' in request.resolver_match.url_name %}text-accent-mint{% endif %}">location_city</span>
+                        <span>Data Dusun</span>
+                    </div>
+                </a>
+
+                <!-- Cek Menu Statistik -->
+                <a class="flex items-center justify-between px-space-md py-2 rounded-lg transition-colors 
+                          {% if 'statistik' in request.resolver_match.url_name %}bg-primary-container text-on-primary font-semibold shadow-sm{% else %}text-on-primary-container hover:bg-primary-container hover:text-on-primary{% endif %}" 
+                   href="{% url 'kelola_statistik' %}">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] {% if 'statistik' in request.resolver_match.url_name %}text-accent-mint{% endif %}">bar_chart</span>
+                        <span>Statistik Penduduk</span>
+                    </div>
+                </a>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Status Server Bawah -->
+    <div class="p-space-md">
+        <div class="p-space-md rounded-xl bg-primary-container/60 flex flex-col gap-2">
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-accent-mint animate-pulse"></span>
+                <span class="font-label-sm text-label-sm font-semibold text-on-primary uppercase tracking-wider">SID Server Aktif</span>
+            </div>
+            <p class="font-label-sm text-label-sm text-on-primary-container">Versi 2.4.0 • Terkoneksi</p>
+        </div>
+    </div>
+</aside>

@@ -1,0 +1,104 @@
+{% load static %}
+<header class="fixed top-0 inset-x-0 z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+
+    <!-- Top Bar -->
+    <div class="bg-primary text-on-primary py-space-xs">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-wrap items-center justify-between gap-y-1">
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-1 font-label-sm text-label-sm">
+                <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px] text-accent-mint">schedule</span>
+                    <span>Senin - Jumat: 08:00 - 15:30 WITA</span>
+                </div>
+                <div class="hidden sm:flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px] text-accent-mint">emergency</span>
+                    <span>WhatsApp Siaga: 0812-3456-7890</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 font-label-sm text-label-sm">
+                <span class="hidden md:inline text-on-primary/80">Kecamatan Wanasaba, Lombok Timur</span>
+                <div class="flex items-center gap-2">
+                    <a aria-label="Facebook Desa" class="hover:text-accent-mint transition-colors" href="#">
+                        <span class="material-symbols-outlined text-[16px]">public</span>
+                    </a>
+                    <a aria-label="Saluran Komunikasi" class="hover:text-accent-mint transition-colors" href="#">
+                        <span class="material-symbols-outlined text-[16px]">forum</span>
+                    </a>
+                    <a aria-label="Pemberitahuan Warga" class="hover:text-accent-mint transition-colors" href="#">
+                        <span class="material-symbols-outlined text-[16px]">notifications</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Nav -->
+    <div class="bg-surface-pure/95 backdrop-blur-xl">
+        <div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-space-md">
+
+            <!-- Logo -->
+            <a href="{% url 'beranda' %}" class="flex items-center gap-3 shrink-0 cursor-pointer">
+                <img alt="Logo Desa Beriri Jarak" class="h-8 w-auto object-contain"
+                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZjprOFm1lefLg4T0KrLwi08V-9aCd19_0Jnt7od_45osfyVm1oM64pIw35g0iqR3zQTOoJGtvZTQEKdtExLlcSw7WJIse28FqkW2sTRdpUKV0yvkYzWCyJ-mwvvkRWNmXmjFD6e3HxZl-PAfD_RuPstVfDgf7JLBRsOrGLaIyJyANx1A5N-IX9_8hpuvJXXSFTlbGolKuAgR54IvoH9Hbzzm8dZ87IrhBq-0vDrDyOyVx-2GJpABjt9mRz4PjvpJSEgKbIQn0WzetGY4">
+                <div class="flex flex-col">
+                    <span class="font-title-md text-title-md font-bold tracking-tight text-primary leading-tight">DESA BERIRI JARAK</span>
+                    <span class="font-label-sm text-label-sm text-text-secondary leading-none">Kec. Wanasaba, Kab. Lombok Timur</span>
+                </div>
+            </a>
+
+            <!-- Nav -->
+            <nav class="hidden xl:flex items-center gap-5">
+                <a href="{% url 'beranda' %}"
+                   class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">Beranda</a>
+
+                <!-- Layanan Publik Dropdown -->
+                <div class="relative group">
+                    <button class="flex items-center gap-1 font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-2 cursor-pointer">
+                        <span>Layanan Publik</span>
+                        <span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+                    </button>
+                    <div class="absolute left-0 top-full pt-1 hidden group-hover:block min-w-[220px]">
+                        <div class="bg-surface-pure rounded-xl shadow-[0_10px_25px_-5px_rgba(6,78,59,0.08)] py-2 flex flex-col">
+                            <a href="{% url 'layanan' %}" class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">Syarat Layanan</a>
+                            <a href="{% url 'formulir_pengajuan' %}" class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">Formulir Pengajuan</a>
+                            <a href="{% url 'lacak_tiket' %}" class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">Lacak Tiket</a>
+                            
+                            <!-- DIUBAH: Menjadi Pengumuman & Pengaduan -->
+                            <a href="{% url 'pengumuman' %}" class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">Pengumuman &amp; Pengaduan Warga</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profil Desa Dropdown -->
+                <div class="relative group">
+                    <button class="flex items-center gap-1 font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-2 cursor-pointer">
+                        <span>Profil Desa</span>
+                        <span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+                    </button>
+                    <div class="absolute left-0 top-full pt-1 hidden group-hover:block min-w-[200px]">
+                        <div class="bg-surface-pure rounded-xl shadow-[0_10px_25px_-5px_rgba(6,78,59,0.08)] py-2 flex flex-col">
+                            <a href="{% url 'perangkat_desa' %}" class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">Aparatur Desa</a>
+                            <a href="{% url 'visi_misi' %}" class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">Visi &amp; Misi</a>
+                            <a href="{% url 'sejarah' %}" class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">Sejarah Desa</a>
+                            <a href="{% url 'wilayah' %}" class="px-4 py-2 font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors">Peta Wilayah</a>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="{% url 'berita' %}" class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-2">Berita</a>
+                <a href="{% url 'data_statistik' %}" class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-2">Data Desa</a>
+                <a href="{% url 'apbdes' %}" class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-2">APBDes</a>
+                <a href="{% url 'katalog_umkm' %}" class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-2">UMKM Desa</a>
+                <a href="{% url 'galeri' %}" class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-2">Galeri</a>
+            </nav>
+
+            <!-- Auth Buttons -->
+            <div class="flex items-center gap-space-sm shrink-0">
+                <a href="{% url 'portal_masuk' %}"
+                   class="inline-flex items-center justify-center font-label-lg text-label-lg px-4 py-2 rounded-xl text-on-primary bg-primary hover:bg-secondary transition-colors shadow-[0_2px_8px_-2px_rgba(6,78,59,0.2)]">Masuk</a>
+                <a href="{% url 'portal_masuk' %}" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>

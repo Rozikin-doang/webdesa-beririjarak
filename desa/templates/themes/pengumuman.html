@@ -1,0 +1,316 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Warta & Pengumuman Publik - Website Resmi Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+    <div class="max-w-7xl mx-auto w-full px-6 lg:px-12 py-space-lg">
+        
+        <!-- Header Banner -->
+        <div class="relative overflow-hidden bg-primary rounded-3xl p-8 lg:p-12 text-on-primary shadow-xl">
+            <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-accent-emerald/10 blur-3xl pointer-events-none"></div>
+            <div class="absolute right-1/4 -bottom-20 w-64 h-64 rounded-full bg-secondary-fixed/10 blur-2xl pointer-events-none"></div>
+            
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+                <div class="max-w-3xl space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-pure/10 backdrop-blur-md font-label-md text-label-md text-accent-mint uppercase tracking-wider">
+                        <span class="w-2 h-2 rounded-full bg-accent-mint animate-pulse"></span>
+                        Kanal Siaran Resmi Desa Beriri Jarak
+                    </div>
+                    <h1 class="font-display-lg text-display-lg font-extrabold tracking-tight text-surface-pure">
+                        Warta &amp; Pengumuman Publik
+                    </h1>
+                    <p class="font-body-lg text-body-lg text-surface-pure/80 max-w-2xl">
+                        Transparansi informasi, maklumat pelayanan, agenda musyawarah, dan keterbukaan tata kelola desa di bawah naungan Pemerintah Desa Beriri Jarak, Kec. Wanasaba, Lombok Timur.
+                    </p>
+                </div>
+                
+                <!-- Widget Statistik -->
+                <div class="grid grid-cols-3 gap-3 bg-surface-pure/10 backdrop-blur-lg p-4 rounded-2xl shrink-0">
+                    <div class="text-center px-3 py-1">
+                        <span class="font-display-lg text-headline-lg font-bold text-accent-mint leading-none block">{{ pengumuman_list|length }}</span>
+                        <span class="font-label-sm text-label-sm text-surface-pure/70 mt-1 block">Total Warta</span>
+                    </div>
+                    <div class="text-center px-3 py-1 bg-surface-pure/10 rounded-xl">
+                        <span class="font-display-lg text-headline-lg font-bold text-tertiary-fixed-dim leading-none block">100%</span>
+                        <span class="font-label-sm text-label-sm text-surface-pure/70 mt-1 block">Terverifikasi</span>
+                    </div>
+                    <div class="text-center px-3 py-1">
+                        <span class="font-display-lg text-headline-lg font-bold text-surface-pure leading-none block">3</span>
+                        <span class="font-label-sm text-label-sm text-surface-pure/70 mt-1 block">Urgensi Aktif</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifikasi Pesan Sukses (Muncul setelah form dikirim) -->
+        {% if messages %}
+            <div class="mt-6 space-y-2">
+                {% for message in messages %}
+                    <div class="p-4 rounded-xl {% if message.tags == 'success' %}bg-accent-mint/20 text-primary border border-accent-mint{% else %}bg-error-container text-on-error-container border border-error{% endif %} flex items-start gap-3 shadow-sm">
+                        <span class="material-symbols-outlined">{% if message.tags == 'success' %}check_circle{% else %}error{% endif %}</span>
+                        <p class="font-body-sm font-semibold">{{ message }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Grid Pengumuman -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for item in pengumuman_list %}
+            <article class="bg-surface-pure rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                <div>
+                    <div class="relative h-48 w-full overflow-hidden bg-surface-container-low flex items-center justify-center">
+                        {% if item.is_penting %}
+                            <div class="absolute top-3 left-3 z-10"><span class="px-3 py-1 rounded-full bg-error text-on-error font-label-md text-label-md flex items-center gap-1 shadow-sm"><span class="material-symbols-outlined text-[16px]">priority_high</span> Mendesak</span></div>
+                        {% else %}
+                            <div class="absolute top-3 left-3 z-10"><span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md">Pengumuman</span></div>
+                        {% endif %}
+                        
+                        <div class="absolute top-3 right-3 z-10"><span class="px-2.5 py-1 rounded-full bg-primary/80 backdrop-blur-md text-surface-pure font-label-sm text-label-sm">{{ item.tanggal_rilis|date:"d M Y" }}</span></div>
+                        
+                        {% if item.gambar %}
+                            <img src="{{ item.gambar.url }}" alt="{{ item.judul }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        {% else %}
+                            <span class="material-symbols-outlined text-[80px] text-surface-container-highest">campaign</span>
+                        {% endif %}
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="font-headline-sm text-headline-sm font-bold text-text-primary group-hover:text-secondary transition-colors cursor-pointer line-clamp-2" onclick="openDetailModal('{{ item.id }}')">
+                            {{ item.judul }}
+                        </h3>
+                        <p class="font-body-sm text-body-sm text-text-secondary line-clamp-3">
+                            {{ item.isi_pengumuman|striptags|truncatechars:150 }}
+                        </p>
+                    </div>
+                </div>
+                <div class="px-6 pb-6 pt-2 flex items-center justify-between">
+                    <button class="text-primary font-label-md text-label-md hover:text-secondary flex items-center gap-1 transition-colors cursor-pointer" onclick="openDetailModal('{{ item.id }}')">
+                        <span>Baca Selengkapnya</span>
+                        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                    </button>
+                    {% if item.file_lampiran %}
+                    <div class="flex items-center gap-1 text-outline">
+                        <span class="material-symbols-outlined text-[18px]">attach_file</span>
+                        <span class="font-label-sm text-label-sm">Lampiran</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </article>
+            {% empty %}
+            <div class="col-span-3 text-center py-16">
+                <span class="material-symbols-outlined text-[48px] text-outline mb-2">campaign</span>
+                <p class="text-text-secondary font-body-md">Belum ada pengumuman yang dipublikasikan.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- WhatsApp Subscription -->
+        <div class="mt-16 bg-surface-container-high/40 rounded-3xl p-8 lg:p-10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="max-w-xl space-y-2">
+                <div class="inline-flex items-center gap-2 font-label-md text-label-md text-secondary font-bold"><span class="material-symbols-outlined text-[18px]">mark_email_read</span> Kanal Siaga Pengumuman Warga</div>
+                <h3 class="font-headline-md text-headline-md font-bold text-text-primary">Tidak Ingin Ketinggalan Bantuan atau Surat Edaran?</h3>
+                <p class="font-body-sm text-body-sm text-text-secondary">Dapatkan pemberitahuan ringkas dan pengumuman mendesak Pemerintah Desa Beriri Jarak langsung via saluran pesan WhatsApp resmi warga.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 shrink-0">
+                <a class="px-6 py-3 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg hover:bg-secondary flex items-center gap-2 shadow-md transition-all" href="https://wa.me/6281234567890?text=Halo%20Admin%20Desa%20Beriri%20Jarak,%20saya%20ingin%20berlangganan%20siaran%20pengumuman%20desa." rel="noopener noreferrer" target="_blank">
+                    <span class="material-symbols-outlined text-[20px]">chat</span> Gabung Siaran WhatsApp Desa
+                </a>
+            </div>
+        </div>
+
+        <!-- FORM KRITIK & SARAN / PENGADUAN -->
+        <div class="mt-12 bg-surface-pure rounded-3xl p-8 lg:p-12 shadow-lg border border-border-subtle">
+            <div class="max-w-2xl mx-auto text-center mb-8">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-md mb-3">
+                    <span class="material-symbols-outlined text-[18px]">forum</span> Suara Warga
+                </div>
+                <h2 class="font-headline-lg text-headline-lg font-bold text-text-primary">Pengaduan, Kritik & Saran</h2>
+                <p class="font-body-md text-text-secondary mt-2">Punya keluhan terkait pelayanan, atau ide untuk pembangunan desa? Sampaikan langsung kepada Pemerintah Desa Beriri Jarak melalui formulir di bawah ini.</p>
+            </div>
+
+            <form method="POST" action="{% url 'pengaduan_warga' %}" class="max-w-2xl mx-auto space-y-5">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div class="space-y-2">
+                        <label class="font-label-md font-semibold text-text-primary">Nama Anda (Opsional)</label>
+                        <input type="text" name="nama" placeholder="Boleh dikosongkan (Anonim)" class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="font-label-md font-semibold text-text-primary">Email / No. WhatsApp <span class="text-error">*</span></label>
+                        <input type="text" name="email" required placeholder="Contoh: 0812xxx atau email@anda.com" class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="font-label-md font-semibold text-text-primary">Kategori Aspirasi <span class="text-error">*</span></label>
+                    <select name="subjek" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary">
+                        <option value="">-- Pilih Kategori --</option>
+                        <option value="Pengaduan Pelayanan">Pengaduan Pelayanan Administrasi</option>
+                        <option value="Kritik Pembangunan">Kritik Pembangunan Desa</option>
+                        <option value="Saran Fasilitas Umum">Saran Fasilitas Umum</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="font-label-md font-semibold text-text-primary">Isi Pesan <span class="text-error">*</span></label>
+                    <textarea name="pesan" required rows="5" placeholder="Tuliskan kritik, saran, atau pengaduan Anda secara jelas dan sopan..." class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary"></textarea>
+                </div>
+
+                <div class="pt-2 flex justify-end">
+                    <button type="submit" class="px-8 py-3 rounded-xl bg-primary text-on-primary font-bold shadow-md flex items-center gap-2 hover:bg-secondary transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">send</span> Kirim Aspirasi
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- MODAL DETAIL PENGUMUMAN -->
+    <div class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm hidden items-center justify-center p-4 lg:p-8 overflow-y-auto" id="detailAnnouncementModal">
+        <div class="bg-surface-pure w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[921px] flex flex-col">
+            <!-- Top Bar -->
+            <div class="bg-surface-container-low px-6 py-4 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-error"></span>
+                    <span class="w-3 h-3 rounded-full bg-tertiary-fixed-dim"></span>
+                    <span class="w-3 h-3 rounded-full bg-accent-emerald"></span>
+                    <span class="ml-2 font-label-sm text-label-sm text-text-secondary tracking-wide uppercase">Kop Publikasi Elektronik Resmi</span>
+                </div>
+                <button aria-label="Tutup Detail" class="w-8 h-8 rounded-full bg-surface-pure hover:bg-surface-container text-text-secondary hover:text-text-primary flex items-center justify-center transition-colors cursor-pointer" onclick="closeDetailModal()">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="p-6 lg:p-10 overflow-y-auto space-y-8">
+                <!-- Kop Surat -->
+                <div class="flex flex-col sm:flex-row items-center gap-5 pb-6 bg-surface-container-low/50 p-6 rounded-2xl">
+                    <img alt="Logo Desa Beriri Jarak" class="h-16 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiD7k9MJ-ucczS4_HtucfRFc0cpOwlW5PZf92jFr6Vpye9MM_uCG__w5r-W2TmnnmDEb8JO1CDUErWufqB_Onw1j8FHNcVc3YDge3cdV3fBXDkk_N-0b6pZhOpvrtp519dvMrt1KTr518u-92QDo3cCxvkhRTb-C5w1U0zsME-AOTNwsBH-QlDziUt2DB5_gBgDyW8qtnDtduTGYa0rsksxtYQ-PIW4uk3FepQ8RU2z3yLa_Phx78ZFXrEodRRfCa0TrfDcwUw76rXmgQ"/>
+                    <div class="text-center sm:text-left space-y-0.5">
+                        <span class="font-label-sm text-label-sm uppercase tracking-wider text-text-secondary block">Pemerintah Kabupaten Lombok Timur • Kecamatan Wanasaba</span>
+                        <h2 class="font-headline-sm text-headline-sm font-extrabold text-primary tracking-tight">PEMERINTAH DESA BERIRI JARAK</h2>
+                        <span class="font-body-sm text-body-sm text-text-secondary block">Jalan Raya Beriri Jarak No. 01, Kode Pos 83653 • Laman: desaberirijarak.com</span>
+                    </div>
+                </div>
+                
+                <!-- Meta -->
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="px-3 py-1 rounded-full bg-gold-light text-tertiary font-label-md text-label-md flex items-center gap-1 font-semibold"><span class="material-symbols-outlined text-[16px]">campaign</span> Warta Resmi</span>
+                        <span class="px-3 py-1 rounded-full bg-surface-container-low text-secondary font-label-md text-label-md">No. Registrasi: 140/012/PEM/BJ/2026</span>
+                    </div>
+                </div>
+                
+                <!-- Article Title -->
+                <div class="space-y-3">
+                    <h1 class="font-headline-xl text-headline-xl font-extrabold text-text-primary leading-tight" id="modalTitle">Judul Pengumuman</h1>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary"><span class="material-symbols-outlined text-[20px]">account_balance</span></div>
+                        <div>
+                            <p class="font-label-md text-label-md text-text-primary">Diterbitkan oleh: <span class="font-semibold text-secondary">Pemerintah Desa Beriri Jarak</span></p>
+                            <p class="font-label-sm text-label-sm text-text-secondary" id="modalDate">-</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Isi Pengumuman -->
+                <div class="space-y-4 font-body-md text-body-md text-on-surface leading-relaxed" id="modalContent">
+                    <p>Isi pengumuman...</p>
+                </div>
+                
+                <!-- Lampiran -->
+                <div class="bg-surface-container-low rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4" id="modalAttachment" style="display: none;">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-error-container text-error flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[28px]">picture_as_pdf</span></div>
+                        <div>
+                            <span class="font-title-md text-title-md font-bold text-text-primary block">Lampiran Dokumen</span>
+                            <span class="font-label-sm text-label-sm text-text-secondary block">Dokumen Resmi</span>
+                        </div>
+                    </div>
+                    <a class="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:bg-secondary flex items-center gap-2 transition-colors shrink-0 cursor-pointer shadow-sm" id="modalDownloadLink" href="#" download>
+                        <span class="material-symbols-outlined text-[18px]">download</span> Unduh Lampiran
+                    </a>
+                </div>
+                
+                <!-- Share -->
+                <div class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-surface-pure">
+                    <button class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-surface-container-low text-text-primary hover:bg-surface-container font-label-md text-label-md transition-colors cursor-pointer flex items-center justify-center gap-1.5" onclick="closeDetailModal()">
+                        <span class="material-symbols-outlined text-[18px]">arrow_back</span> Kembali ke Daftar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Data pengumuman dari Django ke JavaScript
+    const pengumumanData = {
+        {% for item in pengumuman_list %}
+        "{{ item.id }}": {
+            "judul": "{{ item.judul|escapejs }}",
+            "isi": "{{ item.isi_pengumuman|escapejs }}",
+            "tanggal": "{{ item.tanggal_rilis|date:'d F Y' }}",
+            "lampiran": "{% if item.file_lampiran %}{{ item.file_lampiran.url }}{% endif %}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    };
+
+    function openDetailModal(id) {
+        const data = pengumumanData[id];
+        if (!data) return;
+
+        document.getElementById('modalTitle').innerText = data.judul;
+        document.getElementById('modalDate').innerText = data.tanggal;
+        
+        const formattedIsi = data.isi.replace(/\n/g, '<br>');
+        document.getElementById('modalContent').innerHTML = formattedIsi;
+
+        const attachmentDiv = document.getElementById('modalAttachment');
+        const downloadLink = document.getElementById('modalDownloadLink');
+        
+        if (data.lampiran) {
+            attachmentDiv.style.display = 'flex';
+            downloadLink.href = data.lampiran;
+        } else {
+            attachmentDiv.style.display = 'none';
+        }
+
+        const modal = document.getElementById('detailAnnouncementModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDetailModal() {
+        const modal = document.getElementById('detailAnnouncementModal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeDetailModal();
+        }
+    });
+
+    const modalBackdrop = document.getElementById('detailAnnouncementModal');
+    if (modalBackdrop) {
+        modalBackdrop.addEventListener('click', function(e) {
+            if (e.target === modalBackdrop) {
+                closeDetailModal();
+            }
+        });
+    }
+</script>
+{% endblock %}

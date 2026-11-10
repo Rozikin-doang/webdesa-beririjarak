@@ -1,0 +1,344 @@
+{% extends "themes/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Katalog UMKM - Website Resmi Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+
+    <!-- Hero Header -->
+    <section class="relative w-full bg-primary-container text-on-primary overflow-hidden">
+        <div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-accent-mint/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute left-1/3 bottom-0 w-80 h-80 rounded-full bg-gold-light/10 blur-3xl pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-14 relative z-10 flex flex-col gap-6">
+            <!-- Breadcrumb -->
+            <nav aria-label="Navigasi Jejak Halaman" class="flex items-center gap-2 text-on-primary/75 font-label-md text-label-md">
+                <a class="hover:text-accent-mint transition-colors flex items-center gap-1" href="{% url 'beranda' %}">
+                    <span class="material-symbols-outlined text-[16px]">home</span> Beranda
+                </a>
+                <span class="material-symbols-outlined text-[14px] text-on-primary/40">chevron_right</span>
+                <a class="hover:text-accent-mint transition-colors" href="#">Ekonomi &amp; BUMDes</a>
+                <span class="material-symbols-outlined text-[14px] text-on-primary/40">chevron_right</span>
+                <span class="text-accent-mint font-semibold">Katalog UMKM</span>
+            </nav>
+            
+            <!-- Header & Stats -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+                <div class="lg:col-span-8 flex flex-col gap-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-pure/10 backdrop-blur-md self-start text-accent-mint font-label-sm text-label-sm">
+                        <span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">verified</span> Program Penguatan Usaha Rakyat &amp; BUMDes
+                    </div>
+                    <h1 class="font-headline-xl text-headline-xl lg:text-display-lg font-extrabold tracking-tight leading-tight text-surface-pure">
+                        Katalog Produk &amp; UMKM Desa Beriri Jarak
+                    </h1>
+                    <p class="font-body-lg text-body-lg text-on-primary/80 max-w-2xl">
+                        Jelajahi komoditas unggulan lereng Rinjani, kriya anyaman khas Sasak, dan olahan pangan asli karya krama Desa Beriri Jarak. Beli langsung dari petani dan perajin lokal untuk mendongkrak ekonomi desa mandiri.
+                    </p>
+                </div>
+                
+                <div class="lg:col-span-4 grid grid-cols-3 gap-3">
+                    <div class="bg-surface-pure/10 backdrop-blur-md rounded-2xl p-4 flex flex-col items-center text-center">
+                        <span class="font-headline-md text-headline-md font-bold text-accent-mint">{{ umkm_list|length }}</span>
+                        <span class="font-label-sm text-label-sm text-on-primary/80 leading-snug mt-1">UMKM Terdaftar</span>
+                    </div>
+                    <div class="bg-surface-pure/10 backdrop-blur-md rounded-2xl p-4 flex flex-col items-center text-center">
+                        <span class="font-headline-md text-headline-md font-bold text-tertiary-fixed-dim">100%</span>
+                        <span class="font-label-sm text-label-sm text-on-primary/80 leading-snug mt-1">Asli Olahan Lokal</span>
+                    </div>
+                    <div class="bg-surface-pure/10 backdrop-blur-md rounded-2xl p-4 flex flex-col items-center text-center">
+                        <span class="font-headline-md text-headline-md font-bold text-accent-mint">6</span>
+                        <span class="font-label-sm text-label-sm text-on-primary/80 leading-snug mt-1">Dusun Produsen</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search & Filter Toolbar -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 w-full -mt-7 relative z-20">
+        <div class="bg-surface-pure rounded-2xl p-5 shadow-xl flex flex-col gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+                <!-- Search -->
+                <div class="md:col-span-5 relative">
+                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+                    <input class="w-full pl-11 pr-4 py-3 bg-surface-container-low rounded-xl font-body-sm text-body-sm text-text-primary placeholder:text-outline focus:outline-none focus:bg-surface-pure transition-all" id="umkmSearchInput" placeholder="Cari nama produk, komoditas, atau perajin..." type="text"/>
+                </div>
+                
+                <!-- Filter Dusun -->
+                <div class="md:col-span-4 relative">
+                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">location_on</span>
+                    <select class="w-full pl-11 pr-8 py-3 bg-surface-container-low rounded-xl font-label-lg text-label-lg text-text-primary appearance-none focus:outline-none cursor-pointer">
+                        <option value="all">Semua Dusun Asal</option>
+                        <option value="beriri-lauk">Dusun Beriri Lauk</option>
+                        <option value="jarak-daya">Dusun Jarak Daya</option>
+                        <option value="orok-gendang">Dusun Orok Gendang</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
+                </div>
+                
+                <!-- Sort -->
+                <div class="md:col-span-3 relative">
+                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">swap_vert</span>
+                    <select class="w-full pl-11 pr-8 py-3 bg-surface-container-low rounded-xl font-label-lg text-label-lg text-text-primary appearance-none focus:outline-none cursor-pointer">
+                        <option value="featured">Produk Unggulan</option>
+                        <option value="price-low">Harga Terendah</option>
+                        <option value="price-high">Harga Tertinggi</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
+                </div>
+            </div>
+            
+            <!-- Category Pills -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 pt-1 no-scrollbar" id="category-filters">
+                <button class="category-pill active shrink-0 px-4 py-2 rounded-xl font-label-md text-label-md bg-primary-container text-on-primary transition-all shadow-sm" type="button">Semua Kategori</button>
+                <button class="category-pill shrink-0 px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-low text-text-secondary hover:bg-surface-container hover:text-on-surface transition-all" type="button">Makanan &amp; Minuman</button>
+                <button class="category-pill shrink-0 px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-low text-text-secondary hover:bg-surface-container hover:text-on-surface transition-all" type="button">Kriya &amp; Anyaman</button>
+                <button class="category-pill shrink-0 px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-low text-text-secondary hover:bg-surface-container hover:text-on-surface transition-all" type="button">Kopi &amp; Rempah</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Grid -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 py-12 w-full flex flex-col gap-10">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <h2 class="font-headline-md text-headline-md font-bold text-primary">Komoditas &amp; Produk Unggulan</h2>
+                <p class="font-body-sm text-body-sm text-text-secondary mt-0.5">Menampilkan {{ umkm_list|length }} produk terkurasi oleh BUMDes Beriri Jarak</p>
+            </div>
+            <div class="flex items-center gap-2 self-start sm:self-auto bg-surface-container-low px-3 py-1.5 rounded-lg text-primary font-label-sm text-label-sm">
+                <span class="material-symbols-outlined text-[16px] text-accent-emerald">eco</span>
+                <span>Bersertifikasi Desa Aman Konsumsi</span>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for produk in umkm_list %}
+            <article class="bg-surface-pure rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+                <div class="relative h-60 w-full overflow-hidden bg-surface-container">
+                    {% if produk.gambar_produk %}
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="{{ produk.gambar_produk.url }}">
+                    {% else %}
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="{% static 'img/Digital.png' %}">
+                    {% endif %}
+                    <div class="absolute top-3 left-3 flex flex-col gap-1.5">
+                        <span class="px-2.5 py-1 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm font-semibold shadow-sm">{{ produk.kategori }}</span>
+                        {% if produk.is_unggulan %}
+                            <span class="px-2.5 py-0.5 rounded-full bg-gold-light text-tertiary font-label-sm text-label-sm font-bold">Unggulan BUMDes</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="p-5 flex-1 flex flex-col justify-between gap-4">
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center gap-1.5 text-text-secondary font-label-sm text-label-sm">
+                            <span class="material-symbols-outlined text-[15px] text-primary">store</span>
+                            <span class="font-medium text-text-primary">{{ produk.nama_penjual }}</span>
+                            <span>•</span>
+                            <span class="text-secondary font-semibold">{{ produk.dusun.nama|default:"-" }}</span>
+                        </div>
+                        <h3 class="font-title-lg text-title-lg font-bold text-text-primary group-hover:text-primary transition-colors leading-snug">{{ produk.nama_produk }}</h3>
+                        <div class="flex items-center gap-1.5 mt-1 text-tertiary">
+                            <span class="material-symbols-outlined text-[16px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="font-label-md text-label-md font-bold text-on-surface">{{ produk.rating }}</span>
+                        </div>
+                        <p class="font-body-sm text-body-sm text-text-secondary line-clamp-2">{{ produk.deskripsi }}</p>
+                    </div>
+                    <div class="flex flex-col gap-3 pt-2">
+                        <div class="flex items-baseline justify-between">
+                            <span class="font-label-sm text-label-sm text-text-secondary uppercase tracking-wider font-semibold">Harga</span>
+                            <span class="font-headline-sm text-headline-sm font-extrabold text-primary">Rp {{ produk.harga|intcomma }} <span class="text-sm font-normal">/ {{ produk.satuan }}</span></span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <!-- Tombol Detail Menggunakan Data Attribute -->
+                            <button class="w-full py-2.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" 
+                                    onclick="openProductModal(this)" 
+                                    data-title="{{ produk.nama_produk }}" 
+                                    data-price="Rp {{ produk.harga|intcomma }} / {{ produk.satuan }}" 
+                                    data-seller="{{ produk.nama_penjual }}" 
+                                    data-category="{{ produk.kategori }}" 
+                                    data-desc="{{ produk.deskripsi }}" 
+                                    data-wa="{{ produk.kontak_whatsapp }}"
+                                    data-img="{% if produk.gambar_produk %}{{ produk.gambar_produk.url }}{% else %}{% static 'img/Digital.png' %}{% endif %}"
+                                    type="button">
+                                <span class="material-symbols-outlined text-[16px]">visibility</span> Detail
+                            </button>
+                            <a class="w-full py-2.5 px-3 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-surface-pure font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors shadow-sm" href="https://wa.me/{{ produk.kontak_whatsapp }}?text=Halo%20{{ produk.nama_penjual }},%20saya%20tertarik%20memesan%20{{ produk.nama_produk }}." rel="noopener" target="_blank">
+                                <span class="material-symbols-outlined text-[16px]">chat</span> Pesan WA
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <div class="col-span-3 text-center py-12">
+                <p class="text-text-secondary">Belum ada produk UMKM yang ditambahkan.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- CTA Pendaftaran UMKM -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 pb-16 w-full">
+        <div class="bg-gradient-to-br from-primary-container via-secondary to-primary rounded-3xl p-8 sm:p-12 text-on-primary relative overflow-hidden shadow-xl">
+            <div class="absolute -right-16 -bottom-16 w-72 h-72 rounded-full bg-accent-mint/20 blur-2xl pointer-events-none"></div>
+            <div class="absolute left-1/4 -top-12 w-60 h-60 rounded-full bg-gold-light/10 blur-xl pointer-events-none"></div>
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-8 flex flex-col gap-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-pure/10 text-tertiary-fixed font-label-sm text-label-sm self-start">
+                        <span class="material-symbols-outlined text-[15px]">campaign</span> Pemberdayaan Ekonomi Desa
+                    </div>
+                    <h2 class="font-headline-xl text-headline-xl lg:text-headline-xl font-extrabold tracking-tight text-surface-pure">Punya Usaha di Desa Beriri Jarak? Daftarkan Produk Anda ke BUMDes!</h2>
+                    <p class="font-body-md text-body-md text-on-primary/80 max-w-2xl">Pemerintah Desa bersama BUMDes membuka kurasi pendaftaran gratis untuk seluruh warga. Dapatkan pendampingan sertifikasi halal, foto produk profesional, katalog online desa, serta akses pemasaran antar-daerah.</p>
+                </div>
+                <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-center">
+                    <a class="w-full py-4 px-6 rounded-2xl bg-gold-light hover:bg-tertiary-fixed text-tertiary font-title-md text-title-md font-bold text-center transition-all shadow-md flex items-center justify-center gap-2" href="https://wa.me/6281234567890?text=Halo%20Pengurus%20BUMDes,%20saya%20ingin%20mendaftarkan%20produk%20UMKM%20saya." rel="noopener" target="_blank">
+                        <span class="material-symbols-outlined text-[20px]">how_to_reg</span> Daftar via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Detail Produk -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-inverse-surface/60 backdrop-blur-sm hidden overflow-y-auto" id="productDetailModal">
+        <div class="relative w-full max-w-5xl bg-surface-pure rounded-3xl shadow-2xl overflow-hidden my-auto animate-fade-in flex flex-col max-h-[942px]">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-surface-pure sticky top-0 z-20 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-2 font-label-sm text-label-sm text-text-secondary">
+                    <span>Katalog UMKM</span>
+                    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                    <span class="text-primary font-bold">Detail Produk</span>
+                </div>
+                <button class="w-9 h-9 rounded-full bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-text-secondary hover:text-primary transition-colors" onclick="closeProductModal()" type="button">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 sm:p-8 overflow-y-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-6 flex flex-col gap-4">
+                        <div class="relative w-full h-80 sm:h-96 rounded-2xl overflow-hidden bg-surface-container">
+                            <img class="w-full h-full object-cover" id="modalMainImg" src="">
+                            <div class="absolute top-4 left-4">
+                                <span class="px-3 py-1 rounded-full bg-accent-emerald text-on-primary font-label-sm text-label-sm font-semibold shadow-sm">Stok Tersedia</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:col-span-6 flex flex-col justify-between gap-6">
+                        <div class="flex flex-col gap-4">
+                            <div class="flex items-center justify-between">
+                                <span class="font-label-md text-label-md px-3 py-1 rounded-full bg-surface-container text-primary font-bold" id="modalCategory">Kategori</span>
+                            </div>
+                            <h2 class="font-headline-lg text-headline-lg font-extrabold text-primary leading-tight" id="modalProductTitle">Nama Produk</h2>
+                            <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl">
+                                <div class="w-11 h-11 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-base">UM</div>
+                                <div class="flex flex-col">
+                                    <span class="font-title-md text-title-md font-bold text-on-surface leading-tight" id="modalSeller">Nama Penjual</span>
+                                    <span class="font-label-sm text-label-sm text-text-secondary">Pelaku Usaha Binaan BUMDes</span>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline gap-3 p-4 bg-surface-container rounded-2xl">
+                                <span class="font-label-md text-label-md text-text-secondary">Harga:</span>
+                                <span class="font-headline-xl text-headline-xl font-black text-primary" id="modalPrice">Rp 0</span>
+                            </div>
+                            <p class="font-body-sm text-body-sm text-text-secondary leading-relaxed" id="modalDesc">Deskripsi produk...</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row items-center gap-3 pt-4 sticky bottom-0 bg-surface-pure">
+                            <a class="w-full sm:flex-1 py-3.5 px-6 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-surface-pure font-title-md text-title-md font-bold flex items-center justify-center gap-2 transition-all shadow-md" id="modalWaBtn" href="#" target="_blank">
+                                <span class="material-symbols-outlined text-[22px]">chat</span> Hubungi Penjual via WA
+                            </a>
+                            <button class="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-surface-container hover:bg-surface-container-high text-primary font-label-lg text-label-lg transition-colors" onclick="closeProductModal()" type="button">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Fungsi untuk membuka modal dan mengisi data secara dinamis
+    function openProductModal(button) {
+        // Ambil data dari atribut tombol yang diklik
+        const title = button.getAttribute('data-title');
+        const price = button.getAttribute('data-price');
+        const seller = button.getAttribute('data-seller');
+        const category = button.getAttribute('data-category');
+        const desc = button.getAttribute('data-desc');
+        const wa = button.getAttribute('data-wa');
+        const img = button.getAttribute('data-img');
+
+        // Masukkan data ke dalam elemen modal
+        document.getElementById('modalProductTitle').innerText = title;
+        document.getElementById('modalPrice').innerText = price;
+        document.getElementById('modalSeller').innerText = seller;
+        document.getElementById('modalCategory').innerText = category;
+        document.getElementById('modalDesc').innerText = desc;
+        document.getElementById('modalMainImg').src = img;
+        
+        // Buat link WhatsApp otomatis
+        const waBtn = document.getElementById('modalWaBtn');
+        waBtn.href = `https://wa.me/${wa}?text=${encodeURIComponent('Halo ' + seller + ', saya tertarik memesan ' + title + '.')}`;
+        
+        // Tampilkan modal
+        const modal = document.getElementById('productDetailModal');
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Kunci scroll layar
+    }
+
+    function closeProductModal() {
+        const modal = document.getElementById('productDetailModal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto'; // Kembalikan scroll
+    }
+
+    // Tutup modal jika klik di luar area modal
+    document.getElementById('productDetailModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeProductModal();
+        }
+    });
+
+    // Tutup modal jika menekan tombol ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeProductModal();
+        }
+    });
+
+    // Toggle Category Pills
+    const categoryButtons = document.querySelectorAll('.category-pill');
+    categoryButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            categoryButtons.forEach(b => {
+                b.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm');
+                b.classList.add('bg-surface-container-low', 'text-text-secondary');
+            });
+            this.classList.remove('bg-surface-container-low', 'text-text-secondary');
+            this.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm');
+        });
+    });
+
+    // Pencarian UMKM Sederhana (Client-side)
+    const searchInput = document.getElementById('umkmSearchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('article');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
+</script>
+{% endblock %}

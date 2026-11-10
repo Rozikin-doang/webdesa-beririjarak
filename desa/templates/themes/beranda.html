@@ -1,0 +1,677 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Beranda - Website Resmi Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+
+    <!-- 1. HERO SECTION WITH SMART QUICK SEARCH & SLIDER -->
+    <section class="relative w-full -mt-20 overflow-hidden bg-primary min-h-[805px] flex flex-col">
+        
+        <!-- SLIDER GAMBAR -->
+        <div id="hero-slider" class="absolute inset-0 w-full h-full bg-no-repeat">
+            <div class="slider-item absolute inset-0 bg-cover bg-center transition-opacity duration-500 opacity-100" 
+                 style="background-image: url('{% static "img/Jarak website.png" %}');"></div>
+            <div class="slider-item absolute inset-0 bg-cover bg-center transition-opacity duration-500 opacity-0" 
+                 style="background-image: url('{% static "img/Rumah Data.png" %}');"></div>
+            <div class="slider-item absolute inset-0 bg-cover bg-center transition-opacity duration-500 opacity-0" 
+                 style="background-image: url('{% static "img/Digital.png" %}');"></div>
+        </div>
+        
+        <!-- Gradasi Gelap -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/90 z-10"></div>
+        
+        <!-- TOMBOL NAVIGASI KIRI & KANAN -->
+        <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md text-white flex items-center justify-center transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[32px]">chevron_left</span>
+        </button>
+        <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md text-white flex items-center justify-center transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[32px]">chevron_right</span>
+        </button>
+
+        <!-- Konten Hero -->
+        <div class="relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-12 mt-auto pb-24 flex flex-col items-center text-center">
+            
+            <!-- Tombol Aksi -->
+            <div class="flex flex-wrap items-center justify-center gap-4 mb-6">
+                <a class="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-accent-emerald hover:bg-secondary text-primary font-label-lg text-label-lg font-bold shadow-xl shadow-accent-emerald/20 hover:scale-[1.02] active:scale-95 transition-all duration-200" href="{% url 'formulir_pengajuan' %}">
+                    <span>Ajukan Layanan Online</span>
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </a>
+                <a class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-surface-pure/10 hover:bg-surface-pure/20 text-on-primary backdrop-blur-md font-label-lg text-label-lg transition-all duration-200 border border-white/20" href="#sambutan-kades">
+                    <span class="material-symbols-outlined text-[20px]">explore</span>
+                    <span>Jelajahi Profil Desa</span>
+                </a>
+            </div>
+            
+            <!-- Search Box -->
+            <div class="w-full max-w-xl bg-surface-pure rounded-xl p-1.5 sm:p-2 shadow-2xl flex flex-col sm:flex-row items-center gap-1.5">
+                <div class="flex items-center w-full px-3 gap-2">
+                    <span class="material-symbols-outlined text-primary text-[20px]">search</span>
+                    <input class="w-full bg-transparent border-0 focus:outline-none font-body-md text-body-sm text-on-surface placeholder:text-outline-variant py-1.5" id="live-search-input" placeholder="Cari layanan surat, data desa, atau produk..." type="text">
+                </div>
+                <button class="w-full sm:w-auto shrink-0 px-5 py-2 rounded-lg bg-primary hover:bg-secondary text-on-primary font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 transition-all" type="button" onclick="alert('Fitur pencarian akan dihubungkan ke backend.')">
+                    <span>Cari</span>
+                    <span class="material-symbols-outlined text-[16px]">travel_explore</span>
+                </button>
+            </div>
+            
+            <!-- Quick Tags -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mt-4 text-on-primary-container font-label-sm text-label-sm bg-black/20 p-2 rounded-full backdrop-blur-sm">
+                <span class="opacity-90 font-semibold ml-2">Paling dicari:</span>
+                <button class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-on-primary transition-colors border border-white/20" onclick="document.getElementById('live-search-input').value='Surat Keterangan Usaha'" type="button">Surat Usaha (SKU)</button>
+                <a href="{% url 'lacak_tiket' %}" class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-on-primary transition-colors border border-white/20">Lacak Berkas</a>
+                <a href="{% url 'apbdes' %}" class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-on-primary transition-colors border border-white/20">APBDes 2024</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. QUICK ACTION GRID -->
+    <section class="relative z-30 max-w-7xl mx-auto px-6 lg:px-12 -mt-16 w-full" id="quick-services">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <!-- Card 1: SKU -->
+            <a class="group bg-surface-pure p-5 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" href="{% url 'formulir_pengajuan' %}">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors duration-300 mb-4">
+                        <span class="material-symbols-outlined text-[26px]">storefront</span>
+                    </div>
+                    <span class="font-title-md text-title-md text-on-surface block group-hover:text-primary transition-colors">Surat Keterangan Usaha</span>
+                    <p class="font-body-sm text-body-sm text-text-secondary mt-1.5">Permohonan legalitas usaha UMKM warga untuk perbankan &amp; izin.</p>
+                </div>
+                <div class="mt-4 pt-3 flex items-center justify-between text-secondary font-label-md text-label-md">
+                    <span>Buat Surat</span>
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </div>
+            </a>
+            <!-- Card 2: Domisili -->
+            <a class="group bg-surface-pure p-5 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" href="{% url 'formulir_pengajuan' %}">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors duration-300 mb-4">
+                        <span class="material-symbols-outlined text-[26px]">home_work</span>
+                    </div>
+                    <span class="font-title-md text-title-md text-on-surface block group-hover:text-primary transition-colors">Surat Domisili</span>
+                    <p class="font-body-sm text-body-sm text-text-secondary mt-1.5">Keterangan tempat tinggal penduduk dan badan sosial setempat.</p>
+                </div>
+                <div class="mt-4 pt-3 flex items-center justify-between text-secondary font-label-md text-label-md">
+                    <span>Buat Surat</span>
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </div>
+            </a>
+            <!-- Card 3: SKCK & KTP -->
+            <a class="group bg-surface-pure p-5 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" href="{% url 'formulir_pengajuan' %}">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors duration-300 mb-4">
+                        <span class="material-symbols-outlined text-[26px]">badge</span>
+                    </div>
+                    <span class="font-title-md text-title-md text-on-surface block group-hover:text-primary transition-colors">Pengantar SKCK &amp; KTP</span>
+                    <p class="font-body-sm text-body-sm text-text-secondary mt-1.5">Penerbitan surat pengantar kepolisian &amp; berkas rekam identitas.</p>
+                </div>
+                <div class="mt-4 pt-3 flex items-center justify-between text-secondary font-label-md text-label-md">
+                    <span>Buat Surat</span>
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </div>
+            </a>
+            <!-- Card 4: Tracking Tiket -->
+            <div class="group bg-surface-container-low p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-[26px]">radar</span>
+                    </div>
+                    <span class="font-title-md text-title-md text-primary block">Lacak Tiket Layanan</span>
+                    <p class="font-body-sm text-body-sm text-text-secondary mt-1.5">Cek progres tanda tangan dan verifikasi berkas secara riil.</p>
+                </div>
+                <div class="mt-4 pt-3">
+                    <form action="{% url 'lacak_tiket' %}" method="POST" class="flex items-center gap-1.5 bg-surface-pure rounded-lg p-1.5 shadow-sm">
+                        {% csrf_token %}
+                        <input class="w-full bg-transparent px-2 font-label-sm text-label-sm text-on-surface focus:outline-none" id="quick-ticket-input" name="id_tiket" placeholder="ID Tiket..." type="text">
+                        <button class="px-2.5 py-1 bg-primary text-on-primary rounded font-label-sm text-label-sm hover:bg-secondary" type="submit">Cek</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Card 5: Pengumuman & Pengaduan -->
+            <a class="group bg-tertiary-fixed p-5 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" href="{% url 'pengumuman' %}">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-tertiary text-on-primary flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-[26px]">campaign</span>
+                    </div>
+                    <span class="font-title-md text-title-md text-tertiary block">Pengumuman &amp; Pengaduan</span>
+                    <p class="font-body-sm text-body-sm text-tertiary/80 mt-1.5">Baca warta terbaru desa dan sampaikan aspirasi, keluhan, serta saran pembangunan Anda.</p>
+                </div>
+                <div class="mt-4 pt-3 flex items-center justify-between text-tertiary font-label-md text-label-md font-bold">
+                    <span>Lihat Warta &amp; Aduan</span>
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">chat</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 3. STATISTIK KUNCI DESA -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-20 w-full">
+        <div class="bg-surface-pure rounded-3xl p-8 lg:p-12 shadow-xl shadow-primary/5 flex flex-col gap-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-2 font-label-md text-label-md text-secondary uppercase tracking-wider mb-2">
+                        <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                        Demografi &amp; Potensi Terdata
+                    </div>
+                    <h2 class="font-headline-xl text-headline-xl font-bold text-on-surface">Statistik Kunci Desa Beriri Jarak</h2>
+                </div>
+                <div class="flex items-center gap-2 text-text-secondary font-label-sm text-label-sm">
+                    <span class="material-symbols-outlined text-[16px] text-accent-emerald">sync</span>
+                    <span>Pembaruan Data: Semester I 2025</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-8">
+                <div class="flex flex-col bg-surface-container-low p-5 rounded-2xl">
+                    <span class="font-label-sm text-label-sm text-text-secondary uppercase">Total Penduduk</span>
+                    <div class="flex items-baseline gap-1 mt-2">
+                        <span class="font-headline-xl text-headline-xl font-extrabold text-primary tracking-tight">{{ stat_penduduk.total_penduduk|default:"4.820" }}</span>
+                        <span class="font-label-md text-label-md text-text-secondary">Jiwa</span>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between font-label-sm text-label-sm text-text-secondary pt-2">
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span>L: {{ stat_penduduk.laki_laki|default:"2.380" }}</span>
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-accent-emerald"></span>P: {{ stat_penduduk.perempuan|default:"2.440" }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-surface-container-low p-5 rounded-2xl">
+                    <span class="font-label-sm text-label-sm text-text-secondary uppercase">Kepala Keluarga</span>
+                    <div class="flex items-baseline gap-1 mt-2">
+                        <span class="font-headline-xl text-headline-xl font-extrabold text-primary tracking-tight">{{ stat_penduduk.total_kk|default:"1.450" }}</span>
+                        <span class="font-label-md text-label-md text-text-secondary">KK</span>
+                    </div>
+                    <p class="font-label-sm text-label-sm text-text-secondary mt-3 pt-2">Tersebar di 6 Dusun Induk</p>
+                </div>
+                <div class="flex flex-col bg-surface-container-low p-5 rounded-2xl">
+                    <span class="font-label-sm text-label-sm text-text-secondary uppercase">Kewilayahan</span>
+                    <div class="flex items-baseline gap-1 mt-2">
+                        <span class="font-headline-xl text-headline-xl font-extrabold text-primary tracking-tight">6</span>
+                        <span class="font-label-md text-label-md text-text-secondary">Dusun</span>
+                    </div>
+                    <p class="font-label-sm text-label-sm text-text-secondary mt-3 pt-2">28 Rukun Tetangga (RT)</p>
+                </div>
+                <div class="flex flex-col bg-surface-container-low p-5 rounded-2xl">
+                    <span class="font-label-sm text-label-sm text-text-secondary uppercase">UMKM Binaan</span>
+                    <div class="flex items-baseline gap-1 mt-2">
+                        <span class="font-headline-xl text-headline-xl font-extrabold text-primary tracking-tight">{{ total_umkm }}</span>
+                        <span class="font-label-md text-label-md text-text-secondary">Unit</span>
+                    </div>
+                    <p class="font-label-sm text-label-sm text-secondary font-semibold mt-3 pt-2">+8 Produk Tersertifikasi</p>
+                </div>
+                <div class="col-span-2 sm:col-span-1 flex flex-col bg-gold-light/60 p-5 rounded-2xl">
+                    <span class="font-label-sm text-label-sm text-tertiary uppercase font-bold">Status Indeks Desa</span>
+                    <div class="mt-2">
+                        <span class="font-headline-md text-headline-md font-extrabold text-tertiary tracking-tight block">MANDIRI</span>
+                        <span class="font-label-sm text-label-sm text-tertiary">Skor IDM Kemendesa 2024</span>
+                    </div>
+                    <div class="mt-3 pt-2 flex items-center gap-1.5 text-tertiary font-label-sm text-label-sm font-semibold">
+                        <span class="material-symbols-outlined text-[16px]">stars</span>
+                        <span>Kategori Tertinggi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. SAMBUTAN KEPALA DESA -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-24 w-full" id="sambutan-kades">
+        <div class="bg-surface-pure rounded-3xl p-8 lg:p-14 shadow-xl flex flex-col lg:flex-row items-center gap-12 overflow-hidden relative">
+            <div class="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-secondary-fixed/40 blur-3xl pointer-events-none"></div>
+            
+            <div class="relative shrink-0 w-full max-w-sm lg:w-96">
+                <div class="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl bg-surface-container">
+                    <img 
+                            class="w-full h-full object-cover"
+                            src="{% static 'img/kepala desa.jpg' %}"
+                            alt="Foto"
+                        >
+                    {% comment %} <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnyf7FQYXUghqhKN3xKKqpDSpoc6JT4NaDKL9hV4tQ3gtFriJmn2tr4G_6zeupolVrGSUO9qhd7-rKYF81KLh9NGWUtP2_6JQfJQbcb3C_nUR0GvChkmlhROZTCZajbGkWyGRai8BKZZAEWaDQD--zrklcwuyWg82CvVpS4HcqTihpUB05OSCYAsbsjWLF_rBJQ4SsTF3HXeqaaYl88Nf9DAog2bbKw8MPYhb5xeHQ"> {% endcomment %}
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-5 left-5 right-5 text-on-primary">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-emerald text-primary font-label-sm text-label-sm font-bold mb-1.5">
+                            <span class="material-symbols-outlined text-[14px]">shield</span> Masa Bakti Aktif
+                        </span>
+                        <span class="font-title-md text-title-md font-bold block leading-tight">Lalu Muhammad Nasir, S.AP</span>
+                        <span class="font-label-sm text-label-sm text-secondary-fixed">Kepala Desa Beriri Jarak</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col gap-6 max-w-2xl">
+                <div class="flex items-center gap-3">
+                    <span class="w-10 h-1 rounded-full bg-secondary"></span>
+                    <span class="font-label-lg text-label-lg font-bold text-secondary uppercase tracking-wider">Sambutan Kepala Desa</span>
+                </div>
+                <h3 class="font-headline-lg text-headline-lg font-bold text-on-surface leading-snug">
+                    "Transparansi, Kecepatan Layanan, dan Kebersamaan Adalah Pilar Membangun Beriri Jarak."
+                </h3>
+                <div class="relative pl-6 space-y-4 font-body-md text-body-md text-text-secondary leading-relaxed">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary-fixed rounded-full"></div>
+                    <p><em class="not-italic text-on-surface font-medium">Assalamu’alaikum Warahmatullahi Wabarakatuh.</em> Salam hangat bagi seluruh warga Beriri Jarak di tanah asal maupun para perantau di pelosok nusantara.</p>
+                    <p>Transformasi digital bukanlah tujuan akhir, melainkan jembatan pengabdian kami untuk memastikan setiap warga mendapatkan hak pelayanan administrasi yang cepat, transparan, dan tanpa hambatan birokrasi. Dengan portal resmi ini, APBDes dapat diawasi bersama, surat keterangan dapat diproses tanpa antrean panjang di kantor, dan UMKM desa kami angkat ke etalase nasional.</p>
+                    <p>Mari terus rawat semangat gotong royong dan kearifan lokal Sasak demi kemajuan desa yang berkeadaban dan mandiri secara ekonomi.</p>
+                </div>
+                <div class="pt-4 flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <span class="font-title-md text-title-md font-bold text-primary block">Lalu Muhammad Nasir, S.AP</span>
+                        <span class="font-body-sm text-body-sm text-text-secondary">Pemerintah Desa Beriri Jarak, Wanasaba</span>
+                    </div>
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container font-label-sm text-label-sm text-primary">
+                        <span class="material-symbols-outlined text-secondary text-[20px]">workspace_premium</span>
+                        <span>Tersertifikasi Tanda Tangan Elektronik (TTE)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. PROFIL SINGKAT DESA -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-24 w-full" id="profil-desa-section">
+        <div class="bg-surface-pure rounded-3xl p-8 lg:p-14 shadow-xl flex flex-col gap-10 border border-border-subtle relative overflow-hidden">
+            <div class="absolute -top-20 -left-20 w-80 h-80 rounded-full bg-secondary-fixed/30 blur-3xl pointer-events-none"></div>
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
+                <div>
+                    <div class="inline-flex items-center gap-2 font-label-md text-label-md text-secondary uppercase tracking-wider mb-2.5">
+                        <span class="w-2 h-2 rounded-full bg-secondary"></span>PROFIL PEMERINTAHAN &amp; SEJARAH
+                    </div>
+                    <h2 class="font-headline-xl text-headline-xl font-bold text-on-surface tracking-tight">Sekilas Mengenal Desa Beriri Jarak</h2>
+                </div>
+                <p class="font-body-md text-body-md text-text-secondary max-w-lg leading-relaxed">Terletak di lereng Gunung Rinjani, Kecamatan Wanasaba, Kabupaten Lombok Timur. Desa dengan perpaduan keindahan alam subur, kekayaan kearifan budaya Sasak, dan semangat transformasi pelayanan publik digital.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+                <div class="bg-surface-container-low rounded-2xl p-6 flex flex-col justify-between border border-border-subtle hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="flex flex-col">
+                        <div class="w-12 h-12 rounded-xl bg-surface-pure text-primary flex items-center justify-center shadow-sm mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+                            <span class="material-symbols-outlined text-[24px]">flag</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Arah Pembangunan</span>
+                        <h4 class="font-title-lg text-title-lg font-bold text-on-surface mt-1">Visi &amp; Misi Desa</h4>
+                        <p class="font-body-sm text-body-sm text-text-secondary mt-3 leading-relaxed">"Mewujudkan Desa Beriri Jarak Maju, Mandiri, dan Berbudaya Berbasis Digital" demi tata kelola bersih, transparan, dan peningkatan kesejahteraan seluruh warga.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-border-subtle">
+                        <a href="{% url 'visi_misi' %}" class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-secondary hover:text-primary group-hover:gap-2.5 transition-all">
+                            <span>Baca Visi &amp; Misi Selengkapnya</span>
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low rounded-2xl p-6 flex flex-col justify-between border border-border-subtle hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="flex flex-col">
+                        <div class="w-12 h-12 rounded-xl bg-surface-pure text-primary flex items-center justify-center shadow-sm mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+                            <span class="material-symbols-outlined text-[24px]">history_edu</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Asal-Usul &amp; Tradisi</span>
+                        <h4 class="font-title-lg text-title-lg font-bold text-on-surface mt-1">Sejarah Beriri Jarak</h4>
+                        <p class="font-body-sm text-body-sm text-text-secondary mt-3 leading-relaxed">Berakar dari nilai gotong royong dan ketenteraman masyarakat adat Sasak yang bermukim di hamparan subur lereng Rinjani, menjaga harmoni alam dan adat leluhur secara turun-temurun.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-border-subtle">
+                        <a href="{% url 'sejarah' %}" class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-secondary hover:text-primary group-hover:gap-2.5 transition-all">
+                            <span>Telusuri Sejarah</span>
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low rounded-2xl p-6 flex flex-col justify-between border border-border-subtle hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="flex flex-col">
+                        <div class="w-12 h-12 rounded-xl bg-surface-pure text-primary flex items-center justify-center shadow-sm mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+                            <span class="material-symbols-outlined text-[24px]">groups</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Struktur Pamong</span>
+                        <h4 class="font-title-lg text-title-lg font-bold text-on-surface mt-1">Aparatur &amp; Kelembagaan</h4>
+                        <p class="font-body-sm text-body-sm text-text-secondary mt-3 leading-relaxed">Didukung 12 Perangkat Desa aktif dan 6 Kepala Dusun yang bersinergi bersama BPD, LPMD, Karang Taruna, dan TP-PKK untuk pelayanan warga prima.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-border-subtle">
+                        <a href="{% url 'perangkat_desa' %}" class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-secondary hover:text-primary group-hover:gap-2.5 transition-all">
+                            <span>Lihat Struktur Organisasi</span>
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low rounded-2xl p-6 flex flex-col justify-between border border-border-subtle hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                    <div class="flex flex-col">
+                        <div class="w-12 h-12 rounded-xl bg-surface-pure text-primary flex items-center justify-center shadow-sm mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+                            <span class="material-symbols-outlined text-[24px]">map</span>
+                        </div>
+                        <span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Letak Geografis</span>
+                        <h4 class="font-title-lg text-title-lg font-bold text-on-surface mt-1">Geografis &amp; Wilayah</h4>
+                        <p class="font-body-sm text-body-sm text-text-secondary mt-3 leading-relaxed">Terbagi dalam 6 Dusun dan 28 RT di ketinggian 500-750 mdpl. Berbatasan dengan TN Gunung Rinjani (Utara), Desa Otak Rarak (Selatan), Desa Karang Baru (Timur), Desa Wanasaba (Barat).</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-border-subtle">
+                        <a href="{% url 'wilayah' %}" class="inline-flex items-center gap-1.5 font-label-md text-label-md font-bold text-secondary hover:text-primary group-hover:gap-2.5 transition-all">
+                            <span>Jelajahi Peta Wilayah</span>
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. VIDEO PROFIL & POTENSI -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-24 w-full">
+        <div class="bg-surface-pure rounded-3xl p-8 lg:p-12 shadow-xl flex flex-col gap-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="font-label-lg text-label-lg font-bold text-secondary uppercase tracking-wider block mb-2">Potensi Kearifan Lokal</span>
+                    <h2 class="font-headline-xl text-headline-xl font-bold text-on-surface">Jelajahi Pesona Alam &amp; Tradisi Desa</h2>
+                </div>
+                <p class="font-body-md text-body-md text-text-secondary max-w-md">Terletak di ketinggian lereng Gunung Rinjani, Beriri Jarak dianugerahi tanah subur, sumber mata air alami, dan tangan terampil pengrajin Sasak.</p>
+            </div>
+            
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-on-surface group">
+                <img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBirb_WRewsNKSK4SmwbMa9SXjqIZ6ioPMZoWp7OSewZWi1Uviu9__w5INWNHns6WO8xI70Qr7H-60tvzY41NgHPMAaahHiNEPAr0ZPUP66qjh7vrFngvI1pLY6LUM8wNuzgPNxHn44tCRZDWeBpJK_GKOIlXdgHVc7zmqnunSsEIIJQOpmJ9dVY53W9UWFrbXNqeDfbdf0OVIeLJ6FEEQaNI466nQMpIjDi_sQfsxJ">
+                <div class="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/30 to-transparent"></div>
+                <button aria-label="Putar Video Profil Desa" class="absolute inset-0 m-auto w-20 h-20 rounded-full bg-accent-emerald text-primary flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300" onclick="alert('Video akan segera tersedia.')" type="button">
+                    <span class="material-symbols-outlined text-[42px] ml-1">play_arrow</span>
+                </button>
+                <div class="absolute bottom-6 left-6 right-6 flex flex-wrap items-center justify-between gap-4 text-on-primary">
+                    <div>
+                        <span class="inline-block px-3 py-1 rounded-full bg-surface-pure/20 backdrop-blur-md font-label-sm text-label-sm uppercase mb-2">Video Dokumenter Resmi SID • 04:35 Min</span>
+                        <h4 class="font-title-lg text-title-lg font-bold">Menyemai Harapan di Tanah Beriri Jarak: Sinergi Alam dan Budaya</h4>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px] text-accent-mint">hd</span>
+                        <span class="font-label-sm text-label-sm opacity-90">Resolusi 4K Ultra HD</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                <div class="p-5 rounded-2xl bg-surface-container-low flex flex-col gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-surface-pure text-primary flex items-center justify-center shadow-sm">
+                        <span class="material-symbols-outlined text-[22px]">agriculture</span>
+                    </div>
+                    <span class="font-title-md text-title-md text-on-surface">Pertanian &amp; Hortikultura</span>
+                    <p class="font-body-sm text-body-sm text-text-secondary leading-relaxed">Penghasil utama komoditas tembakau Virginia, kopi robusta pegunungan, aneka sayuran segar, serta padi sawah organik beririgasi teknis.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-surface-container-low flex flex-col gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-surface-pure text-primary flex items-center justify-center shadow-sm">
+                        <span class="material-symbols-outlined text-[22px]">water_drop</span>
+                    </div>
+                    <span class="font-title-md text-title-md text-on-surface">Konservasi Mata Air Tirta</span>
+                    <p class="font-body-sm text-body-sm text-text-secondary leading-relaxed">Kekayaan mata air murni pegunungan yang dikelola BUMDes untuk pemenuhan air bersih warga serta irigasi pertanian berkelanjutan.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-surface-container-low flex flex-col gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-surface-pure text-primary flex items-center justify-center shadow-sm">
+                        <span class="material-symbols-outlined text-[22px]">palette</span>
+                    </div>
+                    <span class="font-title-md text-title-md text-on-surface">Anyaman &amp; Budaya Sasak</span>
+                    <p class="font-body-sm text-body-sm text-text-secondary leading-relaxed">Warisan tradisi anyaman bambu khas Wanasaba dan festival kesenian adat Sasak yang terus dipelihara oleh generasi muda desa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. BERITA & AGENDA TERKINI -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-24 w-full">
+        <div class="flex flex-col gap-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <span class="font-label-lg text-label-lg font-bold text-secondary uppercase tracking-wider block mb-2">Warta Informasi Desa</span>
+                    <h2 class="font-headline-xl text-headline-xl font-bold text-on-surface">Berita &amp; Agenda Terkini</h2>
+                </div>
+                <div class="inline-flex flex-wrap p-1.5 rounded-2xl bg-surface-pure shadow-sm gap-1" id="news-tabs">
+                    <button class="news-tab-btn active px-4 py-2 rounded-xl bg-primary text-on-primary font-label-md text-label-md transition-all" onclick="filterNews('all', this)" type="button">Semua Warta</button>
+                    <button class="news-tab-btn px-4 py-2 rounded-xl text-text-secondary hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterNews('pembangunan', this)" type="button">Pembangunan</button>
+                    <button class="news-tab-btn px-4 py-2 rounded-xl text-text-secondary hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterNews('kegiatan', this)" type="button">Kegiatan Desa</button>
+                    <button class="news-tab-btn px-4 py-2 rounded-xl text-text-secondary hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterNews('pengumuman', this)" type="button">Pengumuman</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="news-grid">
+                {% for berita in berita_terbaru %}
+                <article class="news-card bg-surface-pure rounded-3xl overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" data-category="{{ berita.kategori.slug|default:'umum' }}">
+                    <div>
+                        <div class="relative aspect-video w-full overflow-hidden bg-surface-container">
+                            {% if berita.gambar %}
+                                <img class="w-full h-full object-cover" src="{{ berita.gambar.url }}" alt="{{ berita.judul }}">
+                            {% else %}
+                                <img class="w-full h-full object-cover" src="{% static 'img/Digital.png' %}" alt="Gambar Default">
+                            {% endif %}
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold">
+                                {{ berita.kategori.nama|default:"Umum" }}
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 text-text-secondary font-label-sm text-label-sm mb-3">
+                                <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                <span>{{ berita.tanggal_rilis|date:"d M Y" }}</span>
+                            </div>
+                            <h3 class="font-title-lg text-title-lg font-bold text-on-surface line-clamp-2 hover:text-primary transition-colors cursor-pointer">
+                                <a href="{% url 'berita' %}">{{ berita.judul }}</a>
+                            </h3>
+                            <p class="font-body-sm text-body-sm text-text-secondary mt-3 line-clamp-2">{{ berita.ringkasan|truncatechars:120 }}</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <a class="inline-flex items-center gap-2 font-label-md text-label-md font-bold text-secondary hover:text-primary" href="{% url 'berita' %}">
+                            <span>Baca Selengkapnya</span>
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </article>
+                {% empty %}
+                <div class="col-span-3 text-center py-12 bg-surface-pure rounded-3xl border border-dashed border-outline-variant">
+                    <span class="material-symbols-outlined text-4xl text-outline mb-2">newspaper</span>
+                    <p class="text-text-secondary font-body-md">Belum ada berita yang dipublikasikan.</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="flex justify-center mt-4">
+                <a class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-surface-pure hover:bg-surface-container font-label-lg text-label-lg font-semibold text-primary shadow-md transition-all" href="{% url 'berita' %}">
+                    <span>Lihat Semua Arsip Berita &amp; Agenda</span>
+                    <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. ETALASE PRODUK UMKM -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-24 w-full">
+        <div class="bg-surface-container-low rounded-3xl p-8 lg:p-12 flex flex-col gap-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="font-label-lg text-label-lg font-bold text-secondary uppercase tracking-wider block mb-2">BUMDes &amp; Ekonomi Kerakyatan</span>
+                    <h2 class="font-headline-xl text-headline-xl font-bold text-on-surface">Etalase Produk Unggulan UMKM</h2>
+                </div>
+                <p class="font-body-md text-body-md text-text-secondary max-w-md">Beli langsung dari petani dan perajin Desa Beriri Jarak. Dukung perputaran ekonomi mandiri berbasis potensi lokal desa.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for produk in umkm_unggulan %}
+                <div class="bg-surface-pure rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative aspect-square w-full overflow-hidden bg-surface-container">
+                            {% if produk.gambar_produk %}
+                                <img class="w-full h-full object-cover" src="{{ produk.gambar_produk.url }}" alt="{{ produk.nama_produk }}">
+                            {% else %}
+                                <img class="w-full h-full object-cover" src="{% static 'img/Digital.png' %}" alt="Gambar Default">
+                            {% endif %}
+                            {% if produk.is_unggulan %}
+                                <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-gold-light text-tertiary font-label-sm text-label-sm font-bold shadow-sm">Unggulan</span>
+                            {% endif %}
+                        </div>
+                        <div class="p-5">
+                            <span class="font-label-sm text-label-sm text-text-secondary block">{{ produk.nama_penjual|default:"UMKM Desa" }}</span>
+                            <h4 class="font-title-md text-title-md font-bold text-on-surface mt-1 line-clamp-1">{{ produk.nama_produk }}</h4>
+                            <div class="flex items-center gap-1.5 mt-2 text-tertiary">
+                                <span class="material-symbols-outlined text-[16px] text-accent-emerald" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="font-label-md text-label-md font-bold text-on-surface">4.9</span>
+                                <span class="font-label-sm text-label-sm text-text-secondary">(120+ ulasan)</span>
+                            </div>
+                            <div class="mt-3 font-title-lg text-title-lg font-extrabold text-primary">Rp {{ produk.harga }} <span class="font-body-sm text-body-sm font-normal text-text-secondary">/ {{ produk.satuan }}</span></div>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <a class="w-full py-2.5 px-4 rounded-xl bg-primary hover:bg-secondary text-on-primary font-label-md text-label-md font-semibold flex items-center justify-center gap-2 transition-colors" href="{% url 'katalog_umkm' %}">
+                            <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            <span>Lihat Detail</span>
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-4 text-center py-12 bg-surface-pure rounded-3xl border border-dashed border-outline-variant">
+                    <span class="material-symbols-outlined text-4xl text-outline mb-2">storefront</span>
+                    <p class="text-text-secondary font-body-md">Belum ada produk UMKM yang ditambahkan.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. BANTUAN & FAQ SINGKAT -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-24 mb-16 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div class="lg:col-span-4 bg-primary text-on-primary rounded-3xl p-8 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-accent-emerald text-primary flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-[26px]">support_agent</span>
+                    </div>
+                    <span class="font-label-sm text-label-sm text-accent-mint uppercase tracking-widest block mb-2">Panduan Warga</span>
+                    <h3 class="font-headline-md text-headline-md font-bold leading-tight">Pusat Bantuan &amp; Layanan Masyarakat</h3>
+                    <p class="font-body-sm text-body-sm text-on-primary-container mt-4 leading-relaxed">Punya kendala administratif atau butuh panduan dokumen? Kantor Desa Beriri Jarak siap melayani dengan ramah, transparan, dan bebas pungutan liar.</p>
+                    
+                    <div class="mt-8 space-y-4 font-body-sm text-body-sm">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-accent-mint text-[20px] shrink-0 mt-0.5">schedule</span>
+                            <div>
+                                <span class="font-semibold block text-on-primary">Jam Operasional Pelayanan:</span>
+                                <span class="text-on-primary/80">Senin - Kamis: 08.00 - 15.30 WITA</span><br>
+                                <span class="text-on-primary/80">Jumat: 08.00 - 11.30 WITA</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-accent-mint text-[20px] shrink-0 mt-0.5">emergency_home</span>
+                            <div>
+                                <span class="font-semibold block text-on-primary">Layanan Darurat &amp; Siaga 24 Jam:</span>
+                                <span class="text-on-primary/80">0812-3456-7890 (Kasi Kesejahteraan)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-surface-pure/15">
+                    <a class="inline-flex items-center gap-2 font-label-md text-label-md text-accent-mint hover:underline font-bold" href="{% url 'layanan' %}">
+                        <span>Unduh Formulir Blanko PDF</span>
+                        <span class="material-symbols-outlined text-[16px]">download</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-8 flex flex-col gap-4">
+                <div class="faq-item bg-surface-pure rounded-2xl p-6 shadow-md transition-all">
+                    <button class="w-full flex items-center justify-between text-left gap-4 font-title-md text-title-md text-on-surface" onclick="toggleFaq(this)" type="button">
+                        <span>Bagaimana alur pembuatan surat keterangan online tanpa antre di kantor desa?</span>
+                        <span class="material-symbols-outlined text-[24px] text-primary transition-transform duration-300">expand_more</span>
+                    </button>
+                    <div class="faq-answer hidden mt-4 pt-4 border-t border-border-subtle font-body-sm text-body-sm text-text-secondary leading-relaxed">
+                        Warga cukup memilih jenis surat pada menu <a href="{% url 'layanan' %}" class="text-primary font-semibold hover:underline">Layanan Online</a>, mengisi NIK dan data pemohon, lalu mengunggah foto KK/KTP. Operator desa memverifikasi berkas dalam 1-3 jam kerja. Dokumen yang telah ditandatangani elektronik oleh Kepala Desa dapat langsung diunduh melalui tautan pelacakan atau diambil langsung di kantor desa dalam bentuk cetak resmi berstempel basah.
+                    </div>
+                </div>
+                <div class="faq-item bg-surface-pure rounded-2xl p-6 shadow-md transition-all">
+                    <button class="w-full flex items-center justify-between text-left gap-4 font-title-md text-title-md text-on-surface" onclick="toggleFaq(this)" type="button">
+                        <span>Apakah ada biaya administrasi untuk pengurusan surat di Desa Beriri Jarak?</span>
+                        <span class="material-symbols-outlined text-[24px] text-primary transition-transform duration-300">expand_more</span>
+                    </button>
+                    <div class="faq-answer hidden mt-4 pt-4 border-t border-border-subtle font-body-sm text-body-sm text-text-secondary leading-relaxed">
+                        <strong>Seluruh layanan administrasi dan persuratan di Desa Beriri Jarak adalah Rp 0 (GRATIS).</strong> Apabila ada oknum yang meminta pungutan di luar ketentuan resmi, silakan langsung melaporkan melalui kanal Pengaduan Warga / Lapor Kades pada portal ini.
+                    </div>
+                </div>
+                <div class="faq-item bg-surface-pure rounded-2xl p-6 shadow-md transition-all">
+                    <button class="w-full flex items-center justify-between text-left gap-4 font-title-md text-title-md text-on-surface" onclick="toggleFaq(this)" type="button">
+                        <span>Bagaimana cara mendaftarkan produk UMKM lokal agar tampil di etalase desa?</span>
+                        <span class="material-symbols-outlined text-[24px] text-primary transition-transform duration-300">expand_more</span>
+                    </button>
+                    <div class="faq-answer hidden mt-4 pt-4 border-t border-border-subtle font-body-sm text-body-sm text-text-secondary leading-relaxed">
+                        Warga yang memiliki usaha produktif dapat menghubungi pengurus BUMDes Beriri Jarak atau melalui Kaur Ekonomi dan Pembangunan di kantor desa dengan membawa sampel produk, foto usaha, dan KTP Beriri Jarak untuk kurasi pendampingan kemasan, sertifikasi halal, dan promosi digital gratis.
+                    </div>
+                </div>
+                <div class="faq-item bg-surface-pure rounded-2xl p-6 shadow-md transition-all">
+                    <button class="w-full flex items-center justify-between text-left gap-4 font-title-md text-title-md text-on-surface" onclick="toggleFaq(this)" type="button">
+                        <span>Bagaimana cara mengecek keaslian surat yang telah diterbitkan secara digital?</span>
+                        <span class="material-symbols-outlined text-[24px] text-primary transition-transform duration-300">expand_more</span>
+                    </button>
+                    <div class="faq-answer hidden mt-4 pt-4 border-t border-border-subtle font-body-sm text-body-sm text-text-secondary leading-relaxed">
+                        Setiap dokumen digital dilengkapi QR-Code resmi TTE BSrE. Pihak bank, kepolisian, atau instansi terkait cukup memindai kode QR tersebut menggunakan kamera ponsel untuk memverifikasi keabsahan data langsung dari peladen Sistem Informasi Desa Beriri Jarak.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FLOATING WHATSAPP SIAGA BUTTON -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <a class="flex items-center gap-2.5 px-4 py-3 rounded-full bg-accent-emerald text-primary font-label-md text-label-md font-bold shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200" href="https://wa.me/6281234567890?text=Halo%20Admin%20Desa%20Beriri%20Jarak,%20saya%20ingin%20berkonsultasi" rel="noopener" target="_blank">
+            <span class="material-symbols-outlined text-[24px]">chat</span>
+            <span class="hidden sm:inline">WhatsApp Siaga Warga</span>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // ==========================================
+    // SCRIPT HERO SLIDER MANUAL (TANPA AUTOPLAY)
+    // ==========================================
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slider-item');
+
+    function showSlide(index) {
+        slides.forEach(slide => {
+            slide.classList.remove('opacity-100');
+            slide.classList.add('opacity-0');
+        });
+        slides[index].classList.remove('opacity-0');
+        slides[index].classList.add('opacity-100');
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    // ==========================================
+    // SCRIPT LAINNYA
+    // ==========================================
+    function filterNews(category, btnElement) {
+        var tabs = document.querySelectorAll('.news-tab-btn');
+        tabs.forEach(function(btn) {
+            btn.classList.remove('bg-primary', 'text-on-primary');
+            btn.classList.add('text-text-secondary');
+        });
+        btnElement.classList.add('bg-primary', 'text-on-primary');
+        btnElement.classList.remove('text-text-secondary');
+
+        var cards = document.querySelectorAll('.news-card');
+        cards.forEach(function(card) {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    function toggleFaq(btnElement) {
+        var item = btnElement.closest('.faq-item');
+        var answer = item.querySelector('.faq-answer');
+        var icon = btnElement.querySelector('.material-symbols-outlined');
+
+        if (answer.classList.contains('hidden')) {
+            answer.classList.remove('hidden');
+            icon.style.transform = 'rotate(180deg)';
+        } else {
+            answer.classList.add('hidden');
+            icon.style.transform = 'rotate(0deg)';
+        }
+    }
+</script>
+{% endblock %}

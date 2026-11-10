@@ -1,0 +1,69 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Kelola Berita - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full gap-space-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Berita & Artikel</h1>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1">Kelola publikasi warta desa untuk portal publik.</p>
+        </div>
+        <!-- Tombol Tambah -->
+        <a href="{% url 'tambah_berita' %}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-bold shadow-sm hover:bg-secondary transition-all">
+            <span class="material-symbols-outlined text-[20px]">post_add</span> Tulis Berita
+        </a>
+    </div>
+
+    <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm">
+        <div class="overflow-x-auto -mx-space-lg px-space-lg">
+            <table class="w-full text-left min-w-[620px]">
+                <thead>
+                    <tr class="bg-surface-container-low text-text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                        <th class="py-3 px-4 rounded-l-xl">Judul Berita</th>
+                        <th class="py-3 px-4">Kategori</th>
+                        <th class="py-3 px-4">Tanggal</th>
+                        <th class="py-3 px-4">Status</th>
+                        <th class="py-3 px-4 rounded-r-xl text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border-subtle font-body-sm text-body-sm">
+                    {% for item in daftar_berita %}
+                    <tr class="hover:bg-surface-container-low/60 transition-colors">
+                        <td class="py-3 px-4">
+                            <div class="font-title-md text-title-md font-semibold text-text-primary line-clamp-1">{{ item.judul }}</div>
+                            <div class="font-label-sm text-label-sm text-text-secondary">{{ item.dilihat }} x dibaca</div>
+                        </td>
+                        <td class="py-3 px-4">{{ item.kategori.nama|default:"-" }}</td>
+                        <td class="py-3 px-4 text-text-secondary">{{ item.tanggal_rilis|date:"d M Y" }}</td>
+                        <td class="py-3 px-4">
+                            {% if item.status == 'tayang' %}
+                                <span class="px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm font-semibold">Tayang</span>
+                            {% else %}
+                                <span class="px-2.5 py-1 rounded-full bg-surface-container text-text-secondary font-label-sm font-semibold">Draft</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-3 px-4 text-right">
+                            <div class="inline-flex items-center gap-1.5">
+                                <!-- Tombol Edit (Sementara mengarah ke # karena fitur edit belum dibuat) -->
+                                <a href="#" class="p-1.5 rounded-lg bg-primary-container text-on-primary hover:bg-secondary transition-colors" title="Edit Berita">
+                                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                                </a>
+                                
+                                <!-- Tombol Hapus (Sudah Berfungsi) -->
+                                <a href="{% url 'hapus_berita' item.id %}" onclick="return confirm('Apakah Anda yakin ingin menghapus berita ini secara permanen?')" class="p-1.5 rounded-lg bg-error-container text-error hover:bg-error hover:text-on-error transition-colors" title="Hapus Berita">
+                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="py-8 text-center text-text-secondary">Belum ada data berita. Silakan klik "Tulis Berita".</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

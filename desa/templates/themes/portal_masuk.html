@@ -1,0 +1,262 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Portal Masuk - Website Resmi Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        
+        <!-- Top Navbar -->
+        <div class="mb-6 flex items-center justify-between">
+            <a class="inline-flex items-center gap-2 font-label-md text-label-md text-text-secondary hover:text-primary transition-colors group" href="{% url 'beranda' %}">
+                <span class="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                <span>Kembali ke Portal Beranda Publik</span>
+            </a>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm">
+                <span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span>
+                <span>SID Server Online: v4.2.8 LTS</span>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 rounded-3xl overflow-hidden shadow-2xl bg-surface-pure">
+            
+            <!-- Left Side: Security Info -->
+            <div class="lg:col-span-6 relative bg-primary-container text-on-primary p-8 sm:p-12 lg:p-14 flex flex-col justify-between overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary via-primary-container to-secondary opacity-95"></div>
+                <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-accent-mint/10 blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-accent-emerald/15 blur-2xl pointer-events-none"></div>
+                
+                <div class="relative z-10 space-y-8">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="flex items-center gap-3 bg-surface-pure/10 backdrop-blur-md px-4 py-2 rounded-2xl">
+                            <span class="material-symbols-outlined text-accent-mint text-[24px]">verified_user</span>
+                            <div class="flex flex-col">
+                                <span class="font-label-sm text-label-sm tracking-wider uppercase text-on-primary/70">SID Resmi Terverifikasi</span>
+                                <span class="font-label-md text-label-md font-semibold text-on-primary">SSL 256-Bit TLS End-to-End</span>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-gold-light text-on-surface font-label-sm text-label-sm font-semibold">E-Gov 2026</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h1 class="font-headline-xl text-headline-xl text-on-primary leading-tight">
+                            Portal Autentikasi Administrasi &amp; Pelayanan Terpadu
+                        </h1>
+                        <p class="font-title-lg text-title-lg text-on-primary/90 font-medium">
+                            Desa Beriri Jarak, Kec. Wanasaba, Kab. Lombok Timur
+                        </p>
+                        <div class="p-4 rounded-2xl bg-surface-pure/5 backdrop-blur-sm">
+                            <p class="font-body-md text-body-md italic text-on-primary/80">
+                                “Transparansi, Akuntabilitas, dan Pelayanan Berkelanjutan Menuju Desa Mandiri 2026.”
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <span class="font-label-md text-label-md uppercase tracking-wider text-accent-mint font-semibold block">Standar Integritas &amp; Keamanan Data</span>
+                        <div class="grid grid-cols-1 gap-3.5">
+                            <div class="flex items-start gap-3 p-3.5 rounded-xl bg-surface-pure/5 hover:bg-surface-pure/10 transition-colors">
+                                <div class="w-8 h-8 rounded-lg bg-accent-emerald/20 flex items-center justify-center shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-accent-mint text-[20px]">lock</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-label-lg text-label-lg font-semibold text-on-primary">Enkripsi Data Multi-Lapis</h4>
+                                    <p class="font-body-sm text-body-sm text-on-primary/70">Kriptografi AES-256 untuk perlindungan data kependudukan dan NIK warga.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3.5 rounded-xl bg-surface-pure/5 hover:bg-surface-pure/10 transition-colors">
+                                <div class="w-8 h-8 rounded-lg bg-accent-emerald/20 flex items-center justify-center shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-accent-mint text-[20px]">history_toggle_off</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-label-lg text-label-lg font-semibold text-on-primary">Log Audit Akses Realtime</h4>
+                                    <p class="font-body-sm text-body-sm text-on-primary/70">Pencatatan rekam jejak aktivitas operator dan verifikator secara otomatis.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3.5 rounded-xl bg-surface-pure/5 hover:bg-surface-pure/10 transition-colors">
+                                <div class="w-8 h-8 rounded-lg bg-accent-emerald/20 flex items-center justify-center shrink-0 mt-0.5">
+                                    <span class="material-symbols-outlined text-accent-mint text-[20px]">hub</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-label-lg text-label-lg font-semibold text-on-primary">Interoperabilitas Dukcapil</h4>
+                                    <p class="font-body-sm text-body-sm text-on-primary/70">Sinkronisasi data SIAK dan instrumen kepamongprajaan nasional.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative z-10 mt-10 pt-6 bg-surface-pure/5 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-accent-mint text-primary flex items-center justify-center font-bold">
+                            <span class="material-symbols-outlined text-[20px]">support_agent</span>
+                        </div>
+                        <div>
+                            <p class="font-label-md text-label-md text-on-primary font-semibold">Helpdesk Teknis SID</p>
+                            <p class="font-label-sm text-label-sm text-on-primary/70">Tim KKN Hamzanwadi / Admin Desa</p>
+                        </div>
+                    </div>
+                    <a class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent-emerald hover:bg-accent-mint text-primary font-label-md text-label-md font-bold transition-all shadow-md" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+                        <span class="material-symbols-outlined text-[18px]">chat</span> WhatsApp Siaga
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Side: Login Form -->
+            <div class="lg:col-span-6 bg-surface-pure p-8 sm:p-12 lg:p-14 flex flex-col justify-between">
+                <div class="space-y-6">
+                    <div class="p-4 rounded-2xl bg-surface-container-low text-on-surface flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary text-[22px] mt-0.5 shrink-0">info</span>
+                        <div class="flex-1">
+                            <p class="font-label-md text-label-md font-semibold text-primary">Zona Autentikasi Terbatas</p>
+                            <p class="font-body-sm text-body-sm text-text-secondary mt-0.5">Pastikan Anda menggunakan jaringan aman. Akses tanpa wewenang ke sistem informasi desa dicatat berdasarkan UU ITE.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab Switcher (Opsional, hanya visual) -->
+                    <div class="flex p-1 bg-surface-container rounded-2xl">
+                        <button class="flex-1 py-2.5 px-4 rounded-xl font-label-lg text-label-lg font-semibold bg-surface-pure text-primary shadow-sm transition-all flex items-center justify-center gap-2" id="tab-operator" type="button">
+                            <span class="material-symbols-outlined text-[18px]">badge</span>
+                            <span>Operator &amp; Pamong</span>
+                        </button>
+                        <button class="flex-1 py-2.5 px-4 rounded-xl font-label-lg text-label-lg font-medium text-text-secondary hover:text-on-surface transition-all flex items-center justify-center gap-2" id="tab-warga" type="button">
+                            <span class="material-symbols-outlined text-[18px]">person</span>
+                            <span>Warga Mandiri</span>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <h2 class="font-headline-lg text-headline-lg text-on-surface" id="form-heading">Masuk ke Akun Anda</h2>
+                        <p class="font-body-md text-body-md text-text-secondary" id="form-subheading">Silakan masukkan kredensial resmi operator atau perangkat desa.</p>
+                    </div>
+                    
+                    <!-- Pesan Error Jika Login Gagal -->
+                    {% if error %}
+                    <div class="p-4 rounded-xl bg-error-container text-on-error-container flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">error</span>
+                        <span class="font-label-md text-label-md font-semibold">{{ error }}</span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Form Login Sebenarnya (POST) -->
+                    <form class="space-y-5" method="POST" action="{% url 'portal_masuk' %}">
+                        {% csrf_token %}
+                        
+                        <div class="space-y-2">
+                            <label class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center justify-between" for="identity">
+                                <span>Nama Pengguna / Email <span class="text-tertiary-container">*</span></span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-text-secondary">
+                                    <span class="material-symbols-outlined text-[20px]">alternate_email</span>
+                                </div>
+                                <!-- Placeholder dihapus -->
+                                <input name="identity" class="w-full pl-11 pr-4 py-3 bg-surface-pure rounded-xl font-body-md text-body-md text-on-surface shadow-inner focus:outline-none focus:bg-surface-container-low transition-all border border-border-subtle" id="identity" required type="text"/>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="font-label-lg text-label-lg text-on-surface font-semibold" for="password">
+                                    Kata Sandi <span class="text-tertiary-container">*</span>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-text-secondary">
+                                    <span class="material-symbols-outlined text-[20px]">key</span>
+                                </div>
+                                <!-- Placeholder dihapus -->
+                                <input name="password" class="w-full pl-11 pr-11 py-3 bg-surface-pure rounded-xl font-body-md text-body-md text-on-surface shadow-inner focus:outline-none focus:bg-surface-container-low transition-all border border-border-subtle" id="password" required type="password"/>
+                                <button aria-label="Tampilkan sandi" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-text-secondary hover:text-primary transition-colors" id="toggle-password" type="button">
+                                    <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between pt-1">
+                            <label class="flex items-center gap-2.5 cursor-pointer select-none">
+                                <input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" id="remember" type="checkbox"/>
+                                <span class="font-body-sm text-body-sm text-text-secondary">Ingat sesi saya</span>
+                            </label>
+                        </div>
+                        
+                        <button class="w-full py-3.5 px-6 rounded-xl bg-primary hover:bg-secondary text-on-primary font-label-lg text-label-lg font-bold shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group cursor-pointer" type="submit">
+                            <span>Masuk ke Dashboard Sistem</span>
+                            <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </button>
+                    </form>
+                    
+                    <div class="p-4 rounded-2xl bg-surface-container flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-surface-pure flex items-center justify-center text-primary shadow-sm">
+                                <span class="material-symbols-outlined text-[18px]">domain_verification</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="font-label-sm text-label-sm font-semibold text-on-surface">Pusat Layanan Warga Online</span>
+                                <span class="font-body-sm text-body-sm text-text-secondary">Butuh buat surat pengantar tanpa login?</span>
+                            </div>
+                        </div>
+                        <a class="px-3.5 py-1.5 rounded-lg bg-surface-pure hover:bg-surface-container-low text-primary font-label-md text-label-md font-semibold transition-colors shadow-sm" href="{% url 'layanan' %}">
+                            Buat Surat
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="mt-8 pt-6 bg-surface-container-low/40 rounded-2xl p-4 text-center">
+                    <p class="font-body-sm text-body-sm text-text-secondary">© 2026 Pemerintah Desa Beriri Jarak. Repost by <span class="font-semibold text-on-surface">KKN Universitas Hamzanwadi FT KLP28</span>.</p>
+                    <div class="flex items-center justify-center gap-4 mt-2 font-label-sm text-label-sm text-text-secondary">
+                        <a class="hover:text-primary transition-colors" href="#">Protokol Keamanan</a>
+                        <span>•</span>
+                        <a class="hover:text-primary transition-colors" href="#">Panduan Operator</a>
+                        <span>•</span>
+                        <a class="hover:text-primary transition-colors" href="#">Status Server</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Script untuk Toggle Sandi (Mata)
+    const pwdInput = document.getElementById('password');
+    const toggleBtn = document.getElementById('toggle-password');
+    const eyeIcon = document.getElementById('eye-icon');
+
+    if (toggleBtn && pwdInput) {
+        toggleBtn.addEventListener('click', () => {
+            const isPwd = pwdInput.getAttribute('type') === 'password';
+            pwdInput.setAttribute('type', isPwd ? 'text' : 'password');
+            eyeIcon.textContent = isPwd ? 'visibility_off' : 'visibility';
+        });
+    }
+
+    // Script untuk Ganti Tab (Hanya tampilan visual)
+    const tabOp = document.getElementById('tab-operator');
+    const tabWarga = document.getElementById('tab-warga');
+    const heading = document.getElementById('form-heading');
+    const subheading = document.getElementById('form-subheading');
+
+    function setRole(role) {
+        if (role === 'operator') {
+            tabOp.className = "flex-1 py-2.5 px-4 rounded-xl font-label-lg text-label-lg font-semibold bg-surface-pure text-primary shadow-sm transition-all flex items-center justify-center gap-2";
+            tabWarga.className = "flex-1 py-2.5 px-4 rounded-xl font-label-lg text-label-lg font-medium text-text-secondary hover:text-on-surface transition-all flex items-center justify-center gap-2";
+            heading.textContent = "Masuk ke Akun Anda";
+            subheading.textContent = "Silakan masukkan kredensial resmi operator atau perangkat desa.";
+        } else {
+            tabWarga.className = "flex-1 py-2.5 px-4 rounded-xl font-label-lg text-label-lg font-semibold bg-surface-pure text-primary shadow-sm transition-all flex items-center justify-center gap-2";
+            tabOp.className = "flex-1 py-2.5 px-4 rounded-xl font-label-lg text-label-lg font-medium text-text-secondary hover:text-on-surface transition-all flex items-center justify-center gap-2";
+            heading.textContent = "Portal Layanan Mandiri Warga";
+            subheading.textContent = "Gunakan Nomor Induk Kependudukan (NIK) dan PIN digital Anda.";
+        }
+    }
+
+    if (tabOp && tabWarga) {
+        tabOp.addEventListener('click', () => setRole('operator'));
+        tabWarga.addEventListener('click', () => setRole('warga'));
+    }
+</script>
+{% endblock %}

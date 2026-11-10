@@ -1,0 +1,66 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Kelola Layanan Surat - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full gap-space-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Katalog Layanan Surat</h1>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1">Daftar semua jenis surat dan persyaratan yang tersedia untuk warga.</p>
+        </div>
+        <!-- Tombol Tambah -->
+        <a href="{% url 'tambah_layanan_surat' %}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-bold shadow-sm hover:bg-secondary transition-all">
+            <span class="material-symbols-outlined text-[20px]">add_circle</span> Tambah Layanan
+        </a>
+    </div>
+
+    <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm">
+        <div class="overflow-x-auto -mx-space-lg px-space-lg">
+            <table class="w-full text-left min-w-[620px]">
+                <thead>
+                    <tr class="bg-surface-container-low text-text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                        <th class="py-3 px-4 rounded-l-xl">Nama Layanan</th>
+                        <th class="py-3 px-4">Kategori</th>
+                        <th class="py-3 px-4">Estimasi Waktu</th>
+                        <th class="py-3 px-4">Biaya</th>
+                        <th class="py-3 px-4 rounded-r-xl text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border-subtle font-body-sm text-body-sm">
+                    {% for item in daftar_layanan %}
+                    <tr class="hover:bg-surface-container-low/60 transition-colors">
+                        <td class="py-3 px-4">
+                            <div class="font-title-md text-title-md font-semibold text-text-primary">{{ item.nama_layanan }}</div>
+                            <div class="font-label-sm text-label-sm text-text-secondary line-clamp-1 max-w-xs">{{ item.deskripsi }}</div>
+                        </td>
+                        <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm font-semibold">{{ item.kategori }}</span></td>
+                        <td class="py-3 px-4 text-text-secondary">{{ item.estimasi_waktu }}</td>
+                        <td class="py-3 px-4 font-semibold text-primary">{{ item.biaya }}</td>
+                        <td class="py-3 px-4 text-right">
+                            <div class="inline-flex items-center gap-1.5">
+                                <!-- Tombol Edit (Mengarah ke URL) -->
+                                <a href="{% url 'edit_layanan_surat' item.id %}" class="p-1.5 rounded-lg bg-primary-container text-on-primary hover:bg-secondary transition-colors" title="Edit Layanan">
+                                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                                </a>
+                                
+                                <!-- Tombol Hapus (Menggunakan FORM POST) -->
+                                <form method="POST" action="{% url 'hapus_layanan_surat' item.id %}" class="inline-block m-0 p-0" onsubmit="return confirm('Apakah Anda yakin ingin menghapus layanan surat ini secara permanen?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="p-1.5 rounded-lg bg-error-container text-error hover:bg-error hover:text-on-error transition-colors cursor-pointer" title="Hapus Layanan">
+                                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="py-8 text-center text-text-secondary">Belum ada katalog layanan surat.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

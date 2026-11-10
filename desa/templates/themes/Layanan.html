@@ -1,0 +1,422 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Layanan Publik - Website Resmi Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+
+    <!-- Hero & Breadcrumb -->
+    <section class="relative overflow-hidden bg-primary text-on-primary pt-space-xl pb-24 px-gutter">
+        <div class="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-accent-mint/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute left-1/4 -bottom-24 w-80 h-80 rounded-full bg-secondary-fixed/5 blur-2xl pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto flex flex-col gap-space-lg relative z-10">
+            <!-- Breadcrumb -->
+            <nav class="flex items-center gap-space-xs text-on-primary-container text-body-sm font-body-sm flex-wrap">
+                <a class="hover:text-accent-mint transition-colors flex items-center gap-1" href="{% url 'beranda' %}">
+                    <span class="material-symbols-outlined text-[16px]">home</span> Beranda
+                </a>
+                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                <span class="hover:text-accent-mint transition-colors">Layanan Publik</span>
+                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                <span class="text-on-primary font-medium">Panduan Persyaratan Surat Administrasi</span>
+            </nav>
+            
+            <!-- Headline & System Badge -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-space-lg">
+                <div class="max-w-3xl space-y-space-md">
+                    <div class="inline-flex items-center gap-space-xs px-space-md py-1 rounded-full bg-secondary text-accent-mint text-label-md font-label-md tracking-wider uppercase shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-accent-mint animate-pulse"></span>
+                        SIPAD 2026 • Sistem Informasi Pelayanan Administrasi Desa
+                    </div>
+                    <h1 class="font-headline-xl text-headline-xl md:text-display-lg text-on-primary leading-tight tracking-tight">
+                        Pusat Layanan Surat &amp; Administrasi Kependudukan Terpadu
+                    </h1>
+                    <p class="font-body-lg text-body-lg text-on-primary-container leading-relaxed">
+                        Informasi lengkap standar operasional prosedur (SOP), berkas persyaratan pengajuan, estimasi waktu penyelesaian (SLA), dan panduan penerbitan dokumen administrasi bagi seluruh warga Desa Beriri Jarak, Kec. Wanasaba.
+                    </p>
+                </div>
+                
+                <!-- Quick Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-space-sm shrink-0">
+                    <button class="inline-flex items-center justify-center gap-space-xs px-space-lg py-3 rounded-xl bg-accent-mint text-primary font-label-lg text-label-lg shadow-md hover:bg-secondary-fixed transition-all" onclick="document.getElementById('status-modal').classList.remove('hidden')">
+                        <span class="material-symbols-outlined text-[20px]">manage_search</span>
+                        <span>Cek Status Berkas</span>
+                    </button>
+                    <a class="inline-flex items-center justify-center gap-space-xs px-space-lg py-3 rounded-xl bg-surface-pure/10 text-on-primary font-label-lg text-label-lg hover:bg-surface-pure/20 transition-all backdrop-blur-md" href="https://wa.me/6281234567890?text=Halo%20Admin%20Pelayanan%20Desa%20Beriri%20Jarak,%20saya%20ingin%20konsultasi%20persyaratan%20surat" rel="noopener" target="_blank">
+                        <span class="material-symbols-outlined text-[20px] text-accent-mint">chat</span>
+                        <span>Konsultasi WA</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Metric Badges Section (Overlapping) -->
+    <section class="max-w-7xl mx-auto w-full px-gutter -mt-12 relative z-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-md flex items-center gap-space-md">
+                <div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-secondary shrink-0">
+                    <span class="material-symbols-outlined text-[30px]">payments</span>
+                </div>
+                <div>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Biaya Layanan</span>
+                    <span class="font-title-lg text-title-lg text-primary block font-bold">Rp 0 (Gratis)</span>
+                    <span class="font-label-md text-label-md text-secondary">Seluruh dokumen resmi</span>
+                </div>
+            </div>
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-md flex items-center gap-space-md">
+                <div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-secondary shrink-0">
+                    <span class="material-symbols-outlined text-[30px]">timer</span>
+                </div>
+                <div>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Waktu Proses (SLA)</span>
+                    <span class="font-title-lg text-title-lg text-primary block font-bold">15 - 30 Menit</span>
+                    <span class="font-label-md text-label-md text-secondary">Langsung jadi jika lengkap</span>
+                </div>
+            </div>
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-md flex items-center gap-space-md">
+                <div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-secondary shrink-0">
+                    <span class="material-symbols-outlined text-[30px]">description</span>
+                </div>
+                <div>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Jenis Dokumen</span>
+                    <span class="font-title-lg text-title-lg text-primary block font-bold">{{ katalog_surat|length }}+ Layanan Aktif</span>
+                    <span class="font-label-md text-label-md text-secondary">Terintegrasi Disdukcapil</span>
+                </div>
+            </div>
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-md flex items-center gap-space-md">
+                <div class="w-14 h-14 rounded-xl bg-gold-light flex items-center justify-center text-tertiary-container shrink-0">
+                    <span class="material-symbols-outlined text-[30px]">verified</span>
+                </div>
+                <div>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block">Kepuasan Warga</span>
+                    <span class="font-title-lg text-title-lg text-primary block font-bold">98.4% (Sangat Baik)</span>
+                    <span class="font-label-md text-label-md text-tertiary-container">Survei IKM 2025/2026</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOP 4 Langkah (STATIS) -->
+    <section class="max-w-7xl mx-auto w-full px-gutter py-space-xl mt-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-space-lg">
+            <div>
+                <span class="font-label-md text-label-md text-secondary uppercase tracking-widest font-semibold block">Standar Operasional Prosedur</span>
+                <h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">4 Langkah Pengajuan Surat yang Cepat &amp; Tertib</h2>
+            </div>
+            <p class="font-body-sm text-body-sm text-on-surface-variant max-w-md mt-2 md:mt-0">
+                Pastikan alur diikuti berurutan demi kelancaran validasi identitas dan penomoran buku register desa.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md relative">
+            <!-- Step 1 -->
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-space-md">
+                        <span class="font-headline-lg text-headline-lg text-surface-container font-black">01</span>
+                        <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-[22px]">cottage</span>
+                        </div>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg text-primary mb-space-xs font-semibold">Pengantar Kadus / RT</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Minta lembar pengantar dari Kepala Dusun atau Ketua RT di lingkungan tempat tinggal Anda di Beriri Jarak.</p>
+                </div>
+                <div class="mt-space-md pt-space-sm">
+                    <span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-secondary">
+                        <span class="material-symbols-outlined text-[16px]">check_circle</span> Validasi Lingkungan Dusun
+                    </span>
+                </div>
+            </div>
+            <!-- Step 2 -->
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-space-md">
+                        <span class="font-headline-lg text-headline-lg text-surface-container font-black">02</span>
+                        <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-[22px]">counter_1</span>
+                        </div>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg text-primary mb-space-xs font-semibold">Loket / WA Pelayanan</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Bawa berkas fisik ke Loket PTSP Kantor Desa Beriri Jarak atau kirim dokumen digital melalui WhatsApp Operator.</p>
+                </div>
+                <div class="mt-space-md pt-space-sm">
+                    <span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-secondary">
+                        <span class="material-symbols-outlined text-[16px]">schedule</span> Jam 08.00 - 15.00 WITA
+                    </span>
+                </div>
+            </div>
+            <!-- Step 3 -->
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-space-md">
+                        <span class="font-headline-lg text-headline-lg text-surface-container font-black">03</span>
+                        <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-[22px]">draw</span>
+                        </div>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg text-primary mb-space-xs font-semibold">Verifikasi &amp; TTE Kades</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Pemeriksaan data oleh Sekdes lalu penandatanganan resmi (elektronik TTE BSrE / stempel basah) oleh Kepala Desa.</p>
+                </div>
+                <div class="mt-space-md pt-space-sm">
+                    <span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-secondary">
+                        <span class="material-symbols-outlined text-[16px]">security</span> Registrasi Buku Nomor Surat
+                    </span>
+                </div>
+            </div>
+            <!-- Step 4 -->
+            <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-space-md">
+                        <span class="font-headline-lg text-headline-lg text-surface-container font-black">04</span>
+                        <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-[22px]">fact_check</span>
+                        </div>
+                    </div>
+                    <h3 class="font-title-lg text-title-lg text-primary mb-space-xs font-semibold">Dokumen Diserahkan</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Surat fisik diserahkan di loket atau file PDF ber-QR code dikirimkan ke nomor WhatsApp warga secara instan.</p>
+                </div>
+                <div class="mt-space-md pt-space-sm">
+                    <span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-accent-emerald font-semibold">
+                        <span class="material-symbols-outlined text-[16px]">done_all</span> Surat Sah &amp; Berlaku
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter & Search -->
+    <section class="max-w-7xl mx-auto w-full px-gutter pt-space-lg">
+        <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm space-y-space-md">
+            <div class="flex flex-col md:flex-row gap-space-md items-center justify-between">
+                <div class="relative w-full md:w-96">
+                    <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+                    <input class="w-full pl-11 pr-4 py-3 rounded-xl bg-surface-container-low text-on-surface text-body-sm font-body-sm placeholder:text-on-surface-variant focus:outline-none focus:bg-surface-pure focus:shadow-md transition-all" id="service-search-input" onkeyup="filterServices()" placeholder="Cari jenis surat (SKTM, Domisili, Usaha, KTP)..." type="text"/>
+                </div>
+                <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none" id="category-tabs">
+                    <button class="category-btn active px-4 py-2 rounded-xl text-label-lg font-label-lg whitespace-nowrap bg-primary text-on-primary shadow-sm transition-all" onclick="setCategory('all', this)">Semua Layanan</button>
+                    <button class="category-btn px-4 py-2 rounded-xl text-label-lg font-label-lg whitespace-nowrap bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" onclick="setCategory('Kependudukan', this)">Kependudukan</button>
+                    <button class="category-btn px-4 py-2 rounded-xl text-label-lg font-label-lg whitespace-nowrap bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" onclick="setCategory('Usaha', this)">Usaha</button>
+                    <button class="category-btn px-4 py-2 rounded-xl text-label-lg font-label-lg whitespace-nowrap bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" onclick="setCategory('Pertanahan', this)">Pertanahan</button>
+                </div>
+            </div>
+            <div class="flex items-center justify-between text-label-md font-label-md text-on-surface-variant pt-2">
+                <span id="service-count-text">Menampilkan {{ katalog_surat|length }} layanan administrasi tersedia</span>
+                <span class="flex items-center gap-1 text-secondary">
+                    <span class="material-symbols-outlined text-[16px]">info</span>
+                    Layanan ditandatangani Kepala Desa: <strong class="text-on-surface">Lalu Muhammad Nasir, S.AP</strong>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Katalog Layanan (DINAMIS) -->
+    <section class="max-w-7xl mx-auto w-full px-gutter py-space-xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg" id="services-grid">
+            
+            {% for item in katalog_surat %}
+            <article class="service-card bg-surface-pure rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group" data-category="{{ item.kategori }}" data-keywords="{{ item.nama_layanan|lower }} {{ item.deskripsi|lower }}">
+                <div class="p-space-lg space-y-space-md">
+                    <div class="flex items-start justify-between gap-space-sm">
+                        <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-accent-mint transition-colors">
+                            <span class="material-symbols-outlined text-[26px]">description</span>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container text-label-sm font-label-sm font-semibold">{{ item.biaya }}</span>
+                            <span class="text-label-sm text-on-surface-variant mt-1 flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]">schedule</span> {{ item.estimasi_waktu }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-label-sm font-label-sm text-secondary uppercase font-bold tracking-wider">{{ item.kategori }}</span>
+                        <h3 class="font-title-lg text-title-lg text-primary font-bold mt-1 group-hover:text-secondary transition-colors">{{ item.nama_layanan }}</h3>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">{{ item.deskripsi }}</p>
+                    </div>
+                    <div class="space-y-space-xs bg-surface-container-low p-space-md rounded-xl">
+                        <div class="flex items-center justify-between cursor-pointer" onclick="toggleDetails('req-{{ item.id }}', this)">
+                            <span class="font-label-md text-label-md text-primary font-semibold flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-secondary">checklist</span> Daftar Persyaratan Berkas</span>
+                            <span class="material-symbols-outlined text-secondary transition-transform transform rotate-0 details-icon text-[20px]">expand_more</span>
+                        </div>
+                        <div class="hidden mt-space-sm pt-space-xs space-y-2 text-body-sm font-body-sm text-on-surface" id="req-{{ item.id }}">
+                            <!-- Memecah persyaratan berdasarkan enter -->
+                            <ul class="space-y-1.5 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="material-symbols-outlined text-[16px] text-secondary mt-0.5">check_circle</span>
+                                    <span>{{ item.persyaratan|linebreaksbr }}</span>
+                                </li>
+                            </ul>
+                            <div class="pt-2 text-label-sm font-label-sm text-on-surface-variant italic">*Pastikan semua berkas asli dibawa saat verifikasi</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-space-lg pt-0 flex items-center gap-space-xs">
+                    <a class="flex-1 py-2.5 px-3 rounded-xl bg-primary text-on-primary text-center font-label-lg text-label-lg hover:bg-secondary transition-colors flex items-center justify-center gap-1.5 shadow-sm" href="https://wa.me/6281234567890?text=Halo%20Admin%20Desa%20Beriri%20Jarak,%20saya%20ingin%20mengajukan%20{{ item.nama_layanan|urlencode }}" rel="noopener" target="_blank">
+                        <span class="material-symbols-outlined text-[18px] text-accent-mint">chat</span> Ajukan via WA
+                    </a>
+                    <button class="py-2.5 px-3 rounded-xl bg-surface-container text-primary font-label-lg text-label-lg hover:bg-surface-container-highest transition-colors" onclick="toggleDetails('req-{{ item.id }}', this.parentElement.previousElementSibling.querySelector('.details-icon').parentElement)">Detail</button>
+                </div>
+            </article>
+            {% empty %}
+            <div class="col-span-3 text-center py-10">
+                <p class="text-text-secondary">Belum ada katalog layanan surat.</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Empty State -->
+        <div class="hidden text-center py-16 bg-surface-pure rounded-2xl shadow-sm my-6" id="no-services-found">
+            <div class="w-16 h-16 rounded-full bg-surface-container mx-auto flex items-center justify-center text-on-surface-variant mb-space-sm">
+                <span class="material-symbols-outlined text-[32px]">manage_search</span>
+            </div>
+            <h3 class="font-title-lg text-title-lg text-primary font-semibold">Layanan Tidak Ditemukan</h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant max-w-md mx-auto mt-1">Kata kunci yang Anda masukkan tidak sesuai dengan katalog surat. Silakan tanyakan langsung ke operator desa kami melalui WhatsApp.</p>
+            <a class="inline-flex items-center gap-2 mt-space-md px-space-lg py-2.5 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg" href="https://wa.me/6281234567890" rel="noopener" target="_blank">
+                <span class="material-symbols-outlined text-[18px] text-accent-mint">chat</span> Tanya Operator WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- Helpdesk Card -->
+    <section class="max-w-7xl mx-auto w-full px-gutter pb-space-xl">
+        <div class="bg-surface-pure rounded-2xl p-space-xl shadow-sm border border-border-subtle flex flex-col md:flex-row items-center justify-between gap-space-lg">
+            <div class="flex items-center gap-space-md">
+                <div class="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center text-primary shrink-0">
+                    <span class="material-symbols-outlined text-[32px]">support_agent</span>
+                </div>
+                <div>
+                    <span class="text-label-sm font-label-sm text-secondary font-bold uppercase tracking-wider block">Helpdesk &amp; Bantuan Berkas</span>
+                    <h4 class="font-title-lg text-title-lg text-primary font-bold">Ragu atau Bingung dengan Kelengkapan Berkas?</h4>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Kirimkan foto dokumen Anda terlebih dahulu ke Tim Verifikator Loket Desa Beriri Jarak untuk pengecekan pra-cetak.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-space-sm w-full md:w-auto shrink-0">
+                <a class="w-full md:w-auto inline-flex items-center justify-center gap-2 px-space-lg py-3.5 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg hover:bg-secondary transition-all shadow-md" href="https://wa.me/6281234567890" rel="noopener" target="_blank">
+                    <span class="material-symbols-outlined text-[20px] text-accent-mint">chat</span> WhatsApp Siaga: 0812-3456-7890
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Tracking Status -->
+    <div class="hidden fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm flex items-center justify-center p-4" id="status-modal">
+        <div class="bg-surface-pure rounded-3xl max-w-lg w-full p-space-xl shadow-2xl relative">
+            <button class="absolute right-4 top-4 w-9 h-9 rounded-full bg-surface-container-low text-on-surface flex items-center justify-center hover:bg-surface-container transition-colors" onclick="document.getElementById('status-modal').classList.add('hidden')">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+            <div class="flex items-center gap-space-sm mb-space-md">
+                <div class="w-10 h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[24px]">manage_search</span>
+                </div>
+                <div>
+                    <h3 class="font-title-lg text-title-lg text-primary font-bold">Lacak Status Surat Anda</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Sistem verifikasi berkas daring Beriri Jarak</p>
+                </div>
+            </div>
+            <div class="space-y-space-md">
+                <div>
+                    <label class="font-label-md text-label-md text-primary font-semibold block mb-1">Nomor Induk Kependudukan (NIK)</label>
+                    <input class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface text-body-sm focus:outline-none focus:bg-surface-pure focus:shadow-md border border-border-subtle" id="tracking-nik" placeholder="Masukkan 16 digit NIK pemohon..." type="text"/>
+                </div>
+                <button class="w-full py-3.5 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-semibold hover:bg-secondary transition-colors shadow-md flex items-center justify-center gap-2" onclick="checkTrackingStatus()">
+                    <span class="material-symbols-outlined text-[20px]">search</span> Cek Posisi Berkas
+                </button>
+                <div class="hidden mt-space-md p-space-md rounded-xl bg-surface-container-low border border-secondary/20" id="tracking-result">
+                    <div class="flex items-center justify-between pb-2 border-b border-border-subtle">
+                        <span class="font-label-md text-label-md text-on-surface-variant">Status Pengajuan</span>
+                        <span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">Terverifikasi &amp; Selesai</span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-primary mt-2">Surat Anda telah ditandatangani dan siap diambil di loket Kantor Desa Beriri Jarak atau diunduh via WhatsApp.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleDetails(elementId, toggleBtn) {
+        const target = document.getElementById(elementId);
+        const icon = toggleBtn.querySelector('.details-icon') || toggleBtn.parentElement.querySelector('.details-icon');
+        
+        if (target.classList.contains('hidden')) {
+            target.classList.remove('hidden');
+            if (icon) icon.style.transform = 'rotate(180deg)';
+        } else {
+            target.classList.add('hidden');
+            if (icon) icon.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    function setCategory(category, buttonEl) {
+        const buttons = document.querySelectorAll('.category-btn');
+        buttons.forEach(btn => {
+            btn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+            btn.classList.add('bg-surface-container-low', 'text-on-surface-variant');
+        });
+        buttonEl.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
+        buttonEl.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+
+        const cards = document.querySelectorAll('.service-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            const matchesCategory = (category === 'all' || cardCategory === category);
+            
+            if (matchesCategory) {
+                card.classList.remove('hidden');
+                visibleCount++;
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+
+        updateCountText(visibleCount);
+    }
+
+    function filterServices() {
+        const query = document.getElementById('service-search-input').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.service-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const title = card.querySelector('h3').innerText.toLowerCase();
+            const keywords = card.getAttribute('data-keywords').toLowerCase();
+            
+            if (title.includes(query) || keywords.includes(query)) {
+                card.classList.remove('hidden');
+                visibleCount++;
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+
+        updateCountText(visibleCount);
+    }
+
+    function updateCountText(count) {
+        const countEl = document.getElementById('service-count-text');
+        const emptyState = document.getElementById('no-services-found');
+        
+        if (count === 0) {
+            emptyState.classList.remove('hidden');
+            countEl.innerText = 'Tidak ada layanan yang cocok';
+        } else {
+            emptyState.classList.add('hidden');
+            countEl.innerText = `Menampilkan ${count} layanan administrasi tersedia`;
+        }
+    }
+
+    function checkTrackingStatus() {
+        const nik = document.getElementById('tracking-nik').value.trim();
+        const res = document.getElementById('tracking-result');
+        if (nik.length < 5) {
+            alert('Silakan masukkan minimal NIK yang valid.');
+            return;
+        }
+        res.classList.remove('hidden');
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Kelola Peta Desa - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full max-w-4xl mx-auto gap-space-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Pengaturan Peta Desa</h1>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1">Atur tampilan peta interaktif di halaman publik.</p>
+        </div>
+        <a href="{% url 'wilayah' %}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container text-primary font-label-md text-label-md hover:bg-surface-container-high transition-colors">
+            <span class="material-symbols-outlined text-[18px]">open_in_new</span> Lihat Halaman Publik
+        </a>
+    </div>
+
+    <form method="POST" class="bg-surface-pure rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col gap-5">
+        {% csrf_token %}
+        
+        <!-- Header Form dengan Tombol Hapus (Ikon) -->
+        <div class="flex items-center justify-between pb-4 border-b border-border-subtle">
+            <div>
+                <h2 class="font-title-md font-bold text-primary">Informasi Peta</h2>
+                <p class="text-xs text-text-secondary">Lengkapi data di bawah ini.</p>
+            </div>
+            
+            <!-- Tombol Hapus Peta (Ikon Tong Sampah Merah) -->
+            {% if data %}
+            <a href="{% url 'hapus_peta' %}" onclick="return confirm('Apakah Anda yakin ingin menghapus konfigurasi peta ini? Peta di halaman publik akan hilang.')" class="p-2 rounded-lg bg-error-container text-error hover:bg-error hover:text-on-error transition-colors flex items-center justify-center" title="Hapus Peta">
+                <span class="material-symbols-outlined text-[20px]">delete</span>
+            </a>
+            {% endif %}
+        </div>
+
+        <div class="space-y-1">
+            <label class="font-label-md font-semibold text-text-primary">Judul Peta <span class="text-error">*</span></label>
+            <input type="text" name="judul" value="{{ data.judul|default:'Peta Spasial Desa Beriri Jarak' }}" required class="w-full px-4 py-2 rounded-lg bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary">
+        </div>
+
+        <div class="space-y-1">
+            <label class="font-label-md font-semibold text-text-primary">Deskripsi Singkat</label>
+            <textarea name="deskripsi" rows="3" class="w-full px-4 py-2 rounded-lg bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary">{{ data.deskripsi|default:'' }}</textarea>
+        </div>
+
+        <div class="space-y-1">
+            <label class="font-label-md font-semibold text-text-primary">Link Embed Google Maps <span class="text-error">*</span></label>
+            <p class="text-xs text-text-secondary mb-2">Buka Google Maps > Cari "Beriri Jarak" > Klik "Share" > "Embed a map" > Copy isi atribut <code>src="..."</code> saja.</p>
+            <textarea name="link_embed_maps" rows="3" required class="w-full px-4 py-2 rounded-lg bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary" placeholder="https://www.google.com/maps/embed?pb=...">{{ data.link_embed_maps|default:'' }}</textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Luas Wilayah (Ha)</label>
+                <input type="text" name="luas_wilayah" value="{{ data.luas_wilayah|default:'485,6' }}" class="w-full px-4 py-2 rounded-lg bg-surface-container-low border border-border-subtle outline-none">
+            </div>
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Jumlah Dusun</label>
+                <input type="text" name="jumlah_dusun" value="{{ data.jumlah_dusun|default:'6' }}" class="w-full px-4 py-2 rounded-lg bg-surface-container-low border border-border-subtle outline-none">
+            </div>
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Elevasi (mdpl)</label>
+                <input type="text" name="elevasi" value="{{ data.elevasi|default:'450–750' }}" class="w-full px-4 py-2 rounded-lg bg-surface-container-low border border-border-subtle outline-none">
+            </div>
+        </div>
+
+        <div class="pt-4 border-t border-border-subtle flex justify-end gap-3">
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold shadow-md flex items-center gap-2 hover:bg-secondary transition-colors">
+                <span class="material-symbols-outlined">save</span> Simpan Pengaturan Peta
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

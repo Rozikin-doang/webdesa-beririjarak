@@ -1,0 +1,74 @@
+{% load static %}
+<footer class="w-full bg-surface-container-low mt-space-xl">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-space-xl pb-space-lg">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            <!-- Brand -->
+            <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-3">
+                    <img alt="Logo Desa Beriri Jarak" class="h-9 w-auto object-contain"
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiD7k9MJ-ucczS4_HtucfRFc0cpOwlW5PZf92jFr6Vpye9MM_uCG__w5r-W2TmnnmDEb8JO1CDUErWufqB_Onw1j8FHNcVc3YDge3cdV3fBXDkk_N-0b6pZhOpvrtp519dvMrt1KTr518u-92QDo3cCxvkhRTb-C5w1U0zsME-AOTNwsBH-QlDziUt2DB5_gBgDyW8qtnDtduTGYa0rsksxtYQ-PIW4uk3FepQ8RU2z3yLa_Phx78ZFXrEodRRfCa0TrfDcwUw76rXmgQ">
+                    <div class="flex flex-col">
+                        <span class="font-title-md text-title-md font-bold text-primary leading-tight">DESA BERIRI JARAK</span>
+                        <span class="font-label-sm text-label-sm text-text-secondary">Kecamatan Wanasaba</span>
+                    </div>
+                </div>
+                <p class="font-body-sm text-body-sm text-text-secondary mt-1">
+                    Pusat Administrasi Pemerintahan dan Pelayanan Masyarakat Desa Beriri Jarak yang Akuntabel, Mandiri, dan Melayani.
+                </p>
+                <div class="font-body-sm text-body-sm text-on-surface mt-2 flex flex-col gap-1">
+                    <span class="font-title-md text-title-md text-primary font-semibold">Kantor Desa:</span>
+                    <span>Jl. Raya Beriri Jarak No. 1, Kec. Wanasaba, Kab. Lombok Timur, Nusa Tenggara Barat 83653</span>
+                </div>
+            </div>
+
+            <!-- Layanan -->
+            <div class="flex flex-col gap-3">
+                <span class="font-title-md text-title-md font-bold text-primary">Layanan Publik</span>
+                <div class="flex flex-col gap-2 font-body-sm text-body-sm text-text-secondary">
+                    <a class="hover:text-primary transition-colors" href="{% url 'layanan' %}">Persyaratan Administrasi</a>
+                    <a class="hover:text-primary transition-colors" href="{% url 'layanan' %}#formulir">Pengajuan Surat Online</a>
+                    <a class="hover:text-primary transition-colors" href="{% url 'layanan' %}#lacak">Cek Progres Permohonan</a>
+                    <a class="hover:text-primary transition-colors" href="{% url 'pengumuman' %}">Saluran Pengaduan Warga</a>
+                    <a class="hover:text-primary transition-colors" href="{% url 'apbdes' %}">Katalog Perdes &amp; SK Kades</a>
+                </div>
+            </div>
+
+            <!-- Data -->
+            <div class="flex flex-col gap-3">
+                <span class="font-title-md text-title-md font-bold text-primary">Data &amp; Kelembagaan</span>
+                <div class="flex flex-col gap-2 font-body-sm text-body-sm text-text-secondary">
+                    <a class="hover:text-primary transition-colors" href="{% url 'apbdes' %}">Transparansi APBDes</a>
+                    <a class="hover:text-primary transition-colors" href="{% url 'data_statistik' %}">Statistik Kependudukan</a>
+                    <a class="hover:text-primary transition-colors" href="{% url 'perangkat_desa' %}">Badan Permusyawaratan Desa (BPD)</a>
+                    <a class="hover:text-primary transition-colors" href="{% url 'katalog_umkm' %}">BUMDes Beriri Jarak</a>
+                    <a class="hover:text-primary transition-colors" href="{% url 'katalog_umkm' %}">Galeri UMKM Potensi Desa</a>
+                </div>
+            </div>
+
+            <!-- Kontak -->
+            <div class="flex flex-col gap-3">
+                <span class="font-title-md text-title-md font-bold text-primary">Pusat Bantuan &amp; Kontak</span>
+                <div class="flex flex-col gap-2 font-body-sm text-body-sm text-text-secondary">
+                    <span>WhatsApp: +62 812-3456-7890</span>
+                    <span>Email: pemdes@beririjarak.desa.id</span>
+                    <span>Senin - Jumat (08.00 - 15.30 WITA)</span>
+                </div>
+                <div class="mt-2">
+                    <a href="{% url 'pengumuman' %}"
+                       class="inline-flex items-center justify-center font-label-lg text-label-lg px-4 py-2.5 rounded-xl text-on-surface bg-gold-light hover:bg-tertiary-fixed transition-colors">Aduan Cepat Warga</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="mt-space-xl pt-space-md flex flex-col md:flex-row items-center justify-between gap-4 font-body-sm text-body-sm text-text-secondary">
+            <p>© 2026 Pemerintah Desa Beriri Jarak. Terintegrasi dengan Sistem Informasi Desa (SID).</p>
+            <div class="flex items-center gap-6 font-label-sm text-label-sm">
+                <a class="hover:text-primary transition-colors" href="{% url 'apbdes' %}">Regulasi</a>
+                <a class="hover:text-primary transition-colors" href="{% url 'visi_misi' %}">Tentang SID</a>
+                <a class="hover:text-primary transition-colors" href="{% url 'portal_masuk' %}">Portal Operator</a>
+            </div>
+        </div>
+    </div>
+</footer>

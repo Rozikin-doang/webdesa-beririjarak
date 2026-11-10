@@ -1,0 +1,122 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Sejarah Desa - Website Resmi Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+
+    <!-- Hero Section -->
+    <section class="w-full bg-surface-container-low/70 py-10 lg:py-14">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-6">
+            <nav aria-label="Jalur Navigasi Halaman" class="flex items-center flex-wrap gap-2 font-label-md text-label-md text-text-secondary">
+                <a class="hover:text-primary transition-colors flex items-center gap-1.5" href="{% url 'beranda' %}">
+                    <span class="material-symbols-outlined text-[16px]">home</span>
+                    <span>Beranda</span>
+                </a>
+                <span class="material-symbols-outlined text-[14px] text-outline-variant">chevron_right</span>
+                <span class="text-on-surface-variant">Profil Desa</span>
+                <span class="material-symbols-outlined text-[14px] text-outline-variant">chevron_right</span>
+                <span class="text-primary font-semibold">Sejarah Desa</span>
+            </nav>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+                <div class="lg:col-span-8 flex flex-col gap-4">
+                    <div class="inline-flex items-center gap-2 self-start px-3 py-1.5 rounded-full bg-secondary/10 text-secondary font-label-md text-label-md">
+                        <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">history_edu</span>
+                        <span>Historiografi &amp; Asal-Usul Krama Desa Beriri Jarak</span>
+                    </div>
+                    <h1 class="font-headline-xl text-headline-xl text-primary font-extrabold tracking-tight">Sejarah &amp; Asal-Usul Desa Beriri Jarak</h1>
+                    <p class="font-body-lg text-body-lg text-text-secondary max-w-3xl leading-relaxed">Menelusuri jejak peradaban krama Sasak di kaki Gunung Rinjani, kearifan toponimi ‘Beriri Jarak’, hingga transformasi struktural menuju kemandirian tata kelola pemerintahan di Kecamatan Wanasaba, Lombok Timur.</p>
+                </div>
+                <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end lg:items-end">
+                    <button class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg shadow-sm hover:bg-secondary transition-all" onclick="window.print()">
+                        <span class="material-symbols-outlined text-[18px]">print</span>
+                        <span>Cetak Naskah Sejarah</span>
+                    </button>
+                    <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-surface-pure text-primary font-label-lg text-label-lg shadow-sm hover:bg-surface-container-lowest transition-all" href="#arsip-tutur">
+                        <span class="material-symbols-outlined text-[18px]">menu_book</span>
+                        <span>Arsip Tutur &amp; Dokumen</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Monografi / Kronologi Section (DINAMIS) -->
+    <section class="w-full py-16 lg:py-24">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <!-- Sticky Sidebar (STATIS) -->
+                <aside class="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-28">
+                    <div class="bg-surface-pure rounded-2xl p-6 shadow-sm flex flex-col gap-5">
+                        <h3 class="font-title-md text-title-md text-primary font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[20px] text-secondary">local_library</span>
+                            <span>Daftar Bab Monografi</span>
+                        </h3>
+                        <div class="flex flex-col gap-2 font-label-lg text-label-lg">
+                            <a class="p-2.5 rounded-lg bg-surface-container-low text-primary font-semibold flex items-center justify-between" href="#bab-1">
+                                <span>1. Permukiman Otak Kokok</span>
+                                <span class="material-symbols-outlined text-[16px]">arrow_right</span>
+                            </a>
+                            <a class="p-2.5 rounded-lg hover:bg-surface-container-low text-text-secondary hover:text-primary transition-colors flex items-center justify-between" href="#bab-2">
+                                <span>2. Garis Batas Pohon Jarak</span>
+                                <span class="material-symbols-outlined text-[16px]">arrow_right</span>
+                            </a>
+                            <a class="p-2.5 rounded-lg hover:bg-surface-container-low text-text-secondary hover:text-primary transition-colors flex items-center justify-between" href="#bab-3">
+                                <span>3. Ikatan Adat &amp; Musyawarah</span>
+                                <span class="material-symbols-outlined text-[16px]">arrow_right</span>
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+                
+                <!-- Article Content (DINAMIS) -->
+                <article class="lg:col-span-8 flex flex-col gap-10">
+                    <div class="prose-container flex flex-col gap-8">
+                        <!-- Bab 1 -->
+                        <div class="flex flex-col gap-4" id="bab-1">
+                            <span class="font-label-md text-label-md text-secondary uppercase tracking-widest font-semibold">Bab I • Asal Muasal</span>
+                            <h2 class="font-headline-lg text-headline-lg text-primary font-bold">{{ data.bab_1_judul|default:"Jejak Krama di Bawah Lindungan Rinjani" }}</h2>
+                            <div class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed text-justify first-letter:float-left first-letter:text-6xl first-letter:pr-4 first-letter:font-extrabold first-letter:text-primary first-letter:leading-none">
+                                {{ data.bab_1_isi|default:"Isi sejarah belum ditambahkan."|linebreaksbr }}
+                            </div>
+                        </div>
+                        
+                        <!-- Blockquote -->
+                        <div class="my-4 p-8 rounded-2xl bg-surface-container-low relative overflow-hidden">
+                            <span class="material-symbols-outlined text-[64px] text-secondary/15 absolute -left-2 -top-2 select-none pointer-events-none">format_quote</span>
+                            <p class="font-headline-sm text-headline-sm text-primary font-semibold italic relative z-10 leading-snug">
+                                “{{ data.kutipan_falsafah|default:'Adat Sasak mengajarkan kita: Inaq gumi, amaq langit.' }}”
+                            </p>
+                            <div class="mt-4 flex items-center gap-3">
+                                <div class="w-8 h-0.5 bg-accent-emerald"></div>
+                                <span class="font-label-md text-label-md text-text-secondary">Petuah Sesepuh Tokoh Adat Beriri Jarak</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Bab 2 -->
+                        <div class="flex flex-col gap-4" id="bab-2">
+                            <span class="font-label-md text-label-md text-secondary uppercase tracking-widest font-semibold">Bab II • Pohon Jarak &amp; Harmoni Batas</span>
+                            <h3 class="font-headline-md text-headline-md text-primary font-bold">{{ data.bab_2_judul|default:"Penetapan Batas Melalui Flora Jarak Pagar" }}</h3>
+                            <div class="font-body-md text-body-md text-on-surface-variant leading-relaxed text-justify">
+                                {{ data.bab_2_isi|default:"Isi sejarah belum ditambahkan."|linebreaksbr }}
+                            </div>
+                        </div>
+                        
+                        <!-- Bab 3 -->
+                        <div class="flex flex-col gap-4" id="bab-3">
+                            <span class="font-label-md text-label-md text-secondary uppercase tracking-widest font-semibold">Bab III • Pemantapan Lembaga</span>
+                            <h3 class="font-headline-md text-headline-md text-primary font-bold">{{ data.bab_3_judul|default:"Pemekaran Menuju Kemandirian Pemerintahan" }}</h3>
+                            <div class="font-body-md text-body-md text-on-surface-variant leading-relaxed text-justify">
+                                {{ data.bab_3_isi|default:"Isi sejarah belum ditambahkan."|linebreaksbr }}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

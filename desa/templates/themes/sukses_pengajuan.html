@@ -1,0 +1,36 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Pengajuan Berhasil - Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full min-h-[70vh] items-center justify-center py-16">
+    <div class="max-w-xl w-full mx-auto px-6">
+        <div class="bg-surface-pure rounded-3xl p-8 shadow-lg text-center space-y-4">
+            <div class="w-20 h-20 rounded-full bg-accent-emerald/20 text-accent-emerald flex items-center justify-center mx-auto">
+                <span class="material-symbols-outlined text-[48px]">check_circle</span>
+            </div>
+            <h1 class="font-headline-xl text-headline-xl text-primary font-bold">Pengajuan Berhasil!</h1>
+            <p class="font-body-md text-text-secondary">Terima kasih, pengajuan surat Anda telah kami terima. Silakan simpan ID Tiket di bawah ini untuk melacak status pengajuan.</p>
+            
+            <div class="bg-surface-container-low rounded-xl p-4 my-4">
+                <span class="font-label-sm text-label-sm text-text-secondary block">ID Tiket Anda:</span>
+                <span class="font-headline-lg text-headline-lg font-extrabold text-primary tracking-wider">{{ pengajuan.id_tiket }}</span>
+            </div>
+            
+            <div class="text-sm text-text-secondary">
+                <p>Status saat ini: <strong class="text-primary">{{ pengajuan.get_status_display }}</strong></p>
+            </div>
+
+            <div class="pt-4 flex flex-col sm:flex-row gap-3">
+                <a href="{% url 'lacak_tiket' %}" class="flex-1 px-4 py-3 rounded-xl bg-primary text-on-primary font-label-md font-bold shadow-md flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">search</span> Lacak Tiket
+                </a>
+                <a href="{% url 'beranda' %}" class="flex-1 px-4 py-3 rounded-xl bg-surface-container font-label-md font-bold flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">home</span> Kembali ke Beranda
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

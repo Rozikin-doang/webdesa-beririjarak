@@ -1,0 +1,81 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Kelola APBDes - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full gap-space-lg">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Laporan APBDes</h1>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1">Kelola data transparansi keuangan desa.</p>
+        </div>
+        <!-- Tombol Tambah -->
+        <a href="{% url 'tambah_apbdes' %}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-bold shadow-sm hover:bg-secondary transition-all">
+            <span class="material-symbols-outlined text-[20px]">monitoring</span> Tambah Laporan
+        </a>
+    </div>
+
+    <!-- Notifikasi Messages -->
+    {% if messages %}
+        <div class="space-y-2">
+            {% for message in messages %}
+                <div class="p-4 rounded-xl {% if message.tags == 'success' %}bg-accent-mint/20 text-primary border border-accent-mint{% else %}bg-error-container text-on-error-container border border-error{% endif %} flex items-start gap-3">
+                    <span class="material-symbols-outlined">{% if message.tags == 'success' %}check_circle{% else %}error{% endif %}</span>
+                    <p class="font-body-sm font-semibold">{{ message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="bg-surface-pure rounded-2xl p-space-lg shadow-sm">
+        <div class="overflow-x-auto -mx-space-lg px-space-lg">
+            <table class="w-full text-left min-w-[720px]">
+                <thead>
+                    <tr class="bg-surface-container-low text-text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                        <th class="py-3 px-4 rounded-l-xl">Tahun / Tahap</th>
+                        <th class="py-3 px-4">Total Pendapatan</th>
+                        <th class="py-3 px-4">Total Belanja</th>
+                        <th class="py-3 px-4">Status</th>
+                        <th class="py-3 px-4 rounded-r-xl text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border-subtle font-body-sm text-body-sm">
+                    {% for item in daftar_apbdes %}
+                    <tr class="hover:bg-surface-container-low/60 transition-colors">
+                        <td class="py-3 px-4">
+                            <div class="font-title-md text-title-md font-semibold text-text-primary">TA {{ item.tahun_anggaran }}</div>
+                            <div class="font-label-sm text-label-sm text-text-secondary">{{ item.tahap }}</div>
+                        </td>
+                        <td class="py-3 px-4 font-semibold text-primary">Rp {{ item.total_pendapatan|intcomma }}</td>
+                        <td class="py-3 px-4 font-semibold text-error">Rp {{ item.total_belanja|intcomma }}</td>
+                        <td class="py-3 px-4">
+                            <span class="px-2.5 py-1 rounded-full bg-accent-emerald/20 text-accent-emerald font-label-sm font-bold">Disahkan</span>
+                        </td>
+                        <td class="py-3 px-4 text-right">
+                            <div class="inline-flex items-center gap-1.5">
+                                <!-- Tombol Edit -->
+                                <a href="{% url 'edit_apbdes' item.id %}" class="p-1.5 rounded-lg bg-primary-container text-on-primary hover:bg-secondary transition-colors" title="Edit Laporan">
+                                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                                </a>
+                                
+                                <!-- Tombol Hapus (FORM POST) -->
+                                <form method="POST" action="{% url 'hapus_apbdes' item.id %}" class="inline-block m-0 p-0" onsubmit="return confirm('Apakah Anda yakin ingin menghapus laporan APBDes ini secara permanen?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="p-1.5 rounded-lg bg-error-container text-error hover:bg-error hover:text-on-error transition-colors cursor-pointer" title="Hapus Laporan">
+                                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="py-8 text-center text-text-secondary">Belum ada data APBDes.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

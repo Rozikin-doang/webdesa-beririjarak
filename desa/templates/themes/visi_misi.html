@@ -1,0 +1,71 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Visi & Misi - Website Resmi Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+    <!-- Header -->
+    <section class="bg-surface-container-low py-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <nav class="flex items-center gap-2 font-label-md text-text-secondary mb-4">
+                <a href="{% url 'beranda' %}" class="hover:text-primary">Beranda</a>
+                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                <span>Profil Desa</span>
+                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                <span class="text-primary font-semibold">Visi &amp; Misi</span>
+            </nav>
+            <h1 class="font-headline-xl text-primary font-bold">Visi &amp; Misi Desa Beriri Jarak</h1>
+            <p class="font-body-md text-text-secondary mt-2">Arah dan cita-cita pembangunan desa untuk kesejahteraan bersama.</p>
+        </div>
+    </section>
+
+    <!-- Konten -->
+    <section class="max-w-5xl mx-auto px-6 lg:px-12 py-16 w-full flex flex-col gap-10">
+        
+        <!-- Visi -->
+        <div class="bg-surface-pure rounded-3xl p-8 lg:p-12 shadow-md border-l-8 border-primary relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 opacity-5">
+                <span class="material-symbols-outlined text-[150px]">flag</span>
+            </div>
+            <div class="relative z-10 space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-bold">
+                    <span class="material-symbols-outlined text-[18px]">visibility</span> VISI
+                </div>
+                <h2 class="font-headline-md text-primary font-bold leading-tight">
+                    {% if data and data.visi %}
+                        "{{ data.visi }}"
+                    {% else %}
+                        "Belum ada visi yang ditambahkan."
+                    {% endif %}
+                </h2>
+            </div>
+        </div>
+
+        <!-- Misi -->
+        <div class="bg-surface-pure rounded-3xl p-8 lg:p-12 shadow-md">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/10 text-secondary font-bold mb-6">
+                <span class="material-symbols-outlined text-[18px]">checklist</span> MISI
+            </div>
+            
+            <div class="space-y-4">
+                {% if data and data.misi %}
+                    <!-- Memecah teks misi berdasarkan enter -->
+                    {% for misi_item in data.misi.splitlines %}
+                        {% if misi_item %}
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-surface-container-low hover:bg-surface-container transition-colors">
+                            <div class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center shrink-0 font-bold text-sm">
+                                {{ forloop.counter }}
+                            </div>
+                            <p class="font-body-lg text-on-surface-variant leading-relaxed pt-1">{{ misi_item }}</p>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p class="text-text-secondary">Belum ada misi yang ditambahkan.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

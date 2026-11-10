@@ -1,0 +1,64 @@
+{% extends "themes/admin/base_admin.html" %}
+{% load static %}
+
+{% block title %}Buat Pengumuman - SID{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full max-w-4xl mx-auto gap-space-lg">
+    <div class="flex items-center gap-4">
+        <a href="{% url 'kelola_pengumuman' %}" class="p-2 rounded-lg bg-surface-container"><span class="material-symbols-outlined text-primary">arrow_back</span></a>
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Buat Pengumuman</h1>
+            <p class="font-body-sm text-body-sm text-text-secondary mt-1">Buat warta atau pengumuman resmi desa.</p>
+        </div>
+    </div>
+    
+    <!-- enctype AGAR BISA UPLOAD GAMBAR & LAMPIRAN -->
+    <form method="POST" enctype="multipart/form-data" class="bg-surface-pure rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col gap-5">
+        {% csrf_token %}
+        
+        <div class="space-y-1">
+            <label class="font-label-md font-semibold text-text-primary">Judul <span class="text-error">*</span></label>
+            <input type="text" name="judul" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle focus:ring-2 focus:ring-primary outline-none">
+        </div>
+        
+        <div class="space-y-1">
+            <label class="font-label-md font-semibold text-text-primary">Isi Pengumuman <span class="text-error">*</span></label>
+            <textarea name="isi_pengumuman" required rows="5" class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none"></textarea>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Tanggal Rilis <span class="text-error">*</span></label>
+                <input type="date" name="tanggal_rilis" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-border-subtle outline-none">
+            </div>
+            
+            <!-- INPUT GAMBAR (TAMBAHAN BARU) -->
+            <div class="space-y-1">
+                <label class="font-label-md font-semibold text-text-primary">Foto Pengumuman (Opsional)</label>
+                <input type="file" name="gambar" accept="image/*" class="w-full px-4 py-2 rounded-xl bg-surface-container-low border border-border-subtle outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-container file:text-on-primary hover:file:bg-secondary cursor-pointer">
+                <p class="text-xs text-text-secondary mt-1">Format: JPG, PNG. Maksimal 2MB.</p>
+            </div>
+        </div>
+
+        <!-- INPUT FILE LAMPIRAN -->
+        <div class="space-y-1">
+            <label class="font-label-md font-semibold text-text-primary">Lampiran File (Opsional)</label>
+            <input type="file" name="file_lampiran" accept="application/pdf,image/*" class="w-full px-4 py-2 rounded-xl bg-surface-container-low border border-border-subtle outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-container file:text-on-primary hover:file:bg-secondary cursor-pointer">
+            <p class="text-xs text-text-secondary mt-1">Format: PDF, JPG, PNG. Maksimal 2MB.</p>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+            <input type="checkbox" name="is_penting" id="is_penting" class="w-5 h-5 rounded text-primary accent-primary">
+            <label for="is_penting" class="font-label-md font-semibold text-text-primary cursor-pointer">Tandai Mendesak/Penting</label>
+        </div>
+        
+        <div class="pt-4 border-t border-border-subtle flex justify-end gap-3">
+            <a href="{% url 'kelola_pengumuman' %}" class="px-5 py-2.5 rounded-xl bg-surface-container font-semibold">Batal</a>
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold shadow-md flex items-center gap-2 hover:bg-secondary transition-colors">
+                <span class="material-symbols-outlined">save</span> Simpan Pengumuman
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<header class="fixed top-0 left-72 right-0 h-20 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg">
+    
+    <!-- Search Bar -->
+    <div class="flex items-center gap-space-lg flex-1 max-w-xl">
+        <div class="relative w-full">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+            <input class="w-full h-11 pl-10 pr-4 rounded-xl bg-surface-container-low text-on-surface font-body-sm text-body-sm placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-accent-emerald transition-all" placeholder="Cari NIK, warga, atau dokumen..." type="text">
+        </div>
+    </div>
+    
+    <!-- Right Menu -->
+    <div class="flex items-center gap-space-md">
+        <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low">
+            <span class="w-2 h-2 rounded-full bg-accent-emerald"></span>
+            <span class="font-label-sm text-label-sm font-medium text-text-secondary">Terbuka untuk Publik</span>
+        </div>
+        
+        <button class="relative p-2.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+            <span class="material-symbols-outlined text-[22px]">notifications</span>
+            <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-error rounded-full ring-2 ring-surface"></span>
+        </button>
+        
+        <!-- Profile & Logout -->
+        <div class="flex items-center gap-3 pl-space-sm border-l border-border-subtle ml-2">
+            <div class="text-right hidden sm:block">
+                <!-- Menampilkan username yang login -->
+                <div class="font-label-lg text-label-lg font-semibold text-text-primary capitalize">{{ request.user.username }}</div>
+                <div class="font-label-sm text-label-sm text-text-secondary">Operator Sistem</div>
+            </div>
+            <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-primary text-[20px]">person</span>
+            </div>
+            
+            <!-- Tombol Logout -->
+            <a href="{% url 'logout' %}" class="ml-2 p-2 rounded-xl bg-error-container text-error hover:bg-error hover:text-white transition-colors" title="Keluar Sistem">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+            </a>
+        </div>
+    </div>
+</header>

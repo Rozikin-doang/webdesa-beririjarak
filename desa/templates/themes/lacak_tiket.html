@@ -1,0 +1,118 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Lacak Tiket Pengajuan - Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full min-h-screen bg-surface-container-lowest py-12">
+    <div class="max-w-3xl mx-auto w-full px-6">
+        
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4">
+                <span class="material-symbols-outlined text-[32px]">search</span>
+            </div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-text-primary">Lacak Status Tiket</h1>
+            <p class="font-body-md text-text-secondary mt-2">Masukkan ID Tiket yang Anda dapatkan saat mengajukan surat untuk melihat status terkini.</p>
+        </div>
+
+        <!-- Form Pencarian -->
+        <div class="bg-surface-pure rounded-3xl p-6 lg:p-8 shadow-sm border border-border-subtle mb-8">
+            <form method="POST" class="flex flex-col sm:flex-row gap-4">
+                {% csrf_token %}
+                <div class="flex-1 relative">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary">confirmation_number</span>
+                    <input type="text" name="id_tiket" required placeholder="Contoh: BJ-20261107-001" 
+                           class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-surface-container-low border border-border-subtle outline-none focus:ring-2 focus:ring-primary font-mono uppercase">
+                </div>
+                <button type="submit" class="px-8 py-3.5 rounded-xl bg-primary text-on-primary font-bold shadow-md hover:bg-secondary transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">search</span> Cek Status
+                </button>
+            </form>
+            
+            {% if error %}
+            <div class="mt-4 p-4 rounded-xl bg-error-container text-on-error-container border border-error flex items-start gap-3">
+                <span class="material-symbols-outlined text-error">error</span>
+                <p class="font-body-sm font-semibold">{{ error }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Hasil Pencarian -->
+        {% if pengajuan %}
+        <div class="bg-surface-pure rounded-3xl overflow-hidden shadow-lg border border-border-subtle animate-fade-in-up">
+            <!-- Card Header -->
+            <div class="bg-primary p-6 lg:p-8 text-on-primary flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <p class="font-label-sm uppercase tracking-wider text-on-primary-container mb-1">Tiket Ditemukan</p>
+                    <h2 class="font-headline-md text-headline-md font-bold font-mono">{{ pengajuan.id_tiket }}</h2>
+                </div>
+                <div class="px-4 py-2 rounded-full font-bold text-sm uppercase tracking-wide
+                    {% if pengajuan.status == 'menunggu' %}bg-gold-light text-tertiary
+                    {% elif pengajuan.status == 'diproses' %}bg-surface-container-high text-text-primary
+                    {% elif pengajuan.status == 'selesai' %}bg-accent-emerald text-primary
+                    {% else %}bg-error text-on-error{% endif %}">
+                    {{ pengajuan.get_status_display }}
+                </div>
+            </div>
+            
+            <!-- Card Body -->
+            <div class="p-6 lg:p-8 space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <p class="font-label-sm text-text-secondary mb-1">Nama Pemohon</p>
+                        <p class="font-title-md font-semibold text-text-primary">{{ pengajuan.nama_pemohon }}</p>
+                    </div>
+                    <div>
+                        <p class="font-label-sm text-text-secondary mb-1">NIK Pemohon</p>
+                        <p class="font-title-md font-semibold text-text-primary">{{ pengajuan.nik_pemohon }}</p>
+                    </div>
+                    <div>
+                        <p class="font-label-sm text-text-secondary mb-1">Jenis Surat / Layanan</p>
+                        <p class="font-title-md font-semibold text-text-primary">
+                            {% if pengajuan.layanan %}
+                                {{ pengajuan.layanan.nama_layanan }}
+                            {% else %}
+                                Layanan Input Manual
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="font-label-sm text-text-secondary mb-1">Tanggal Pengajuan</p>
+                        <p class="font-title-md font-semibold text-text-primary">{{ pengajuan.tanggal_pengajuan|date:"d F Y, H:i" }} WITA</p>
+                    </div>
+                </div>
+
+                {% if pengajuan.keterangan_tambahan %}
+                <div class="pt-4 border-t border-border-subtle">
+                    <p class="font-label-sm text-text-secondary mb-1">Keterangan Tambahan</p>
+                    <div class="p-4 rounded-xl bg-surface-container-low text-text-primary text-sm whitespace-pre-line">
+                        {{ pengajuan.keterangan_tambahan }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Footer Info -->
+            <div class="px-6 py-4 bg-surface-container-low border-t border-border-subtle flex items-start gap-3">
+                <span class="material-symbols-outlined text-secondary text-[20px]">info</span>
+                <p class="text-sm text-text-secondary">
+                    Silakan simpan ID Tiket ini. Jika status sudah <strong>Selesai</strong>, Anda dapat mengambil surat fisik di Kantor Desa Beriri Jarak dengan membawa KTP asli.
+                </p>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<style>
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up {
+        animation: fadeInUp 0.4s ease-out forwards;
+    }
+</style>
+{% endblock %}

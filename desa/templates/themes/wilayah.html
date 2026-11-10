@@ -1,0 +1,336 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Peta Wilayah - Website Resmi Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+
+    <!-- BREADCRUMB & INTRO HERO -->
+    <section class="w-full bg-surface-container-low/70 py-space-xl">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <!-- Breadcrumb -->
+            <nav aria-label="Breadcrumb" class="flex items-center gap-2 font-label-md text-label-md text-text-secondary mb-space-md">
+                <a class="hover:text-primary transition-colors flex items-center gap-1" href="{% url 'beranda' %}">
+                    <span class="material-symbols-outlined text-[16px]">home</span> Beranda
+                </a>
+                <span class="text-outline-variant">/</span>
+                <a class="hover:text-primary transition-colors" href="{% url 'wilayah' %}">Profil Desa</a>
+                <span class="text-outline-variant">/</span>
+                <span class="text-primary font-semibold">Wilayah &amp; Batas Desa</span>
+            </nav>
+            
+            <!-- Title & Headline -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+                <div class="lg:col-span-8 flex flex-col gap-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm w-fit shadow-sm">
+                        <span class="material-symbols-outlined text-[15px]">terrain</span>
+                        Profil Spasial &amp; Geografis Resmi SID
+                    </div>
+                    <h1 class="font-headline-xl text-headline-xl text-primary font-extrabold tracking-tight">
+                        {{ data_peta.judul|default:"Peta & Profil Wilayah Desa Beriri Jarak" }}
+                    </h1>
+                    <p class="font-body-lg text-body-lg text-text-secondary leading-relaxed">
+                        {{ data_peta.deskripsi|default:"Terhampar di bentang lereng timur Gunung Rinjani, Desa Beriri Jarak memiliki topografi berbukit sejuk dengan elevasi subur, jaringan mata air alami, serta tata kelola 6 wilayah dusun yang harmonis di Kecamatan Wanasaba, Kabupaten Lombok Timur." }}
+                    </p>
+                </div>
+                <div class="lg:col-span-4 flex flex-wrap lg:justify-end gap-3">
+                    <a class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg shadow-sm hover:bg-secondary transition-all" href="#peta-interaktif">
+                        <span class="material-symbols-outlined text-[18px]">explore</span>
+                        Jelajah Peta GIS
+                    </a>
+                    <button class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-surface-pure text-primary font-label-lg text-label-lg shadow-sm hover:bg-surface-container transition-all" onclick="window.print()">
+                        <span class="material-symbols-outlined text-[18px]">print</span>
+                        Cetak Profil
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUICK GEO-STATS CARDS (DINAMIS) -->
+    <section class="w-full -mt-6">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <!-- Stat 1: Luas Wilayah -->
+                <div class="bg-surface-pure p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-10 h-10 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[20px]">square_foot</span>
+                        </span>
+                        <span class="font-label-sm text-label-sm text-accent-emerald font-semibold">Agraris</span>
+                    </div>
+                    <div>
+                        <span class="font-headline-lg text-headline-lg font-bold text-primary block tracking-tight">{{ data_peta.luas_wilayah|default:"485,6" }}</span>
+                        <span class="font-label-md text-label-md text-text-secondary">Hektar (Ha) Luas Total</span>
+                    </div>
+                </div>
+                <!-- Stat 2: Elevasi -->
+                <div class="bg-surface-pure p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-10 h-10 rounded-xl bg-gold-light text-tertiary flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[20px]">altitude</span>
+                        </span>
+                        <span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Sejuk</span>
+                    </div>
+                    <div>
+                        <span class="font-headline-lg text-headline-lg font-bold text-primary block tracking-tight">{{ data_peta.elevasi|default:"450–750" }}</span>
+                        <span class="font-label-md text-label-md text-text-secondary">mdpl Elevasi Rinjani</span>
+                    </div>
+                </div>
+                <!-- Stat 3: Dusun -->
+                <div class="bg-surface-pure p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-10 h-10 rounded-xl bg-surface-container-high text-primary flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[20px]">holiday_village</span>
+                        </span>
+                        <span class="font-label-sm text-label-sm text-text-secondary font-semibold">Administratif</span>
+                    </div>
+                    <div>
+                        <span class="font-headline-lg text-headline-lg font-bold text-primary block tracking-tight">{{ data_peta.jumlah_dusun|default:"6" }}</span>
+                        <span class="font-label-md text-label-md text-text-secondary">Dusun Kewilayahan</span>
+                    </div>
+                </div>
+                <!-- Stat 4: RT -->
+                <div class="bg-surface-pure p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-10 h-10 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[20px]">groups</span>
+                        </span>
+                        <span class="font-label-sm text-label-sm text-secondary font-semibold">Komunal</span>
+                    </div>
+                    <div>
+                        <span class="font-headline-lg text-headline-lg font-bold text-primary block tracking-tight">28</span>
+                        <span class="font-label-md text-label-md text-text-secondary">Rukun Tetangga (RT)</span>
+                    </div>
+                </div>
+                <!-- Stat 5: Curah Hujan -->
+                <div class="col-span-2 md:col-span-1 bg-surface-pure p-5 rounded-2xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-10 h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[20px]">rainy</span>
+                        </span>
+                        <span class="font-label-sm text-label-sm text-accent-emerald font-semibold">Subur Alami</span>
+                    </div>
+                    <div>
+                        <span class="font-headline-lg text-headline-lg font-bold text-primary block tracking-tight">2.100</span>
+                        <span class="font-label-md text-label-md text-text-secondary">mm/th Curah Hujan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE / VISUAL GIS MAP SECTION (DINAMIS) -->
+    <section class="w-full py-space-xl" id="peta-interaktif">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="bg-surface-pure rounded-3xl p-6 lg:p-8 shadow-sm">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="material-symbols-outlined text-accent-emerald text-[20px]">map</span>
+                            <span class="font-label-md text-label-md text-text-secondary uppercase tracking-wider">Sistem Informasi Geografis (SIG) Desa</span>
+                        </div>
+                        <h2 class="font-headline-md text-headline-md font-bold text-primary">{{ data_peta.judul|default:"Peta Spasial Batas & Zonasi Desa" }}</h2>
+                    </div>
+                </div>
+                
+                <!-- REAL GOOGLE MAPS IFRAME -->
+                <div class="relative w-full h-[460px] lg:h-[540px] rounded-2xl overflow-hidden bg-surface-container shadow-inner border border-border-subtle">
+                    {% if data_peta.link_embed_maps %}
+                        <iframe 
+                            src="{{ data_peta.link_embed_maps }}" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    {% else %}
+                        <div class="w-full h-full flex flex-col items-center justify-center bg-surface-container-low">
+                            <span class="material-symbols-outlined text-[48px] text-outline mb-2">map</span>
+                            <p class="font-body-md text-text-secondary">Peta belum dikonfigurasi. Silakan atur di menu admin <strong>Peta Desa</strong>.</p>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Coordinates & Technical Meta bar -->
+                <div class="flex flex-wrap items-center justify-between gap-4 pt-4 mt-2 text-text-secondary font-label-sm text-label-sm">
+                    <div class="flex flex-wrap items-center gap-x-6 gap-y-1">
+                        <span><strong>Sistem Grid:</strong> WGS 84 / UTM Zone 50S</span>
+                    </div>
+                    <span>Sumber: Bappeda Lombok Timur &amp; BIG RI</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BATAS-BATAS WILAYAH ADMINISTRATIF (STATIS) -->
+    <section class="w-full py-space-lg bg-surface-container-low/40">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="mb-space-lg">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">compass_calibration</span>
+                    <span class="font-label-md text-label-md text-text-secondary uppercase tracking-wider">Batas Wilayah Hukum</span>
+                </div>
+                <h2 class="font-headline-md text-headline-md font-bold text-primary">Batas Administratif 4 Penjuru Mata Angin</h2>
+                <p class="font-body-md text-body-md text-text-secondary mt-1">Berdasarkan Berita Acara Penetapan dan Penegasan Batas Wilayah Desa Kecamatan Wanasaba.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Utara -->
+                <div class="bg-surface-pure rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-12 h-12 rounded-2xl bg-primary-container text-on-primary flex items-center justify-center font-bold">
+                                <span class="material-symbols-outlined text-[24px]">north</span>
+                            </span>
+                            <span class="font-label-md text-label-md font-bold px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant">Sebelah Utara</span>
+                        </div>
+                        <h3 class="font-title-lg text-title-lg font-bold text-primary mb-2">Taman Nasional (TNGR)</h3>
+                        <p class="font-body-sm text-body-sm text-text-secondary leading-relaxed">Berbatasan langsung dengan Hutan Konservasi Taman Nasional Gunung Rinjani (TNGR) dan bentang hutan lindung penopang hidrologi pulau.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-border-subtle flex items-center gap-2 text-label-sm font-label-sm text-accent-emerald font-semibold">
+                        <span class="material-symbols-outlined text-[16px]">verified</span> Batas Alam: Pal Batas Kehutanan
+                    </div>
+                </div>
+                <!-- Selatan -->
+                <div class="bg-surface-pure rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-12 h-12 rounded-2xl bg-surface-container text-primary flex items-center justify-center font-bold">
+                                <span class="material-symbols-outlined text-[24px]">south</span>
+                            </span>
+                            <span class="font-label-md text-label-md font-bold px-2.5 py-1 rounded-full bg-surface-container-high text-primary">Sebelah Selatan</span>
+                        </div>
+                        <h3 class="font-title-lg text-title-lg font-bold text-primary mb-2">Desa Wanasaba Lauk</h3>
+                        <p class="font-body-sm text-body-sm text-text-secondary leading-relaxed">Berbatasan dengan area persawahan irigasi teknis dan pemukiman bagian hilir Desa Wanasaba Lauk, Kecamatan Wanasaba.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-border-subtle flex items-center gap-2 text-label-sm font-label-sm text-text-secondary">
+                        <span class="material-symbols-outlined text-[16px]">turn_sharp_right</span> Batas Jalan Poros &amp; Saluran Subak
+                    </div>
+                </div>
+                <!-- Timur -->
+                <div class="bg-surface-pure rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-12 h-12 rounded-2xl bg-surface-container text-primary flex items-center justify-center font-bold">
+                                <span class="material-symbols-outlined text-[24px]">east</span>
+                            </span>
+                            <span class="font-label-md text-label-md font-bold px-2.5 py-1 rounded-full bg-surface-container-high text-primary">Sebelah Timur</span>
+                        </div>
+                        <h3 class="font-title-lg text-title-lg font-bold text-primary mb-2">Desa Jineng</h3>
+                        <p class="font-body-sm text-body-sm text-text-secondary leading-relaxed">Berbatasan dengan kawasan perkebunan hortikultura dan wilayah perbukitan warga Desa Jineng, jalur akses lintas kecamatan.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-border-subtle flex items-center gap-2 text-label-sm font-label-sm text-text-secondary">
+                        <span class="material-symbols-outlined text-[16px]">pin_drop</span> Patok Beton Batas Desa BPN
+                    </div>
+                </div>
+                <!-- Barat -->
+                <div class="bg-surface-pure rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-12 h-12 rounded-2xl bg-surface-container text-primary flex items-center justify-center font-bold">
+                                <span class="material-symbols-outlined text-[24px]">west</span>
+                            </span>
+                            <span class="font-label-md text-label-md font-bold px-2.5 py-1 rounded-full bg-surface-container-high text-primary">Sebelah Barat</span>
+                        </div>
+                        <h3 class="font-title-lg text-title-lg font-bold text-primary mb-2">Desa Otak Rarangan</h3>
+                        <p class="font-body-sm text-body-sm text-text-secondary leading-relaxed">Berbatasan dengan Desa Otak Rarangan yang dipisahkan secara alami oleh aliran Sungai Jurang Sate yang jernih dan asri.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-border-subtle flex items-center gap-2 text-label-sm font-label-sm text-secondary font-semibold">
+                        <span class="material-symbols-outlined text-[16px]">waves</span> Batas Alami: Sungai Jurang Sate
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PEMBAGIAN WILAYAH DUSUN & DIREKTORI KADUS (DINAMIS) -->
+    <section class="w-full py-space-xl">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-space-lg">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined text-accent-emerald text-[20px]">location_city</span>
+                        <span class="font-label-md text-label-md text-text-secondary uppercase tracking-wider">Kewilayahan Administratif</span>
+                    </div>
+                    <h2 class="font-headline-md text-headline-md font-bold text-primary">{{ daftar_dusun|length }} Dusun Induk &amp; Kepala Kewilayahan</h2>
+                    <p class="font-body-md text-body-md text-text-secondary mt-1">Struktur pimpinan dusun (Kadus) yang melayani kebutuhan administrasi warga di tingkat basis.</p>
+                </div>
+                <div class="flex items-center gap-2 text-label-sm font-label-sm text-text-secondary">
+                    <span class="w-3 h-3 rounded-full bg-accent-emerald inline-block"></span>
+                    {{ daftar_dusun|length }} Kepala Dusun Terdaftar
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for dusun in daftar_dusun %}
+                <div class="bg-surface-pure rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="font-label-md text-label-md px-3 py-1 rounded-full bg-primary text-on-primary font-semibold">Dusun {{ forloop.counter|stringformat:"02d" }}</span>
+                            <span class="font-label-sm text-label-sm text-text-secondary">{{ dusun.luas_ha }} Ha</span>
+                        </div>
+                        <h3 class="font-title-lg text-title-lg font-bold text-primary mb-1">{{ dusun.nama }}</h3>
+                        <p class="font-body-sm text-body-sm text-text-secondary mb-4">{{ dusun.deskripsi|default:"Wilayah dusun di Desa Beriri Jarak."|truncatechars:100 }}</p>
+                        <div class="bg-surface-container-low p-4 rounded-xl mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold shrink-0">
+                                    <span class="material-symbols-outlined text-[20px]">badge</span>
+                                </div>
+                                <div>
+                                    <span class="font-label-sm text-label-sm text-text-secondary block">Kepala Wilayah (Kadus)</span>
+                                    <span class="font-title-md text-title-md font-bold text-primary">{{ dusun.kepala_dusun }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-border-subtle grid grid-cols-2 gap-2 text-center">
+                        <div><span class="font-title-md text-title-md font-bold text-primary block">{{ dusun.jumlah_kk }}</span><span class="font-label-sm text-label-sm text-text-secondary">KK</span></div>
+                        <div><span class="font-title-md text-title-md font-bold text-primary block">{{ dusun.jumlah_jiwa }}</span><span class="font-label-sm text-label-sm text-text-secondary">Jiwa</span></div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-3 text-center py-10">
+                    <p class="text-text-secondary">Belum ada data dusun yang diinput admin.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Bantuan Pertanahan (STATIS) -->
+    <section class="w-full py-space-xl">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="bg-gradient-to-br from-primary via-primary-container to-secondary rounded-3xl p-8 lg:p-12 text-on-primary shadow-xl relative overflow-hidden">
+                <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-accent-mint/10 pointer-events-none blur-2xl"></div>
+                <div class="absolute -left-16 -bottom-16 w-80 h-80 rounded-full bg-accent-emerald/10 pointer-events-none blur-2xl"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                    <div class="lg:col-span-8 flex flex-col gap-3">
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-mint/20 text-accent-mint font-label-sm text-label-sm w-fit">
+                            <span class="material-symbols-outlined text-[15px]">real_estate_agent</span> Layanan Administrasi Tata Ruang &amp; Pertanahan
+                        </span>
+                        <h3 class="font-headline-lg text-headline-lg font-bold tracking-tight">Butuh Verifikasi Batas Tanah atau Surat Keterangan Riwayat Wilayah?</h3>
+                        <p class="font-body-md text-body-md text-on-primary/90 max-w-2xl leading-relaxed">Seksi Pemerintahan Desa Beriri Jarak siap melayani warga untuk penerbitan Sporadik, rekomendasi pengukuran batas patok dusun bersama BPN, serta pengurusan izin tata guna ruang desa.</p>
+                        <div class="flex flex-wrap items-center gap-6 pt-2 font-label-md text-label-md text-on-primary/90">
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-accent-mint text-[18px]">schedule</span> Senin - Jumat: 08:30 - 15:00 WITA</div>
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-accent-mint text-[18px]">location_on</span> Meja 02, Kantor Desa Beriri Jarak</div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-center">
+                        <a class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-accent-mint text-primary font-label-lg text-label-lg font-bold shadow-md hover:bg-white transition-all text-center" href="https://wa.me/6281234567890?text=Halo%20Seksi%20Pemerintahan%20Desa%20Beriri%20Jarak,%20saya%20ingin%20konsultasi%20mengenai%20surat%20wilayah%20atau%20batas%20tanah." rel="noopener noreferrer" target="_blank">
+                            <span class="material-symbols-outlined text-[20px]">chat</span> WhatsApp Seksi Pemerintahan
+                        </a>
+                        <a class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-surface-pure/15 text-on-primary hover:bg-surface-pure/25 backdrop-blur-sm font-label-lg text-label-lg font-semibold transition-all text-center" href="{% url 'layanan' %}">
+                            <span class="material-symbols-outlined text-[20px]">description</span> Panduan Syarat Pengukuran
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

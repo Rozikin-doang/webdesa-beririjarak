@@ -1,0 +1,360 @@
+{% extends "themes/base.html" %}
+{% load static %}
+
+{% block title %}Statistik Demografi - Website Resmi Desa Beriri Jarak{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+    <!-- Header Banner -->
+    <section class="relative bg-primary text-on-primary overflow-hidden">
+        <div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-accent-mint/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute left-1/3 -bottom-20 w-80 h-80 rounded-full bg-secondary/30 blur-2xl pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 py-12 md:py-16 relative z-10">
+            <nav aria-label="Breadcrumb" class="flex items-center gap-2 font-label-md text-label-md text-on-primary/70 mb-4">
+                <a class="hover:text-accent-mint transition-colors" href="{% url 'beranda' %}">Beranda</a>
+                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                <a class="hover:text-accent-mint transition-colors" href="{% url 'data_statistik' %}">Data Desa</a>
+                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                <span class="text-accent-mint">Statistik Kependudukan</span>
+            </nav>
+            
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+                <div class="max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container text-accent-mint font-label-sm text-label-sm mb-3 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-accent-mint animate-pulse"></span> SID Terpadu • Pembaruan Semester {{ stat_terbaru.semester|default:"I" }} {{ stat_terbaru.tahun|default:"2026" }}
+                    </div>
+                    <h1 class="font-headline-xl text-headline-xl text-on-primary tracking-tight">Portal Data Statistik &amp; Demografi Penduduk Desa Beriri Jarak</h1>
+                    <p class="font-body-md text-body-md text-on-primary/80 mt-3 leading-relaxed">Transparansi data agregat kependudukan berbasis Sistem Informasi Desa (SID) mutakhir mencakup sebaran dusun, agama, rasio jenis kelamin, dan mata pencaharian warga di Kecamatan Wanasaba, Lombok Timur.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 shrink-0">
+                    <button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-pure/10 hover:bg-surface-pure/20 text-on-primary font-label-lg text-label-lg transition-all shadow-sm" onclick="window.print()">
+                        <span class="material-symbols-outlined text-[18px]">print</span> Cetak Ringkasan
+                    </button>
+                    <a class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent-mint hover:bg-accent-emerald text-primary font-label-lg text-label-lg transition-all shadow-md" href="#open-data">
+                        <span class="material-symbols-outlined text-[18px]">download</span> Unduh Agregat
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KPI Cards -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 -mt-8 relative z-20 w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <div class="bg-surface-pure rounded-2xl p-6 shadow-md transition-transform hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-label-md text-label-md text-text-secondary uppercase tracking-wider">Total Penduduk</span>
+                    <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[22px]">groups</span></div>
+                </div>
+                <div class="mt-3 flex items-baseline gap-2"><span class="font-display-lg text-headline-xl text-primary font-extrabold tracking-tight">{{ stat_terbaru.total_penduduk|default:"0" }}</span><span class="font-label-sm text-label-sm text-secondary font-semibold">Jiwa</span></div>
+                <div class="mt-2 flex items-center gap-1.5 font-label-sm text-label-sm text-text-secondary"><span class="material-symbols-outlined text-[15px] text-accent-emerald">trending_up</span><span>Data Terintegrasi</span></div>
+            </div>
+            <div class="bg-surface-pure rounded-2xl p-6 shadow-md transition-transform hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-label-md text-label-md text-text-secondary uppercase tracking-wider">Rasio Gender</span>
+                    <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[22px]">wc</span></div>
+                </div>
+                <div class="mt-3 flex items-baseline gap-2">
+                    <span class="font-display-lg text-headline-xl text-primary font-extrabold tracking-tight">
+                        <!-- Logika Sederhana Rasio Gender -->
+                        {% if stat_terbaru.laki_laki and stat_terbaru.perempuan %}
+                            {{ stat_terbaru.laki_laki|floatformat:0 }} : {{ stat_terbaru.perempuan|floatformat:0 }}
+                        {% else %}
+                            0 : 0
+                        {% endif %}
+                    </span>
+                    <span class="font-label-sm text-label-sm text-text-secondary">L / P</span>
+                </div>
+                <div class="mt-2 flex items-center gap-2 font-label-sm text-label-sm text-text-secondary"><span class="w-2 h-2 rounded-full bg-secondary"></span><span>Komposisi Warga</span></div>
+            </div>
+            <div class="bg-surface-pure rounded-2xl p-6 shadow-md transition-transform hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-label-md text-label-md text-text-secondary uppercase tracking-wider">Kewilayahan Dusun</span>
+                    <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[22px]">holiday_village</span></div>
+                </div>
+                <div class="mt-3 flex items-baseline gap-2"><span class="font-display-lg text-headline-xl text-primary font-extrabold tracking-tight">{{ data_dusun|length }}</span><span class="font-label-sm text-label-sm text-secondary font-semibold">Wilayah</span></div>
+                <div class="mt-2 flex items-center gap-1.5 font-label-sm text-label-sm text-text-secondary"><span class="material-symbols-outlined text-[15px] text-primary">check_circle</span><span>Data Dusun Terdaftar</span></div>
+            </div>
+            <div class="bg-surface-pure rounded-2xl p-6 shadow-md transition-transform hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-label-md text-label-md text-text-secondary uppercase tracking-wider">Kepala Keluarga</span>
+                    <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[22px]">family_restroom</span></div>
+                </div>
+                <div class="mt-3 flex items-baseline gap-2"><span class="font-headline-lg text-headline-lg text-primary font-bold">{{ stat_terbaru.total_kk|default:"0" }}</span><span class="font-label-sm text-label-sm text-secondary font-semibold">KK</span></div>
+                <div class="mt-2 flex items-center gap-1 font-label-sm text-label-sm text-text-secondary"><span>Tercatat di Database SID</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Dusun -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-12 w-full" id="dusun-agama">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-2">
+            <div>
+                <div class="flex items-center gap-2 text-secondary font-label-md text-label-md uppercase tracking-wider mb-1"><span class="material-symbols-outlined text-[16px]">account_balance</span><span>Dataset 01</span></div>
+                <h2 class="font-headline-md text-headline-md text-primary font-bold">Data Sebaran Wilayah Dusun</h2>
+            </div>
+            <span class="font-label-sm text-label-sm text-text-secondary bg-surface-container px-3 py-1.5 rounded-full">Basis Registrasi Dusun</span>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- Tabel -->
+            <div class="lg:col-span-7 bg-surface-pure rounded-3xl p-6 md:p-8 shadow-sm">
+                <div class="flex items-center justify-between pb-4">
+                    <h3 class="font-title-md text-title-md text-primary font-semibold">Tabel Agregat Dusun</h3>
+                    <span class="font-label-sm text-label-sm text-text-secondary">Satuan: Jiwa</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left font-body-sm text-body-sm">
+                        <thead>
+                            <tr class="bg-surface-bg text-text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                                <th class="py-3 px-4 rounded-l-xl">No</th>
+                                <th class="py-3 px-4">Nama Dusun</th>
+                                <th class="py-3 px-4">Jumlah KK</th>
+                                <th class="py-3 px-4 text-right rounded-r-xl">Jumlah Jiwa</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-surface-container-low">
+                            {% for dusun in data_dusun %}
+                            <tr class="hover:bg-surface-bg transition-colors">
+                                <td class="py-3.5 px-4 font-semibold text-text-secondary">{{ forloop.counter }}</td>
+                                <td class="py-3.5 px-4 font-title-md text-title-md text-primary font-medium"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-primary"></span><span>{{ dusun.nama }}</span></div></td>
+                                <td class="py-3.5 px-4 text-text-secondary">{{ dusun.jumlah_kk }}</td>
+                                <td class="py-3.5 px-4 text-right font-title-md text-title-md text-primary font-bold">{{ dusun.jumlah_jiwa }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="text-center py-4 text-text-secondary">Belum ada data dusun.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-primary/5 font-title-md text-title-md text-primary">
+                                <td class="py-4 px-4 font-bold rounded-l-xl" colspan="3">Total Seluruh Jiwa</td>
+                                <td class="py-4 px-4 text-right font-extrabold rounded-r-xl">{{ stat_terbaru.total_penduduk|default:"0" }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Chart -->
+            <div class="lg:col-span-5 bg-surface-pure rounded-3xl p-6 md:p-8 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-title-md text-title-md text-primary font-bold">Visualisasi Sebaran</h3>
+                        <span class="text-secondary font-label-sm text-label-sm">Bar Chart</span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-text-secondary mb-6">Grafik komparatif jumlah jiwa tiap klaster kewilayahan dusun.</p>
+                    <div class="relative w-full h-72"><canvas id="agamaChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Gender -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-16 w-full" id="gender">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-2">
+            <div>
+                <div class="flex items-center gap-2 text-secondary font-label-md text-label-md uppercase tracking-wider mb-1"><span class="material-symbols-outlined text-[16px]">diversity_3</span><span>Dataset 02</span></div>
+                <h2 class="font-headline-md text-headline-md text-primary font-bold">Data Demografi Jenis Kelamin (Gender Ratio)</h2>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            <div class="lg:col-span-5 bg-surface-pure rounded-3xl p-6 md:p-8 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-title-md text-title-md text-primary font-bold">Proporsi Laki-Laki &amp; Perempuan</h3>
+                        <span class="text-secondary font-label-sm text-label-sm">Donut Chart</span>
+                    </div>
+                    <div class="relative w-full h-64 flex items-center justify-center mt-6"><canvas id="jenisKelaminChart"></canvas></div>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-7 bg-surface-pure rounded-3xl p-6 md:p-8 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between pb-4">
+                        <h3 class="font-title-md text-title-md text-primary font-semibold">Tabel Agregat Jenis Kelamin</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left font-body-sm text-body-sm">
+                            <thead>
+                                <tr class="bg-surface-bg text-text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                                    <th class="py-3 px-4 rounded-l-xl">No</th>
+                                    <th class="py-3 px-4">Kategori</th>
+                                    <th class="py-3 px-4 text-right rounded-r-xl">Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-surface-container-low">
+                                <tr class="hover:bg-surface-bg transition-colors">
+                                    <td class="py-4 px-4 font-semibold text-text-secondary">1</td>
+                                    <td class="py-4 px-4 font-title-md text-title-md text-primary font-medium"><div class="flex items-center gap-2.5"><span class="w-3 h-3 rounded-full bg-primary"></span><span>Laki-Laki</span></div></td>
+                                    <td class="py-4 px-4 text-right font-title-md text-title-md text-primary font-bold">{{ stat_terbaru.laki_laki|default:"0" }}</td>
+                                </tr>
+                                <tr class="hover:bg-surface-bg transition-colors">
+                                    <td class="py-4 px-4 font-semibold text-text-secondary">2</td>
+                                    <td class="py-4 px-4 font-title-md text-title-md text-secondary font-medium"><div class="flex items-center gap-2.5"><span class="w-3 h-3 rounded-full bg-secondary"></span><span>Perempuan</span></div></td>
+                                    <td class="py-4 px-4 text-right font-title-md text-title-md text-secondary font-bold">{{ stat_terbaru.perempuan|default:"0" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="mt-8 bg-surface-container rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[24px]">balance</span></div>
+                        <div>
+                            <span class="font-title-md text-title-md text-primary font-bold block">Rasio L:P</span>
+                            <span class="font-body-sm text-body-sm text-text-secondary">Komposisi penduduk berdasarkan jenis kelamin.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Pekerjaan -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-16 w-full" id="pekerjaan">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-2">
+            <div>
+                <div class="flex items-center gap-2 text-secondary font-label-md text-label-md uppercase tracking-wider mb-1"><span class="material-symbols-outlined text-[16px]">work</span><span>Dataset 03</span></div>
+                <h2 class="font-headline-md text-headline-md text-primary font-bold">Data Struktur Mata Pencaharian Warga</h2>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-7 bg-surface-pure rounded-3xl p-6 md:p-8 shadow-sm">
+                <div class="flex items-center justify-between pb-4">
+                    <h3 class="font-title-md text-title-md text-primary font-semibold">Tabel Klasifikasi Profesi</h3>
+                    <span class="font-label-sm text-label-sm text-text-secondary">Satuan: Orang</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left font-body-sm text-body-sm">
+                        <thead>
+                            <tr class="bg-surface-bg text-text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+                                <th class="py-3 px-4 rounded-l-xl">No</th>
+                                <th class="py-3 px-4">Kategori Pekerjaan</th>
+                                <th class="py-3 px-4 text-right rounded-r-xl">Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-surface-container-low">
+                            {% for p in pekerjaan %}
+                            <tr class="hover:bg-surface-bg transition-colors">
+                                <td class="py-3.5 px-4 font-semibold text-text-secondary">{{ forloop.counter }}</td>
+                                <td class="py-3.5 px-4 font-title-md text-title-md text-primary font-medium">{{ p.nama_pekerjaan }}</td>
+                                <td class="py-3.5 px-4 text-right font-title-md text-title-md text-primary font-bold">{{ p.jumlah }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="3" class="text-center py-4 text-text-secondary">Belum ada data pekerjaan.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-5 bg-surface-pure rounded-3xl p-6 md:p-8 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-title-md text-title-md text-primary font-bold">Sebaran Sektor Pekerjaan</h3>
+                        <span class="text-secondary font-label-sm text-label-sm">Polar Chart</span>
+                    </div>
+                    <div class="relative w-full h-80 flex items-center justify-center mt-6"><canvas id="pekerjaanChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Open Data Download -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-16 mb-8 w-full" id="open-data">
+        <div class="bg-surface-pure rounded-3xl p-8 md:p-10 shadow-md">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-8">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/10 text-secondary font-label-sm text-label-sm mb-3"><span class="material-symbols-outlined text-[16px]">folder_zip</span> Layanan Satu Data</div>
+                    <h2 class="font-headline-md text-headline-md text-primary font-bold">Akses Terbuka &amp; Unduh Berkas Agregat</h2>
+                    <p class="font-body-md text-body-md text-text-secondary mt-2 leading-relaxed">Pemerintah Desa Beriri Jarak menyediakan salinan digital dataset kependudukan untuk kebutuhan riset akademis, perumusan program, dan transparansi warga secara akuntabel.</p>
+                </div>
+                <div class="lg:col-span-4 flex flex-col gap-3">
+                    <a class="flex items-center justify-between p-4 rounded-2xl bg-primary hover:bg-secondary text-on-primary font-label-lg text-label-lg transition-all shadow-md" href="#" onclick="alert('Mengunduh Laporan (PDF)...'); return false;">
+                        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[24px]">picture_as_pdf</span><div class="text-left"><span class="block font-bold">Laporan Lengkap (PDF)</span></div></div>
+                        <span class="material-symbols-outlined text-[20px]">download</span>
+                    </a>
+                    <a class="flex items-center justify-between p-4 rounded-2xl bg-surface-container hover:bg-surface-container-high text-primary font-label-lg text-label-lg transition-all shadow-sm" href="#" onclick="alert('Mengunduh Dataset (CSV)...'); return false;">
+                        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[24px]">table_chart</span><div class="text-left"><span class="block font-bold">Dataset Tabular (CSV)</span></div></div>
+                        <span class="material-symbols-outlined text-[20px]">download</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Sertakan Chart.js via CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Chart Dusun
+    const ctxAgama = document.getElementById('agamaChart');
+    if (ctxAgama) {
+        new Chart(ctxAgama.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: {{ dusun_labels_json|safe }},
+                datasets: [{
+                    label: 'Jumlah Jiwa',
+                    data: {{ dusun_data_json|safe }},
+                    backgroundColor: ['#003527', '#006c4e', '#10B981', '#34D399', '#707974', '#623c00'],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, grid: { color: '#E2E8F0', drawBorder: false } }, x: { grid: { display: false } } }
+            }
+        });
+    }
+
+    // 2. Chart Gender
+    const ctxGender = document.getElementById('jenisKelaminChart');
+    if (ctxGender) {
+        new Chart(ctxGender.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Laki-Laki', 'Perempuan'],
+                datasets: [{
+                    data: [{{ stat_terbaru.laki_laki|default:"0" }}, {{ stat_terbaru.perempuan|default:"0" }}],
+                    backgroundColor: ['#003527', '#006c4e'],
+                    hoverOffset: 6, borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '70%',
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', padding: 16 } } }
+            }
+        });
+    }
+
+    // 3. Chart Pekerjaan
+    const ctxPekerjaan = document.getElementById('pekerjaanChart');
+    if (ctxPekerjaan) {
+        new Chart(ctxPekerjaan.getContext('2d'), {
+            type: 'polarArea',
+            data: {
+                labels: {{ pekerjaan_labels_json|safe }},
+                datasets: [{
+                    data: {{ pekerjaan_data_json|safe }},
+                    backgroundColor: ['rgba(0, 53, 39, 0.85)', 'rgba(0, 108, 78, 0.8)', 'rgba(16, 185, 129, 0.75)', 'rgba(52, 211, 153, 0.7)', 'rgba(6, 78, 59, 0.5)', 'rgba(98, 60, 0, 0.65)'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } } }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
