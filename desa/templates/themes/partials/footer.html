@@ -62,13 +62,26 @@
         </div>
 
         <!-- Copyright -->
-        <div class="mt-space-xl pt-space-md flex flex-col md:flex-row items-center justify-between gap-4 font-body-sm text-body-sm text-text-secondary">
-            <p>© 2026 Pemerintah Desa Beriri Jarak. Terintegrasi dengan Sistem Informasi Desa (SID).</p>
-            <div class="flex items-center gap-6 font-label-sm text-label-sm">
+        <div class="mt-space-xl pt-space-md border-t border-border-subtle flex flex-col md:flex-row items-center justify-between gap-4 font-body-sm text-body-sm text-text-secondary">
+            <p>© <span id="current-year">2026</span> Pemerintah Desa Beriri Jarak. Terintegrasi dengan Sistem Informasi Desa (SID).</p>
+            <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-label-sm text-label-sm">
                 <a class="hover:text-primary transition-colors" href="{% url 'apbdes' %}">Regulasi</a>
+                <span class="hidden md:inline text-border-subtle">|</span>
                 <a class="hover:text-primary transition-colors" href="{% url 'visi_misi' %}">Tentang SID</a>
-                <a class="hover:text-primary transition-colors" href="{% url 'portal_masuk' %}">Portal Operator</a>
+                <span class="hidden md:inline text-border-subtle">|</span>
+                <!-- Bagian Repost By yang ditambahkan -->
+                <span class="text-text-secondary">Repost By : <span class="text-accent-emerald font-semibold">kkn_universitas hamzanwadi FT KLP28</span></span>
             </div>
         </div>
     </div>
 </footer>
+
+<!-- Script kecil untuk otomatis update tahun berjalan -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const yearElement = document.getElementById('current-year');
+        if (yearElement) {
+            yearElement.textContent = new Date().getFullYear();
+        }
+    });
+</script>

@@ -6,7 +6,7 @@
 {% block content %}
 <div class="flex flex-col w-full">
 
-    <!-- 1. HERO SECTION WITH SMART QUICK SEARCH & SLIDER -->
+    <!-- 1. HERO SECTION -->
     <section class="relative w-full -mt-20 overflow-hidden bg-primary min-h-[805px] flex flex-col">
         
         <!-- SLIDER GAMBAR -->
@@ -33,34 +33,10 @@
         <!-- Konten Hero -->
         <div class="relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-12 mt-auto pb-24 flex flex-col items-center text-center">
             
-            <!-- Tombol Aksi -->
-            <div class="flex flex-wrap items-center justify-center gap-4 mb-6">
-                <a class="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-accent-emerald hover:bg-secondary text-primary font-label-lg text-label-lg font-bold shadow-xl shadow-accent-emerald/20 hover:scale-[1.02] active:scale-95 transition-all duration-200" href="{% url 'formulir_pengajuan' %}">
-                    <span>Ajukan Layanan Online</span>
-                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-                </a>
-                <a class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-surface-pure/10 hover:bg-surface-pure/20 text-on-primary backdrop-blur-md font-label-lg text-label-lg transition-all duration-200 border border-white/20" href="#sambutan-kades">
-                    <span class="material-symbols-outlined text-[20px]">explore</span>
-                    <span>Jelajahi Profil Desa</span>
-                </a>
-            </div>
-            
-            <!-- Search Box -->
-            <div class="w-full max-w-xl bg-surface-pure rounded-xl p-1.5 sm:p-2 shadow-2xl flex flex-col sm:flex-row items-center gap-1.5">
-                <div class="flex items-center w-full px-3 gap-2">
-                    <span class="material-symbols-outlined text-primary text-[20px]">search</span>
-                    <input class="w-full bg-transparent border-0 focus:outline-none font-body-md text-body-sm text-on-surface placeholder:text-outline-variant py-1.5" id="live-search-input" placeholder="Cari layanan surat, data desa, atau produk..." type="text">
-                </div>
-                <button class="w-full sm:w-auto shrink-0 px-5 py-2 rounded-lg bg-primary hover:bg-secondary text-on-primary font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 transition-all" type="button" onclick="alert('Fitur pencarian akan dihubungkan ke backend.')">
-                    <span>Cari</span>
-                    <span class="material-symbols-outlined text-[16px]">travel_explore</span>
-                </button>
-            </div>
-            
             <!-- Quick Tags -->
-            <div class="flex flex-wrap items-center justify-center gap-2 mt-4 text-on-primary-container font-label-sm text-label-sm bg-black/20 p-2 rounded-full backdrop-blur-sm">
+            <div class="flex flex-wrap items-center justify-center gap-2 mt-8 text-on-primary-container font-label-sm text-label-sm bg-black/20 p-2 rounded-full backdrop-blur-sm border border-white/10">
                 <span class="opacity-90 font-semibold ml-2">Paling dicari:</span>
-                <button class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-on-primary transition-colors border border-white/20" onclick="document.getElementById('live-search-input').value='Surat Keterangan Usaha'" type="button">Surat Usaha (SKU)</button>
+                <button class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-on-primary transition-colors border border-white/20" onclick="document.getElementById('navbar-search').focus()" type="button">Surat Usaha (SKU)</button>
                 <a href="{% url 'lacak_tiket' %}" class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-on-primary transition-colors border border-white/20">Lacak Berkas</a>
                 <a href="{% url 'apbdes' %}" class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-on-primary transition-colors border border-white/20">APBDes 2024</a>
             </div>
@@ -226,7 +202,6 @@
                             src="{% static 'img/kepala desa.jpg' %}"
                             alt="Foto"
                         >
-                    {% comment %} <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnyf7FQYXUghqhKN3xKKqpDSpoc6JT4NaDKL9hV4tQ3gtFriJmn2tr4G_6zeupolVrGSUO9qhd7-rKYF81KLh9NGWUtP2_6JQfJQbcb3C_nUR0GvChkmlhROZTCZajbGkWyGRai8BKZZAEWaDQD--zrklcwuyWg82CvVpS4HcqTihpUB05OSCYAsbsjWLF_rBJQ4SsTF3HXeqaaYl88Nf9DAog2bbKw8MPYhb5xeHQ"> {% endcomment %}
                     <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent"></div>
                     <div class="absolute bottom-5 left-5 right-5 text-on-primary">
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-emerald text-primary font-label-sm text-label-sm font-bold mb-1.5">
@@ -349,7 +324,7 @@
         </div>
     </section>
 
-    <!-- 6. VIDEO PROFIL & POTENSI -->
+    <!-- 6. VIDEO PROFIL & POTENSI (YOUTUBE) -->
     <section class="max-w-7xl mx-auto px-6 lg:px-12 mt-24 w-full">
         <div class="bg-surface-pure rounded-3xl p-8 lg:p-12 shadow-xl flex flex-col gap-10">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -360,22 +335,16 @@
                 <p class="font-body-md text-body-md text-text-secondary max-w-md">Terletak di ketinggian lereng Gunung Rinjani, Beriri Jarak dianugerahi tanah subur, sumber mata air alami, dan tangan terampil pengrajin Sasak.</p>
             </div>
             
+            <!-- EMBED VIDEO YOUTUBE -->
             <div class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-on-surface group">
-                <img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBirb_WRewsNKSK4SmwbMa9SXjqIZ6ioPMZoWp7OSewZWi1Uviu9__w5INWNHns6WO8xI70Qr7H-60tvzY41NgHPMAaahHiNEPAr0ZPUP66qjh7vrFngvI1pLY6LUM8wNuzgPNxHn44tCRZDWeBpJK_GKOIlXdgHVc7zmqnunSsEIIJQOpmJ9dVY53W9UWFrbXNqeDfbdf0OVIeLJ6FEEQaNI466nQMpIjDi_sQfsxJ">
-                <div class="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/30 to-transparent"></div>
-                <button aria-label="Putar Video Profil Desa" class="absolute inset-0 m-auto w-20 h-20 rounded-full bg-accent-emerald text-primary flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300" onclick="alert('Video akan segera tersedia.')" type="button">
-                    <span class="material-symbols-outlined text-[42px] ml-1">play_arrow</span>
-                </button>
-                <div class="absolute bottom-6 left-6 right-6 flex flex-wrap items-center justify-between gap-4 text-on-primary">
-                    <div>
-                        <span class="inline-block px-3 py-1 rounded-full bg-surface-pure/20 backdrop-blur-md font-label-sm text-label-sm uppercase mb-2">Video Dokumenter Resmi SID • 04:35 Min</span>
-                        <h4 class="font-title-lg text-title-lg font-bold">Menyemai Harapan di Tanah Beriri Jarak: Sinergi Alam dan Budaya</h4>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px] text-accent-mint">hd</span>
-                        <span class="font-label-sm text-label-sm opacity-90">Resolusi 4K Ultra HD</span>
-                    </div>
-                </div>
+                <iframe class="w-full h-full object-cover" 
+                        src="https://www.youtube.com/embed/1Vq0l3lJAoY?si=3kkCH6FpGQ_6JN3l" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                </iframe>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
@@ -527,7 +496,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div class="lg:col-span-4 bg-primary text-on-primary rounded-3xl p-8 flex flex-col justify-between">
                 <div>
-                    <div class="w-12 h-12 rounded-xl bg-accent-emerald text-primary flex items-center justify-center mb-6">
+                    <div class="w-12 h-12 rounded-xl bg-accent-mint text-primary flex items-center justify-center mb-6">
                         <span class="material-symbols-outlined text-[26px]">support_agent</span>
                     </div>
                     <span class="font-label-sm text-label-sm text-accent-mint uppercase tracking-widest block mb-2">Panduan Warga</span>

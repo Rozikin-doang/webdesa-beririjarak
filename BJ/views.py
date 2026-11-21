@@ -1,10 +1,11 @@
 import json
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
+from django.db import transaction
 from django.utils.text import slugify
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
@@ -16,11 +17,76 @@ from .models import (
     AparaturDesa, VisiMisi, SejarahDesa, PetaDesa, PesanKontak
 )
 
+User = get_user_model()
+
+
+# =========================================================================
+# 0. AUTO-SEED AKUN ADMIN (JALAN SEKALI SAAT SERVER PERTAMA KALI START)
+# =========================================================================
+
+DEFAULT_ADMINS = [
+    {
+        "username": "beririjarak26@gmail.com",
+        "email": "beririjarak26@gmail.com",
+        "password": "R!nj4ni#K4nggo26",
+        "first_name": "Superuser",
+        "last_name": "Beriri Jarak",
+    },
+    {
+        "username": "operator@beririjarak.desa.id",
+        "email": "operator@beririjarak.desa.id",
+        "password": "W4n4s4b4@Em3r4ld",
+        "first_name": "Operator",
+        "last_name": "Desa",
+    },
+]
+
+
+def seed_default_admin():
+    """
+    Buat 2 akun superuser default jika belum ada.
+    Dipanggil otomatis dari beranda() dan proses_login().
+    Aman dijalankan berulang kali karena memakai get_or_create.
+    """
+    for akun in DEFAULT_ADMINS:
+        # PERBAIKAN: Jangan pop(), ambil password dan buat copy dict tanpa password
+        password = akun["password"]
+        data_user = {k: v for k, v in akun.items() if k != "password"}
+        
+        try:
+            user, created = User.objects.get_or_create(
+                username=data_user["username"],
+                defaults={
+                    **data_user,
+                    "is_staff": True,
+                    "is_superuser": True,
+                    "is_active": True,
+                },
+            )
+            if created:
+                user.set_password(password)
+                user.save()
+                print(f"[SEED] Akun admin dibuat: {user.username}")
+            else:
+                # Reset password agar selalu sinkron dengan yang di kode
+                user.set_password(password)
+                user.save()
+                print(f"[SEED] Password direset: {user.username}")
+        except Exception as e:
+            print(f"[SEED] Gagal membuat akun {data_user.get('username')}: {e}")
+
+
 # =========================================================================
 # 1. HALAMAN UTAMA & UMUM
 # =========================================================================
 
 def beranda(request):
+    # Auto-seed admin setiap kali beranda diakses
+    try:
+        seed_default_admin()
+    except Exception:
+        pass
+
     berita_terbaru = Berita.objects.filter(status='tayang').order_by('-tanggal_rilis')[:3]
     umkm_unggulan = ProdukUMKM.objects.filter(is_unggulan=True)[:4]
     if not umkm_unggulan:
@@ -107,7 +173,6 @@ def berita_list(request):
 def detail_berita(request, slug):
     berita = get_object_or_404(Berita, slug=slug, status='tayang')
     
-    # Tambah jumlah dilihat
     berita.dilihat += 1
     berita.save()
 
@@ -215,9 +280,21 @@ def proses_login(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
 
+    # Pastikan akun default ada sebelum login
+    try:
+        seed_default_admin()
+    except Exception:
+        pass
+
     if request.method == 'POST':
-        username = request.POST.get('identity')
-        password = request.POST.get('password')
+        # Mendukung field 'username' (dari overlay) atau 'identity' (dari form lama)
+        username = (
+            request.POST.get('username')
+            or request.POST.get('identity')
+            or ''
+        ).strip()
+        password = request.POST.get('password') or ''
+
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
@@ -225,10 +302,17 @@ def proses_login(request):
             messages.success(request, f'Selamat datang, {user.username}!')
             return redirect('dashboard')
         else:
-            return render(request, 'themes/portal_masuk.html',
-                          {'error': 'Nama pengguna atau kata sandi salah!'})
+            # PERBAIKAN: Redirect balik ke halaman asal + pesan error
+            # (base.html akan otomatis buka overlay & tampilkan alert merah)
+            messages.error(
+                request,
+                'Email/username atau kata sandi salah. Silakan coba lagi.'
+            )
+            referer = request.META.get('HTTP_REFERER', 'beranda')
+            return redirect(referer)
 
-    return render(request, 'themes/portal_masuk.html')
+    # Jika GET, arahkan ke beranda (karena overlay login ada di base.html)
+    return redirect('beranda')
 
 
 def proses_logout(request):
@@ -493,7 +577,6 @@ def tambah_galeri(request):
 @login_required(login_url='portal_masuk')
 def tambah_apbdes(request):
     if request.method == 'POST':
-        # 1. Simpan Induk APBDes (Menggunakan int(float()) agar aman dari input desimal/kosong)
         apbdes = APBDes.objects.create(
             tahun_anggaran=int(float(request.POST.get('tahun_anggaran') or 0)),
             tahap=request.POST.get('tahap') or '',
@@ -506,13 +589,12 @@ def tambah_apbdes(request):
             realisasi_belanja=int(float(request.POST.get('realisasi_belanja') or 0)),
         )
         
-        # 2. Simpan Rincian Belanja
         uraian_list = request.POST.getlist('uraian_belanja[]')
         anggaran_list = request.POST.getlist('anggaran_belanja[]')
         realisasi_list = request.POST.getlist('realisasi_belanja[]')
         
         for u, a, r in zip(uraian_list, anggaran_list, realisasi_list):
-            if u: # Jika uraian tidak kosong
+            if u:
                 RincianBelanja.objects.create(
                     apbdes=apbdes,
                     uraian=u,
@@ -710,7 +792,6 @@ def edit_apbdes(request, id):
         apbdes.tahun_anggaran = int(float(request.POST.get('tahun_anggaran') or 0))
         apbdes.tahap = request.POST.get('tahap') or ''
         
-        # Update rincian pendapatan
         apbdes.pendapatan_asli = int(float(request.POST.get('pendapatan_asli') or 0))
         apbdes.pendapatan_transfer = int(float(request.POST.get('pendapatan_transfer') or 0))
         apbdes.pendapatan_lain = int(float(request.POST.get('pendapatan_lain') or 0))
@@ -721,7 +802,6 @@ def edit_apbdes(request, id):
         apbdes.realisasi_belanja = int(float(request.POST.get('realisasi_belanja') or 0))
         apbdes.save()
 
-        # Hapus rincian belanja lama, ganti dengan yang baru
         apbdes.rincian_belanja.all().delete()
         
         uraian_list = request.POST.getlist('uraian_belanja[]')
@@ -830,7 +910,6 @@ def simpan_statistik(request):
         }
     )
 
-    # Update pekerjaan (tanpa hapus semua jika tidak perlu)
     StatistikPekerjaan.objects.all().delete()
     for name, jumlah in zip(
         request.POST.getlist('nama_pekerjaan[]'),
@@ -839,7 +918,6 @@ def simpan_statistik(request):
         if name and jumlah:
             StatistikPekerjaan.objects.create(nama_pekerjaan=name, jumlah=jumlah)
 
-    # Update agama
     StatistikAgama.objects.all().delete()
     for name, jumlah in zip(
         request.POST.getlist('nama_agama[]'),
@@ -858,22 +936,17 @@ def simpan_statistik(request):
 
 def formulir_pengajuan(request):
     if request.method == 'POST':
-        # 1. Ambil jenis surat yang diketik manual oleh warga
         jenis_surat_manual = request.POST.get('jenis_surat_manual')
         
         if not jenis_surat_manual:
             messages.error(request, 'Jenis surat wajib diisi.')
             return render(request, 'themes/formulir_pengajuan.html')
 
-        # 2. Ambil keterangan tambahan
         keterangan = request.POST.get('keterangan_tambahan') or ''
-
-        # 3. Gabungkan jenis surat manual ke dalam keterangan tambahan
         keterangan_lengkap = f"Jenis Surat: {jenis_surat_manual}\n{('Catatan Tambahan: ' + keterangan) if keterangan else ''}"
 
-        # 4. Buat pengajuan baru
         pengajuan = PengajuanSurat.objects.create(
-            layanan=None, # Dikosongkan karena input manual
+            layanan=None,
             nik_pemohon=request.POST.get('nik_pemohon'),
             nama_pemohon=request.POST.get('nama_pemohon'),
             no_whatsapp=request.POST.get('no_whatsapp'),
@@ -965,7 +1038,6 @@ def ubah_status_pengajuan(request, id):
             pengajuan.catatan_admin = catatan
         pengajuan.save()
 
-        # Baris messages.success DIHAPUS agar notifikasi tidak muncul
         return redirect('kelola_pengajuan_surat')
 
     return render(request, 'themes/admin/ubah_status_pengajuan.html', {
@@ -990,12 +1062,10 @@ def hapus_pengajuan_surat(request, id):
 
 @login_required(login_url='portal_masuk')
 def api_cek_status_tiket(request, id_tiket):
-    """Endpoint AJAX untuk cek status tiket tanpa reload."""
     pengajuan = PengajuanSurat.objects.filter(id_tiket__iexact=id_tiket).first()
     if not pengajuan:
         return JsonResponse({'success': False, 'message': 'Tiket tidak ditemukan'}, status=404)
 
-    # Antisipasi jika layanan bernilai None karena input manual
     nama_layanan = pengajuan.layanan.nama_layanan if pengajuan.layanan else "Layanan Input Manual"
 
     return JsonResponse({
@@ -1016,13 +1086,11 @@ def api_cek_status_tiket(request, id_tiket):
 
 def pengaduan_warga(request):
     if request.method == 'POST':
-        # Tangkap data dari form
         nama = request.POST.get('nama') or 'Anonim'
         email_atau_wa = request.POST.get('email')
         subjek = request.POST.get('subjek')
         pesan = request.POST.get('pesan')
 
-        # Simpan ke database
         PesanKontak.objects.create(
             nama=nama,
             email=email_atau_wa,
@@ -1031,11 +1099,8 @@ def pengaduan_warga(request):
         )
 
         messages.success(request, 'Terima kasih! Pengaduan/Kritik/Saran Anda telah berhasil dikirim dan akan segera ditindaklanjuti.')
-        
-        # UBAH BAGIAN INI: Agar setelah submit, warga kembali ke halaman pengumuman
         return redirect('pengumuman') 
 
-    # Jika bukan POST, arahkan juga ke halaman pengumuman
     return redirect('pengumuman')
 
 
@@ -1045,17 +1110,14 @@ def pengaduan_warga(request):
 
 @login_required(login_url='portal_masuk')
 def kelola_kritik_saran(request):
-    # Ambil semua pesan, urutkan dari yang terbaru
     daftar_pesan = PesanKontak.objects.all().order_by('-tanggal_kirim')
     
-    # Filter berdasarkan status sudah dibaca atau belum
     status_filter = request.GET.get('status')
     if status_filter == 'belum':
         daftar_pesan = daftar_pesan.filter(sudah_dibaca=False)
     elif status_filter == 'sudah':
         daftar_pesan = daftar_pesan.filter(sudah_dibaca=True)
         
-    # Fitur Pencarian
     q = request.GET.get('q')
     if q:
         daftar_pesan = daftar_pesan.filter(
@@ -1064,7 +1126,6 @@ def kelola_kritik_saran(request):
             Q(pesan__icontains=q)
         )
 
-    # Pagination
     paginator = Paginator(daftar_pesan, 15)
     page_obj = paginator.get_page(request.GET.get('page'))
 
@@ -1082,7 +1143,7 @@ def kelola_kritik_saran(request):
 @require_POST
 def tandai_sudah_dibaca(request, id):
     pesan = get_object_or_404(PesanKontak, id=id)
-    pesan.sudah_dibaca = not pesan.sudah_dibaca # Toggle status
+    pesan.sudah_dibaca = not pesan.sudah_dibaca
     pesan.save()
     status = "sudah dibaca" if pesan.sudah_dibaca else "belum dibaca"
     messages.success(request, f'Pesan berhasil ditandai sebagai {status}.')
